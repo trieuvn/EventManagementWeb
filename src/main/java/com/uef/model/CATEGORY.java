@@ -6,8 +6,23 @@ package com.uef.model;
 
 /**
  *
- * @author Administrator
+ * @author sang
  */
+
 public class CATEGORY {
-    
+    private String name;
+    private String description;
+
+    // Constructors
+    public CATEGORY() {}
+    public CATEGORY(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

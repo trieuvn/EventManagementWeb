@@ -6,8 +6,23 @@ package com.uef.model;
 
 /**
  *
- * @author Administrator
+ * @author sang
  */
+
 public class TAG {
-    
+    private CATEGORY category;
+    private EVENT event;
+
+    // Constructors
+    public TAG() {}
+    public TAG(CATEGORY category, EVENT event) {
+        this.category = category;
+        this.event = event;
+    }
+
+    // Getters and Setters
+    public CATEGORY getCategory() { return category; }
+    public void setCategory(CATEGORY category) { this.category = category; }
+    public EVENT getEvent() { return event; }
+    public void setEvent(EVENT event) { this.event = event; }
 }

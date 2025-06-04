@@ -1,1 +1,12 @@
+com\uef\utils\Map.class
+com\uef\model\LOCATION.class
+com\uef\model\TAG.class
 com\uef\controller\NewClass.class
+com\uef\eventController\EventController.class
+com\uef\model\USER.class
+com\uef\model\PARTICIPANT.class
+com\uef\eventModel\Event.class
+com\uef\model\ORGANIZER.class
+com\uef\model\CHANGE.class
+com\uef\model\CATEGORY.class
+com\uef\model\EVENT.class
