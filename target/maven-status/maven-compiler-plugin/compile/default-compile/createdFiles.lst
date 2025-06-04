@@ -1,1 +1,2 @@
-com\uef\controller\NewClass.class
+com\uef\eventController\EventController.class
+com\uef\eventModel\Event.class
