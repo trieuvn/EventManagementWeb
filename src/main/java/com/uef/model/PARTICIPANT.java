@@ -1,40 +1,80 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.uef.model;
 
-/**
- *
- * @author sang
- */
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "PARTICIPANT")
 public class PARTICIPANT {
-    private USER user;
-    private EVENT event;
-    private int status;
-    private int rate;
-    private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    // Constructors
-    public PARTICIPANT() {}
-    public PARTICIPANT(USER user, EVENT event, int status, int rate, String description) {
-        this.user = user;
-        this.event = event;
-        this.status = status;
-        this.rate = rate;
-        this.description = description;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user", referencedColumnName = "email")
+    private USER user;
+
+    @ManyToOne
+    @JoinColumn(name = "ticket", referencedColumnName = "id")
+    private TICKET ticket;
+
+    @Column(name = "status")
+    private int status;
+
+    @Column(name = "rate")
+    private int rate;
+
+    @Column(name = "comment")
+    private String comment;
 
     // Getters and Setters
-    public USER getUser() { return user; }
-    public void setUser(USER user) { this.user = user; }
-    public EVENT getEvent() { return event; }
-    public void setEvent(EVENT event) { this.event = event; }
-    public int getStatus() { return status; }
-    public void setStatus(int status) { this.status = status; }
-    public int getRate() { return rate; }
-    public void setRate(int rate) { this.rate = rate; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public USER getUser() {
+        return user;
+    }
+
+    public void setUser(USER user) {
+        this.user = user;
+    }
+
+    public TICKET getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(TICKET ticket) {
+        this.ticket = ticket;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
 }

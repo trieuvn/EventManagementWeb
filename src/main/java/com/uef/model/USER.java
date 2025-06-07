@@ -1,35 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.uef.model;
 
-/**
- *
- * @author sang
- */
+import jakarta.persistence.*;
+import java.util.List;
 
+@Entity
+@Table(name = "USER")
 public class USER {
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String phoneNumber;
-    private int role; // 0: organizer, 1: participant
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    // Constructors
-    public USER() {}
-    public USER(String email, String firstName, String lastName, String password, String phoneNumber, int role) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
+    @Column(name = "role")
+    private int role;
+
+    @Column(name = "language")
+    private String language;
+
+    @OneToMany(mappedBy = "user")
+    private List<PARTICIPANT> participants;
+    
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getEmail() { return email; }
+
+    public List<PARTICIPANT> getParticipants() {
+        return participants;
     }
 
-    // Getters and Setters
-    public String getEmail() { return email; }
+    public void setParticipants(List<PARTICIPANT> participants) {
+        this.participants = participants;
+    }
     public void setEmail(String email) { this.email = email; }
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -41,4 +58,6 @@ public class USER {
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public int getRole() { return role; }
     public void setRole(int role) { this.role = role; }
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
 }

@@ -1,69 +1,141 @@
 package com.uef.model;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
+@Table(name = "EVENT")
 public class EVENT {
-    private int id;
-    private String name;
-    private String description;
-    private String date;
-    private int duration;
-    private String type;
-    private String regDeadline;
-    private float ticketPrice;
-    private String contactInfo;
-    private int slots;
-    private String status;
-    private ORGANIZER organizer;
-    private LOCATION location;
-    private List<CATEGORY> categories = new ArrayList<>();
 
-    // Constructors
-    public EVENT() {}
-    public EVENT(int id, String name, String description, String date, int duration, String type,
-                 String regDeadline, float ticketPrice, String contactInfo, int slots, String status) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.date = date;
-        this.duration = duration;
-        this.type = type;
-        this.regDeadline = regDeadline;
-        this.ticketPrice = ticketPrice;
-        this.contactInfo = contactInfo;
-        this.slots = slots;
-        this.status = status;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "contactInfo")
+    private String contactInfo;
+
+    @Column(name = "target")
+    private String target;
+
+    @ManyToOne
+    @JoinColumn(name = "location", referencedColumnName = "id")
+    private LOCATION location;
+
+    @OneToMany(mappedBy = "event")
+    private List<TAG> tags;
+
+    @OneToMany(mappedBy = "event")
+    private List<TICKET> tickets;
+
+    @OneToMany(mappedBy = "event")
+    private List<CHANGE> changes;
+
+    @ManyToOne
+    @JoinColumn(name = "organizer", referencedColumnName = "id")
+    private ORGANIZER organizer;
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getDate() { return date; }
-    public void setDate(String date) { this.date = date; }
-    public int getDuration() { return duration; }
-    public void setDuration(int duration) { this.duration = duration; }
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-    public String getRegDeadline() { return regDeadline; }
-    public void setRegDeadline(String regDeadline) { this.regDeadline = regDeadline; }
-    public float getTicketPrice() { return ticketPrice; }
-    public void setTicketPrice(float ticketPrice) { this.ticketPrice = ticketPrice; }
-    public String getContactInfo() { return contactInfo; }
-    public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
-    public int getSlots() { return slots; }
-    public void setSlots(int slots) { this.slots = slots; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public ORGANIZER getOrganizer() { return organizer; }
-    public void setOrganizer(ORGANIZER organizer) { this.organizer = organizer; }
-    public LOCATION getLocation() { return location; }
-    public void setLocation(LOCATION location) { this.location = location; }
-    public List<CATEGORY> getCategories() { return categories; }
-    public void setCategories(List<CATEGORY> categories) { this.categories = categories; }
-    public void addCategory(CATEGORY category) { this.categories.add(category); }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public LOCATION getLocation() {
+        return location;
+    }
+
+    public void setLocation(LOCATION location) {
+        this.location = location;
+    }
+
+    public List<TAG> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TAG> tags) {
+        this.tags = tags;
+    }
+
+    
+
+    public List<TICKET> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<TICKET> tickets) {
+        this.tickets = tickets;
+    }
+
+    public List<CHANGE> getChanges() {
+        return changes;
+    }
+
+    public void setChanges(List<CHANGE> changes) {
+        this.changes = changes;
+    }
+
+   
+
+    public ORGANIZER getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(ORGANIZER organizer) {
+        this.organizer = organizer;
+    }
+
 }
