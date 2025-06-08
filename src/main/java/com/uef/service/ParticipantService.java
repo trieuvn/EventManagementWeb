@@ -14,18 +14,18 @@ public class ParticipantService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<PARTICIPANT> findAllByEvent(int eventId) {
+    public List<PARTICIPANT> getAllByEvent(int eventId) {
         Query query = entityManager.createQuery("SELECT p FROM PARTICIPANT p WHERE p.ticket IN (SELECT t FROM Ticket t WHERE t.event.id = :eventId)", PARTICIPANT.class);
         query.setParameter("eventId", eventId);
         return query.getResultList();
     }
 
-    public PARTICIPANT findById(int id) {
+    public PARTICIPANT getById(int id) {
         return entityManager.find(PARTICIPANT.class, id);
     }
 
     @Transactional
-    public void save(PARTICIPANT participant) {
+    public void set(PARTICIPANT participant) {
         if (participant.getId() == 0) {
             entityManager.persist(participant);
         } else {
@@ -35,7 +35,7 @@ public class ParticipantService {
 
     @Transactional
     public void deleteById(int id) {
-        PARTICIPANT participant = findById(id);
+        PARTICIPANT participant = getById(id);
         if (participant != null) {
             entityManager.remove(participant);
         }
@@ -43,23 +43,23 @@ public class ParticipantService {
 
     @Transactional
     public void confirmRegistration(int id, int confirmCode) {
-        PARTICIPANT participant = findById(id);
+        PARTICIPANT participant = getById(id);
         if (participant != null && participant.getTicket().getConfirmCode() == confirmCode) {
             participant.setStatus(1); // Assuming 1 = confirmed
-            save(participant);
+            set(participant);
         }
     }
 
     @Transactional
     public void cancelRegistration(int id) {
-        PARTICIPANT participant = findById(id);
+        PARTICIPANT participant = getById(id);
         if (participant != null && participant.getTicket().getEvent().getType().equals("upcoming")) {
             participant.setStatus(0); // Assuming 0 = canceled
-            save(participant);
+            set(participant);
         }
     }
 
-    public List<PARTICIPANT> findByUser(USER user) {
+    public List<PARTICIPANT> getByUser(USER user) {
         Query query = entityManager.createQuery("SELECT p FROM PARTICIPANT p WHERE p.user = :user", PARTICIPANT.class);
         query.setParameter("user", user);
         return query.getResultList();

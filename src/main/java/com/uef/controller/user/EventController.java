@@ -19,11 +19,11 @@ public class EventController {
     @GetMapping
     public String listEvents(@RequestParam(required = false) String type, Model model) {
         if ("upcoming".equals(type)) {
-            model.addAttribute("events", eventService.findUpcomingEvents());
+            model.addAttribute("events", eventService.getUpcomingEvents());
         } else if ("past".equals(type)) {
-            model.addAttribute("events", eventService.findPastEvents());
+            model.addAttribute("events", eventService.getPastEvents());
         } else {
-            model.addAttribute("events", eventService.findAll());
+            model.addAttribute("events", eventService.getAll());
         }
         return "user/events/list";
     }
@@ -36,7 +36,7 @@ public class EventController {
 
     @GetMapping("/{id}")
     public String viewEventDetails(@PathVariable("id") int id, Model model) {
-        EVENT event = eventService.findById(id);
+        EVENT event = eventService.getById(id);
         if (event != null) {
             int totalSlots = event.getTickets().stream().mapToInt(t -> t.getSlots()).sum();
             model.addAttribute("event", event);

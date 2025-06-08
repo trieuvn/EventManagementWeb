@@ -14,15 +14,15 @@ public class CategoryService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<CATEGORY> findAll() {
+    public List<CATEGORY> getAll() {
         return entityManager.createQuery("SELECT c FROM CATEGORY c", CATEGORY.class).getResultList();
     }
 
-    public CATEGORY findById(int id) {
+    public CATEGORY getById(int id) {
         return entityManager.find(CATEGORY.class, id);
     }
 
-    public void save(CATEGORY category) {
+    public void set(CATEGORY category) {
         if (category.getId() == 0) {
             entityManager.persist(category);
         } else {
@@ -31,7 +31,7 @@ public class CategoryService {
     }
 
     public void deleteById(int id) {
-        CATEGORY category = findById(id);
+        CATEGORY category = getById(id);
         if (category != null) {
             entityManager.remove(category);
         }

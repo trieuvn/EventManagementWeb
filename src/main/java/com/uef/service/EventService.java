@@ -15,16 +15,16 @@ public class EventService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<EVENT> findAll() {
+    public List<EVENT> getAll() {
         return entityManager.createQuery("SELECT e FROM EVENT e", EVENT.class).getResultList();
     }
 
-    public EVENT findById(int id) {
+    public EVENT getById(int id) {
         return entityManager.find(EVENT.class, id);
     }
 
     @Transactional
-    public void save(EVENT event) {
+    public void set(EVENT event) {
         if (event.getId() == 0) {
             entityManager.persist(event);
         } else {
@@ -34,32 +34,32 @@ public class EventService {
 
     @Transactional
     public void deleteById(int id) {
-        EVENT event = findById(id);
+        EVENT event = getById(id);
         if (event != null) {
             entityManager.remove(event);
         }
     }
 
     @Transactional
-    public void updateStatus(int id, String status) {
-        EVENT event = findById(id);
+    public void setStatus(int id, String status) {
+        EVENT event = getById(id);
         if (event != null) {
             event.setType(status);
-            save(event);
+            set(event);
         }
     }
 
-    public List<EVENT> findByCategory(String category) {
+    public List<EVENT> getByCategory(String category) {
         Query query = entityManager.createQuery("SELECT e FROM EVENT e JOIN e.tags t WHERE t.category = :category", EVENT.class);
         query.setParameter("category", category);
         return query.getResultList();
     }
 
-    public List<EVENT> findUpcomingEvents() {
+    public List<EVENT> getUpcomingEvents() {
         return entityManager.createQuery("SELECT e FROM EVENT e WHERE e.type = 'upcoming'", EVENT.class).getResultList();
     }
 
-    public List<EVENT> findPastEvents() {
+    public List<EVENT> getPastEvents() {
         return entityManager.createQuery("SELECT e FROM EVENT e WHERE e.type = 'completed'", EVENT.class).getResultList();
     }
 

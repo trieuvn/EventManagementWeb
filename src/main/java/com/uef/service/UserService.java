@@ -14,14 +14,14 @@ public class UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public USER findByEmail(String email) {
+    public USER getByEmail(String email) {
         Query query = entityManager.createQuery("SELECT u FROM USER u WHERE u.email = :email", USER.class);
         query.setParameter("email", email);
         return (USER) query.getSingleResult();
     }
 
     @Transactional
-    public void save(USER user) {
+    public void set(USER user) {
         if (user.getId() == 0) {
             entityManager.persist(user);
         } else {

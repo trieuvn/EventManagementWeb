@@ -40,7 +40,7 @@ public class RegistrationController {
 
         // Simulate finding a ticket (in practice, check availability and deadline)
         TICKET ticket = new TICKET();
-        ticket.setEvent(eventService.findById(eventId)); // Assuming eventService is autowired
+        ticket.setEvent(eventService.getById(eventId)); // Assuming eventService is autowired
         ticket.setConfirmCode(new Random().nextInt(10000)); // Generate confirmation code
         entityManager.persist(ticket); // Persist ticket (requires EntityManager)
 
@@ -48,7 +48,7 @@ public class RegistrationController {
         participant.setUser(user);
         participant.setTicket(ticket);
         participant.setStatus(0); // Pending
-        participantService.save(participant);
+        participantService.set(participant);
 
         model.addAttribute("confirmCode", ticket.getConfirmCode());
         return "user/registration/confirm";

@@ -23,11 +23,11 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute USER user, Model model) {
-        if (userService.findByEmail(user.getEmail()) != null) {
+        if (userService.getByEmail(user.getEmail()) != null) {
             model.addAttribute("error", "Email already registered");
             return "user/register";
         }
-        userService.save(user);
+        userService.set(user);
         return "redirect:/user/login";
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
         if (userService.authenticate(email, password)) {
-            session.setAttribute("user", userService.findByEmail(email));
+            session.setAttribute("user", userService.getByEmail(email));
             return "redirect:/user/events";
         }
         model.addAttribute("error", "Invalid email or password");
@@ -65,7 +65,7 @@ public class UserController {
         USER currentUser = (USER) session.getAttribute("user");
         if (currentUser != null) {
             user.setId(currentUser.getId());
-            userService.save(user);
+            userService.set(user);
             session.setAttribute("user", user);
         }
         return "redirect:/user/profile";

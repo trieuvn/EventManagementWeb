@@ -15,7 +15,7 @@ public class EventController {
 
     @GetMapping
     public String listEvents(Model model) {
-        model.addAttribute("events", eventService.findAll());
+        model.addAttribute("events", eventService.getAll());
         return "admin/events/list";
     }
 
@@ -27,19 +27,19 @@ public class EventController {
 
     @PostMapping("/add")
     public String addEvent(@ModelAttribute EVENT event) {
-        eventService.save(event);
+        eventService.set(event);
         return "redirect:/admin/events";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
-        model.addAttribute("event", eventService.findById(id));
+        model.addAttribute("event", eventService.getById(id));
         return "admin/events/form";
     }
 
     @PostMapping("/update")
     public String updateEvent(@ModelAttribute EVENT event) {
-        eventService.save(event);
+        eventService.set(event);
         return "redirect:/admin/events";
     }
 
@@ -51,7 +51,7 @@ public class EventController {
 
     @PostMapping("/updateStatus")
     public String updateStatus(@RequestParam int id, @RequestParam String status) {
-        eventService.updateStatus(id, status);
+        eventService.setStatus(id, status);
         return "redirect:/admin/events";
     }
 }

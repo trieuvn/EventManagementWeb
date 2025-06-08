@@ -15,7 +15,7 @@ public class CategoryController {
 
     @GetMapping
     public String listCategories(Model model) {
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryService.getAll());
         return "admin/categories/list";
     }
 
@@ -27,19 +27,19 @@ public class CategoryController {
 
     @PostMapping("/add")
     public String addCategory(@ModelAttribute CATEGORY category) {
-        categoryService.save(category);
+        categoryService.set(category);
         return "redirect:/admin/categories";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
-        model.addAttribute("category", categoryService.findById(id));
+        model.addAttribute("category", categoryService.getById(id));
         return "admin/categories/form";
     }
 
     @PostMapping("/update")
     public String updateCategory(@ModelAttribute CATEGORY category) {
-        categoryService.save(category);
+        categoryService.set(category);
         return "redirect:/admin/categories";
     }
 

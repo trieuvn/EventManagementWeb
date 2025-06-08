@@ -19,7 +19,7 @@ public class ParticipantController {
 
     @GetMapping("/event/{eventId}")
     public String listParticipants(@PathVariable int eventId, Model model) {
-        model.addAttribute("participants", participantService.findAllByEvent(eventId));
+        model.addAttribute("participants", participantService.getAllByEvent(eventId));
         model.addAttribute("eventId", eventId);
         return "admin/participants/list";
     }
