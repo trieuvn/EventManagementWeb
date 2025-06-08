@@ -1,42 +1,28 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh; /* Đảm bảo body chiếm toàn bộ chiều cao để footer nằm dưới cùng */
-            display: flex;
-            flex-direction: column;
-        }
-        hr {
-            border: 0;
-            border-top: 1px solid #ddd;
-            margin: 0;
-        }
-        footer {
-            background-color: #2e3b4e; /* Màu xám đậm giống trong hình */
-            padding: 10px 20px;
-            width: 100%;
-            box-sizing: border-box;
-            color: #fff;
-            font-size: 14px;
-            margin-top: auto; /* Đẩy footer xuống dưới cùng */
-            min-height: 40px; /* Đảm bảo footer có chiều cao tối thiểu */
-            display: flex;
-            align-items: center; /* Căn giữa nội dung theo chiều dọc */
-        }
-    </style>
-</head>
-<body>
-    <hr/>
-    <footer>
-        <span>© 2025 - Ứng dụng Quản lý Sự kiện</span>
-    </footer>
-</body>
-</html>
+<footer class="footer-section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="footer-text">
+                <div class="ft-logo">
+                    <a href="${pageContext.request.contextPath}">
+                        <img src="${pageContext.request.contextPath}/assets/img/footer-logo.png" alt="Logo Footer">
+                    </a>
+                </div>
+                <ul>
+                    <li><a href="${pageContext.request.contextPath}">Home</a></li>
+                    <li><a href="${pageContext.request.contextPath}/about-us">About</a></li>
+                    <li><a href=".${pageContext.request.contextPath}/schedule">Schedule</a></li>
+                    <li><a href="${pageContext.request.contextPath}/blog">Blog</a></li>
+                    <li><a href="${pageContext.request.contextPath}/contact">Contacts</a></li>
+
+                </ul>
+                <div class="copyright-text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>- Ứng dụng Quản lý Sự kiện<i class="fa fa-heart" aria-hidden="true"></i> 
+
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

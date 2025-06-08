@@ -15,7 +15,7 @@
 
     <!-- Bật hỗ trợ annotation như @RequestMapping -->
     <mvc:annotation-driven/>
-
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
     <!-- Cấu hình View Resolver để tìm file JSP -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
