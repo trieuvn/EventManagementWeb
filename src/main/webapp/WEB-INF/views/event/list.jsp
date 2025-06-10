@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #ffdce0, #d0e8ff);
+            background: rgba(0, 0, 0, 0);
             min-height: 100vh;
         }
         h2.text-center {
