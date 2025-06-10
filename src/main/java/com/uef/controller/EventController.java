@@ -51,6 +51,7 @@ public class EventController {
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
         model.addAttribute("body", "/WEB-INF/views/event/list.jsp");
+        model.addAttribute("advantage","/WEB-INF/views/layout/benefit.jsp");
        
 
         return "layout/main";
@@ -110,4 +111,5 @@ public class EventController {
     private String generateConfirmationCode() {
         return "CONF-" + (int)(Math.random() * 10000);
     }
+
 }

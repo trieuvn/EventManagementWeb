@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" type="text/css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/benefit.css" type="text/css">
     </head>
 
     <body>
@@ -52,6 +53,7 @@
                 </div>
             </div>
         </section>
+        <jsp:include page= "${advantage}"/>
         <jsp:include page="${body}"/>
         <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
         <script src="${pageContext.request.contextPath}/assets/js/jquery-3.3.1.min.js"></script>
