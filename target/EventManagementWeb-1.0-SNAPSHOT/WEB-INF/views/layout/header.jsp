@@ -13,20 +13,21 @@
                 padding: 8px 0;
             }
 
+
             .container {
-                display: flex;
                 align-items: center; /* ⭐ Giúp logo và menu nằm giữa theo chiều dọc */
                 justify-content: space-between; /* ⭐ Tách logo và menu về 2 bên */
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: 0 20px;
+                
             }
-
             .logo img {
                 max-height: 80px; /* ⭐ Điều chỉnh kích thước logo để không quá cao */
                 height: auto;
                 width: auto;
                 display: block;
+                margin-top: -40px;
             }
 
             .nav-menu ul {
