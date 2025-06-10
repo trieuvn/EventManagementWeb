@@ -2,6 +2,7 @@ package com.uef.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EVENT {
     private int id;
@@ -66,4 +67,5 @@ public class EVENT {
     public List<CATEGORY> getCategories() { return categories; }
     public void setCategories(List<CATEGORY> categories) { this.categories = categories; }
     public void addCategory(CATEGORY category) { this.categories.add(category); }
+
 }

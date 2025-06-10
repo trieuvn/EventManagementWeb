@@ -8,11 +8,13 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="description" content="Manup Template">
-        <meta name="keywords" content="Manup, unica, creative, html">
+        <meta name="description" content="Festivo Template">
+        <meta name="keywords" content="Festivo, unica, creative, html">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Manup | Template</title>
+        <title>Festivo</title>
+        <link rel="icon" href="https://cdn-icons-png.freepik.com/512/12769/12769433.png" type="image/png">
+
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700,800,900&display=swap"
@@ -41,7 +43,7 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="hero-text">
-                            <h2>Change Your Mind<br /> To Become Sucess</h2>
+                            <h2>Change Your Mind<br /> To Become Success</h2>
                         </div>
                     </div>
                     <div class="col-lg-5">

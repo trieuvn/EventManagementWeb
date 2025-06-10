@@ -5,11 +5,6 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="footer-text">
-                <div class="ft-logo">
-                    <a href="${pageContext.request.contextPath}">
-                        <img src="${pageContext.request.contextPath}/assets/img/footer-logo.png" alt="Logo Footer">
-                    </a>
-                </div>
                 <ul>
                     <li><a href="${pageContext.request.contextPath}">Home</a></li>
                     <li><a href="${pageContext.request.contextPath}/about-us">About</a></li>
