@@ -60,17 +60,7 @@
     <div class="container my-5">
         <h2 class="text-center mb-4">Danh sách Sự kiện</h2>
 
-        <div class="mb-4">
-            <form method="get" action="">
-                <div class="input-group mb-3">
-                    <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm theo tên sự kiện..." value="${param.keyword}" />
-                    <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Danh sách thể loại -->
-        <div class="category-title">Chọn thể loại</div>
+        <div class="category-title mb-0">Chọn thể loại</div>
         <div class="category-buttons">
             <a href="?" class="category-btn ${empty param.category ? 'active' : ''}">Tất cả</a>
             <c:forEach var="cat" items="${categories}">
@@ -86,6 +76,11 @@
                         <c:if test="${e.status == 'Mở'}">
                             <span class="badge bg-danger text-white position-absolute top-0 start-0 m-2">MỞ</span>
                         </c:if>
+                        <%--
+                        <c:if test="${not empty e.imageUrl}">
+                            <img src="${e.imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
+                        </c:if>
+                        --%>
                         <div class="card-body">
                             <h5 class="card-title text-center fw-bold">${e.name}</h5>
                             <p><i class="fas fa-info-circle"></i> Mô tả: ${e.description}</p>
@@ -93,7 +88,6 @@
                             <p><i class="fas fa-tags"></i> Thể loại: <span class="badge bg-secondary">${e.type}</span></p>
                             <p><i class="fas fa-calendar-alt"></i> Ngày diễn ra: ${e.date}</p>
                             <p><i class="fas fa-calendar-check"></i> Hạn đăng ký: ${e.regDeadline}</p>
-                            <p><i class="fas fa-money-bill-wave"></i> Giá vé: <strong>${e.ticketPrice} VND</strong></p>
                             <p><i class="fas fa-user-tie"></i> Liên hệ: ${e.contactInfo}</p>
                             <p><i class="fas fa-users"></i> Còn lại: ${e.slots} chỗ</p>
                         </div>
