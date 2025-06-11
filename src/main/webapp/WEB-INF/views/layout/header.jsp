@@ -1,72 +1,107 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f5efff;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-            width: 100%; /* Đảm bảo header chiếm toàn bộ chiều ngang */
-            box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
-        }
-        .header-left img {
-            height: 40px;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header-right .notification {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 15px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            background-color: #fff;
-            font-size: 14px;
-            color: #333;
-            text-decoration: none;
-        }
-        .header-right .profile {
-            width: 30px;
-            height: 30px;
-            background-color: #ff4500;
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-left">
-            <img src="src/main/resources/META-INF/logo_uef.png" alt="UEF Logo">
-        </div>
-        <div class="header-right">
-            <a href="#" class="notification">
-                🔔 Nguyễn Hoàng Phúc
-            </a>
-            <a href="#" class="profile">N</a>
-        </div>
-    </header>
-</body>
+    <head>
+        <title>Home</title>
+        <style>
+            .header-section {
+                position: relative;
+                height: 90px;
+                background-color: #fff;
+                padding: 8px 0;
+                z-index: 1000;
+            }
+
+            .container {
+                align-items: center;
+                justify-content: space-between;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+                flex-wrap: wrap;
+            }
+
+            .logo img {
+                max-height: 100px;
+                height: auto;
+                width: auto;
+                display: block;
+                margin-top: -40px;
+                margin-left: -60px;
+            }
+
+            .nav-menu {
+                flex-grow: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .nav-menu ul {
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+                gap: 25px;
+                justify-content: center; /* Ensure centering */
+                align-items:center;
+            }
+
+            .nav-menu li a {
+                text-decoration: none;
+                color: #333;
+                font-weight: 500;
+                font-size: 16px;
+                margin-top: -15px;
+                display: inline-block;
+                text-align: center;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .nav-menu ul {
+                    flex-direction: column;
+                    gap: 10px;
+                    justify-content: flex-start;
+                }
+
+            }
+
+        </style>
+    </head>
+    <body>
+        <header class="header-section">
+            <div class="container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="${pageContext.request.contextPath}">
+                        <img src="${pageContext.request.contextPath}/assets/img/event-list.png" alt="Events">
+                    </a>
+                </div>
+
+                <!-- Menu -->
+                <div class="nav-menu">
+                    <nav class="mainmenu mobile-menu">
+                        <ul>
+                            <li class="active"><a href="${pageContext.request.contextPath}">TRANG CHỦ</a></li>
+                            <li><a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a></li>
+                            <li><a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a></li>
+                            <li><a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#loginModal">ĐĂNG NHẬP</a></li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+                <div id="mobile-menu"></div>
+            </div>
+        </header>
+    </body>
 </html>
