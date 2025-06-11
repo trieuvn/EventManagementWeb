@@ -60,7 +60,6 @@
     <div class="container my-5">
         <h2 class="text-center mb-4">Danh sách Sự kiện</h2>
 
-        <div class="category-title mb-0">Chọn thể loại</div>
         <div class="category-buttons">
             <a href="?" class="category-btn ${empty param.category ? 'active' : ''}">Tất cả</a>
             <c:forEach var="cat" items="${categories}">
