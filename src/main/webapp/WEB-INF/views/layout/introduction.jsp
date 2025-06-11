@@ -14,20 +14,23 @@
     .option-card { background-color: #f9f9f9; border-radius: 10px; padding: 25px 20px; width: 48%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); }
     .option-card p { margin-bottom: 15px; font-size: 16px; color: #333; }
     .custom-btn { display: inline-block; padding: 12px 20px; font-size: 15px; font-weight: bold; border: none; border-radius: 5px; min-width: 160px; transition: 0.3s; text-decoration: none; }
-    .btn-blue { background-color: #33c3f0; color: #000; }
+    .btn-blue { background-color: #33c3f0; color: #000; border: 2px solid #28b0d8; }
     .btn-blue:hover { background-color: #28b0d8; }
-    .btn-gold { background-color: #d4af37; color: #000; }
-    .btn-gold:hover { background-color: #c89b2c; }
+    .btn-gold { background-color: #d4af37; color: #fff; border: 2px solid #c89b2c; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    .btn-gold:hover { background-color: #c89b2c; transform: translateY(-2px); }
     .close-btn-topright { position: absolute; top: 15px; right: 20px; background-color: #d4af37; border: none; width: 36px; height: 36px; font-size: 24px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+    .forgot-password { text-align: right; margin-top: 10px; }
     @media (max-width: 768px) { .modal-dialog { max-width: 95vw; } .custom-title { font-size: 26px; } .custom-subtext { font-size: 15px; } .option-card { width: 100%; margin-bottom: 15px; } }
 </style>
 
 <!-- Hiển thị thông báo -->
 <c:if test="${not empty msg}">
     <div class="alert alert-success">${msg}</div>
+    <c:remove var="msg" scope="session"/>
 </c:if>
 <c:if test="${not empty error}">
     <div class="alert alert-danger">${error}</div>
+    <c:remove var="error" scope="session"/>
 </c:if>
 
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -40,12 +43,14 @@
                 <div class="option-card text-center">
                     <p><strong>Chưa có tài khoản?</strong></p>
                     <button type="button" class="custom-btn btn-blue" data-toggle="modal" data-target="#signupModal" data-dismiss="modal">
-                        TẠO TÀI KHOẢN
+                        ĐĂNG KÝ
                     </button>
                 </div>
                 <div class="option-card text-center">
                     <p><strong>Đã có tài khoản?</strong></p>
-                    <a href="${pageContext.request.contextPath}/login" class="custom-btn btn-gold">ĐĂNG NHẬP</a>
+                    <button type="button" class="custom-btn btn-gold" data-toggle="modal" data-target="#loginModal2" data-dismiss="modal">
+                        ĐĂNG NHẬP
+                    </button>
                 </div>
             </div>
         </div>
@@ -99,17 +104,53 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-success">ĐĂNG KÝ</button>
+                    <button type="submit" class="btn btn-success" style="padding: 12px 20px; font-size: 15px;">ĐĂNG KÝ</button>
                 </div>
             </form:form>
         </div>
     </div>
 </div>
 
-<c:if test="${not empty error}">
+<div class="modal fade" id="loginModal2" tabindex="-1" role="dialog" aria-labelledby="loginModal2Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content custom-modal-content">
+            <button type="button" class="close-btn-topright" data-dismiss="modal" aria-label="Đóng">×</button>
+            <h2 class="custom-title">ĐĂNG NHẬP</h2>
+            <p class="custom-subtext">Vui lòng nhập thông tin để tiếp tục</p>
+            <form method="post" action="${pageContext.request.contextPath}/login" id="loginForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" class="form-control" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Mật khẩu</label>
+                        <input type="password" class="form-control" id="loginPassword" name="password" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="${pageContext.request.contextPath}/forgot-password">Quên mật khẩu?</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-success" style="padding: 12px 20px; font-size: 15px;">ĐĂNG NHẬP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<c:if test="${not empty error && !empty param.signup}">
     <script>
         $(document).ready(function() {
             $('#signupModal').modal('show');
+        });
+    </script>
+</c:if>
+<c:if test="${not empty error && !empty param.login}">
+    <script>
+        $(document).ready(function() {
+            $('#loginModal2').modal('show');
         });
     </script>
 </c:if>

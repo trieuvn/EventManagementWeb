@@ -60,7 +60,7 @@ public class EventController {
 
     @GetMapping("/login")
     public String showLogin(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/dashboard/login.jsp");
+        model.addAttribute("body", "/WEB-INF/views/layout/introduction.jsp?login=true");
         return "layout/main";
     }
 
@@ -68,6 +68,7 @@ public class EventController {
     public String processLogin(@RequestParam String email,
                                @RequestParam String password,
                                RedirectAttributes ra) {
+        logger.info("Login attempt for email: {}", email);
         USER matchedUser = users.stream()
             .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPassword().equals(password))
             .findFirst()
@@ -76,15 +77,16 @@ public class EventController {
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
             return "redirect:/";
         } else {
+            logger.warn("Login failed for email: {}", email);
             ra.addFlashAttribute("error", "Email hoặc mật khẩu không đúng.");
-            return "redirect:/login";
+            return "redirect:/?login=true";
         }
     }
 
     @GetMapping("/signup")
     public String showSignup(Model model) {
         model.addAttribute("userForm", new USER());
-        return "redirect:/";
+        return "redirect:/?signup=true";
     }
 
     @PostMapping("/signup")
@@ -96,7 +98,7 @@ public class EventController {
             ra.addFlashAttribute("error", "Vui lòng kiểm tra lại thông tin.");
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
             ra.addFlashAttribute("userForm", user);
-            return "redirect:/";
+            return "redirect:/?signup=true";
         }
 
         try {
@@ -104,7 +106,7 @@ public class EventController {
             if (exists) {
                 logger.warn("Email already exists: {}", user.getEmail());
                 ra.addFlashAttribute("error", "Email đã được đăng ký.");
-                return "redirect:/";
+                return "redirect:/?signup=true";
             }
             users.add(user);
             logger.info("User registered successfully: {}", user.getEmail());
@@ -113,7 +115,7 @@ public class EventController {
         } catch (Exception e) {
             logger.error("Error during signup process: ", e);
             ra.addFlashAttribute("error", "Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.");
-            return "redirect:/";
+            return "redirect:/?signup=true";
         }
     }
 
@@ -135,6 +137,13 @@ public class EventController {
         event.setSlots(event.getSlots() - 1);
         ra.addFlashAttribute("msg", "Đăng ký thành công! Mã xác nhận: " + generateConfirmationCode());
         return "redirect:/";
+    }
+
+    @GetMapping("/forgot-password")
+    public String showForgotPassword(Model model) {
+        // Placeholder: Bạn có thể thêm logic xử lý quên mật khẩu (ví dụ: gửi email reset)
+        model.addAttribute("body", "/WEB-INF/views/layout/forgot-password.jsp"); // Tạo file này nếu cần
+        return "layout/main";
     }
 
     private String generateConfirmationCode() {
