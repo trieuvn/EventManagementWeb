@@ -63,6 +63,12 @@ public class EventController {
         model.addAttribute("body", "/WEB-INF/views/layout/introduction.jsp?login=true");
         return "layout/main";
     }
+    
+    @GetMapping("/about")
+    public String aboutUs() {
+        // Trả về tên view (about.jsp)
+        return "event/about";
+    }
 
     @PostMapping("/login")
     public String processLogin(@RequestParam String email,
