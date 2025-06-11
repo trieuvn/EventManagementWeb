@@ -1,23 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.uef.model;
 
-/**
- *
- * @author sang
- */
+import jakarta.validation.constraints.*;
 
 public class USER {
+    @NotNull(message = "Email không được để trống")
+    @Email(message = "Email không hợp lệ")
     private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String phoneNumber;
-    private int role; // 0: organizer, 1: participant
 
-    // Constructors
+    @NotNull(message = "Họ không được để trống")
+    private String firstName;
+
+    @NotNull(message = "Tên không được để trống")
+    private String lastName;
+
+    @NotNull(message = "Mật khẩu không được để trống")
+    @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
+    private String password;
+
+    private String phoneNumber;
+
+    @Min(value = 0, message = "Role phải là 0 hoặc 1")
+    private int role = 1; // Mặc định là participant (1)
+
     public USER() {}
     public USER(String email, String firstName, String lastName, String password, String phoneNumber, int role) {
         this.email = email;
@@ -28,7 +32,6 @@ public class USER {
         this.role = role;
     }
 
-    // Getters and Setters
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getFirstName() { return firstName; }

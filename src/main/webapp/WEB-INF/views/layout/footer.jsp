@@ -6,11 +6,11 @@
         <div class="col-lg-12">
             <div class="footer-text">
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/about-us">About</a></li>
-                    <li><a href=".${pageContext.request.contextPath}/schedule">Schedule</a></li>
-                    <li><a href="${pageContext.request.contextPath}/blog">Blog</a></li>
-                    <li><a href="${pageContext.request.contextPath}/contact">Contacts</a></li>
+                    <li><a href="${pageContext.request.contextPath}">TRANG CHỦ</a></li>
+                    <li><a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a></li>
+                    <li><a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a></li>
+                    <li><a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a></li>
+                    <li><a href="${pageContext.request.contextPath}/login">ĐĂNG NHẬP</a></li>
 
                 </ul>
                 <div class="copyright-text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

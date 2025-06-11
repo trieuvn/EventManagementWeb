@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -38,6 +37,7 @@
             <div class="loader"></div>
         </div>
         <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+        <jsp:include page="/WEB-INF/views/layout/introduction.jsp" />
         <!-- Hero Section Begin -->
         <section class="hero-section set-bg" data-setbg="${pageContext.request.contextPath}/assets/img/hero.jpg">
             <div class="container">
@@ -53,8 +53,8 @@
                 </div>
             </div>
         </section>
-        <jsp:include page= "${advantage}"/>
         <jsp:include page="${body}"/>
+        <jsp:include page= "${advantage}"/>
         <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
         <script src="${pageContext.request.contextPath}/assets/js/jquery-3.3.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
