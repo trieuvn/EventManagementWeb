@@ -86,4 +86,23 @@ public class EventService {
         }
         return query.getResultList();
     }
+
+    public List<EVENT> getEventsByDate(Date date) {
+        String jpql = "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date = :date";
+        Query query = entityManager.createQuery(jpql, EVENT.class);
+        query.setParameter("date", date);
+        return query.getResultList();
+    }
+
+    public List<TICKET> getTicketsByEvent(int eventId) {
+        Query query = entityManager.createQuery("SELECT t FROM TICKET t WHERE t.event.id = :eventId", TICKET.class);
+        query.setParameter("eventId", eventId);
+        return query.getResultList();
+    }
+
+    public ORGANIZER getOrganizerByEvent(int eventId) {
+        EVENT event = entityManager.find(EVENT.class, eventId);
+        return event != null ? event.getOrganizer() : null;
+    }
+
 }
