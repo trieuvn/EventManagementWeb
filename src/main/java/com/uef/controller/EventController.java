@@ -53,7 +53,7 @@ public class EventController {
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
         model.addAttribute("userForm", new USER());
-        model.addAttribute("body", "/WEB-INF/views/event/list.jsp");
+        model.addAttribute("body", "/WEB-INF/views/user/event/list.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
         return "layout/main";
     }
@@ -65,9 +65,10 @@ public class EventController {
     }
     
     @GetMapping("/about")
-    public String aboutUs() {
-        // Trả về tên view (about.jsp)
-        return "event/about";
+    public String aboutUs(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/user/event/about.jsp");
+        model.addAttribute("userForm", new USER());
+        return "layout/main";
     }
 
     @PostMapping("/login")
