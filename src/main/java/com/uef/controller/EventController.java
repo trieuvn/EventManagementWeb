@@ -26,9 +26,9 @@ public class EventController {
     private List<USER> users = new ArrayList<>();
 
     public EventController() {
-        events.add(new EVENT(1, "Hội thảo Công nghệ 2025", "Sự kiện về công nghệ", "2025-07-01", 2, "Công nghệ", "2025-06-25", 0, "email@example.com", 50, "Mở"));
-        events.add(new EVENT(2, "Hòa nhạc Mùa hè", "Buổi hòa nhạc ngoài trời", "2025-08-15", 1, "Âm nhạc", "2025-08-01", 100, "music@example.com", 100, "Mở"));
-        events.add(new EVENT(3, "Triển lãm Nghệ thuật", "Triển lãm các tác phẩm nghệ thuật", "2025-06-30", 3, "Nghệ thuật", "2025-06-20", 50, "art@example.com", 0, "Đóng"));
+        events.add(new EVENT(1, "Hội thảo Công nghệ 2025", "Sự kiện về công nghệ", "2025-07-01", 2, "Công nghệ", "2025-06-25", 0, "email@example.com", 50, "Mở",null));
+        events.add(new EVENT(2, "Hòa nhạc Mùa hè", "Buổi hòa nhạc ngoài trời", "2025-08-15", 1, "Âm nhạc", "2025-08-01", 100, "music@example.com", 100, "Mở",null));
+        events.add(new EVENT(3, "Triển lãm Nghệ thuật", "Triển lãm các tác phẩm nghệ thuật", "2025-06-30", 3, "Nghệ thuật", "2025-06-20", 50, "art@example.com", 0, "Đóng",null));
     }
 
     @GetMapping("/")

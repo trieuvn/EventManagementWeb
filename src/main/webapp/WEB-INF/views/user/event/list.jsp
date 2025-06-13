@@ -75,11 +75,17 @@
                         <c:if test="${e.status == 'Mở'}">
                             <span class="badge bg-danger text-white position-absolute top-0 start-0 m-2">MỞ</span>
                         </c:if>
-                        <%--
-                        <c:if test="${not empty e.imageUrl}">
-                            <img src="${e.imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
-                        </c:if>
-                        --%>
+
+                        <!-- Hình ảnh: nếu rỗng thì hiển thị ảnh mặc định -->
+                        <c:choose>
+                            <c:when test="${not empty e.imageUrl}">
+                                <img src="${e.imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${pageContext.request.contextPath}/assets/img/eventdefault.jpg" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Event Default Image" />
+                            </c:otherwise>
+                        </c:choose>
+
                         <div class="card-body">
                             <h5 class="card-title text-center fw-bold">${e.name}</h5>
                             <p><i class="fas fa-info-circle"></i> Mô tả: ${e.description}</p>
@@ -87,7 +93,6 @@
                             <p><i class="fas fa-tags"></i> Thể loại: <span class="badge bg-secondary">${e.type}</span></p>
                             <p><i class="fas fa-calendar-alt"></i> Ngày diễn ra: ${e.date}</p>
                             <p><i class="fas fa-calendar-check"></i> Hạn đăng ký: ${e.regDeadline}</p>
-                            <p><i class="fas fa-user-tie"></i> Liên hệ: ${e.contactInfo}</p>
                             <p><i class="fas fa-users"></i> Còn lại: ${e.slots} chỗ</p>
                         </div>
                         <div class="card-footer bg-transparent text-center">
