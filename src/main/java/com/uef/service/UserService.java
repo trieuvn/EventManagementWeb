@@ -20,14 +20,7 @@ public class UserService {
         return (USER) query.getSingleResult();
     }
 
-    @Transactional
-    public void set(USER user) {
-        if (user.getId() == 0) {
-            entityManager.persist(user);
-        } else {
-            entityManager.merge(user);
-        }
-    }
+    
 
     public boolean authenticate(String email, String password) {
         Query query = entityManager.createQuery("SELECT u FROM USER u WHERE u.email = :email AND u.password = :password", USER.class);

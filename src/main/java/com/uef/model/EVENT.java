@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "EVENT")
+@Table(name = "[EVENT]")
 public class EVENT {
 
     @Id
@@ -27,10 +27,6 @@ public class EVENT {
 
     @Column(name = "target")
     private String target;
-
-    @ManyToOne
-    @JoinColumn(name = "location", referencedColumnName = "id")
-    private LOCATION location;
 
     @OneToMany(mappedBy = "event")
     private List<TAG> tags;
@@ -92,14 +88,6 @@ public class EVENT {
 
     public void setTarget(String target) {
         this.target = target;
-    }
-
-    public LOCATION getLocation() {
-        return location;
-    }
-
-    public void setLocation(LOCATION location) {
-        this.location = location;
     }
 
     public List<TAG> getTags() {

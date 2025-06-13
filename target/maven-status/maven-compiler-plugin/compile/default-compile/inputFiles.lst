@@ -1,5 +1,6 @@
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\PARTICIPANT.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Map.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\NewClass.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\EventService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\RegistrationController.java
@@ -12,7 +13,6 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\LOCAT
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\CategoryService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\ORGANIZER.java
-D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\NewClass.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\USER.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\EventController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\CATEGORY.java

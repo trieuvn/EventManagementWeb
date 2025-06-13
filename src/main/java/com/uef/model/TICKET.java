@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
-@Table(name = "TICKET")
+@Table(name = "[TICKET]")
 public class TICKET {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +51,9 @@ public class TICKET {
     @ManyToOne
     @JoinColumn(name = "location", referencedColumnName = "id")
     private LOCATION location;
+    
+    @OneToMany(mappedBy = "ticket")
+    private List<PARTICIPANT> participants;
 
     // Getters and Setters
     public int getId() { return id; }
@@ -90,4 +94,13 @@ public class TICKET {
     public void setLocation(LOCATION location) {
         this.location = location;
     }
+
+    public List<PARTICIPANT> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<PARTICIPANT> participants) {
+        this.participants = participants;
+    }
+    
 }

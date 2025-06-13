@@ -1,9 +1,10 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "LOCATION")
+@Table(name = "[LOCATION]")
 public class LOCATION {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,9 @@ public class LOCATION {
     @Column(name = "name")
     private String name;
 
+    @OneToMany(mappedBy = "location")
+    private List<TICKET> tickets;
+    
     // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

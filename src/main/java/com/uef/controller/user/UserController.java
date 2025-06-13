@@ -21,15 +21,7 @@ public class UserController {
         return "user/register";
     }
 
-    @PostMapping("/register")
-    public String register(@ModelAttribute USER user, Model model) {
-        if (userService.getByEmail(user.getEmail()) != null) {
-            model.addAttribute("error", "Email already registered");
-            return "user/register";
-        }
-        userService.set(user);
-        return "redirect:/user/login";
-    }
+   
 
     @GetMapping("/login")
     public String showLoginForm() {
@@ -60,14 +52,5 @@ public class UserController {
         return "user/profile";
     }
 
-    @PostMapping("/profile")
-    public String updateProfile(@ModelAttribute USER user, HttpSession session) {
-        USER currentUser = (USER) session.getAttribute("user");
-        if (currentUser != null) {
-            user.setId(currentUser.getId());
-            userService.set(user);
-            session.setAttribute("user", user);
-        }
-        return "redirect:/user/profile";
-    }
+    
 }

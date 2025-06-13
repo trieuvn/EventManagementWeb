@@ -6,14 +6,11 @@ import jakarta.persistence.*;
 @Table(name = "PARTICIPANT")
 public class PARTICIPANT {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
     @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "email")
+    @JoinColumn(name = "[user]", referencedColumnName = "email")
     private USER user;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "ticket", referencedColumnName = "id")
     private TICKET ticket;
@@ -28,14 +25,6 @@ public class PARTICIPANT {
     private String comment;
 
     // Getters and Setters
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public USER getUser() {
         return user;
@@ -76,5 +65,6 @@ public class PARTICIPANT {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
     
 }

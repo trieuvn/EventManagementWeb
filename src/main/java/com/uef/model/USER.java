@@ -4,13 +4,9 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "[USER]")
 public class USER {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
     @Column(name = "email")
     private String email;
 
@@ -36,8 +32,6 @@ public class USER {
     private List<PARTICIPANT> participants;
     
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
     public String getEmail() { return email; }
 
     public List<PARTICIPANT> getParticipants() {
@@ -60,4 +54,5 @@ public class USER {
     public void setRole(int role) { this.role = role; }
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }
+    
 }

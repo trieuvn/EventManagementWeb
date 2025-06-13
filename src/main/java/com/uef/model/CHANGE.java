@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
-@Table(name = "CHANGE")
+@Table(name = "[CHANGE]")
 public class CHANGE {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
