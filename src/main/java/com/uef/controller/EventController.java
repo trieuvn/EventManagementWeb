@@ -2,7 +2,11 @@ package com.uef.controller;
 
 import com.uef.model.EVENT;
 import com.uef.model.USER;
+import com.uef.utils.Map;
+import com.uef.utils.QRCode;
 import jakarta.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import javax.imageio.ImageIO;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
@@ -32,23 +38,28 @@ public class EventController {
     }
 
     @GetMapping("/")
+    public String home(Model model) throws Exception {
+        return Map.showMap(model, Double.NaN, Double.NaN, 0.7,0.6,"hi","A");
+    }
+
+    @GetMapping("/home")
     public String home(Model model,
-                       @RequestParam(value = "keyword", required = false) String keyword,
-                       @RequestParam(value = "category", required = false) String category) {
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "category", required = false) String category) {
         List<String> categories = events.stream()
-            .map(EVENT::getType)
-            .distinct()
-            .toList();
+                .map(EVENT::getType)
+                .distinct()
+                .toList();
         List<EVENT> filteredEvents = new ArrayList<>(events);
         if (keyword != null && !keyword.trim().isEmpty()) {
             filteredEvents = filteredEvents.stream()
-                .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()))
-                .toList();
+                    .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()))
+                    .toList();
         }
         if (category != null && !category.isEmpty()) {
             filteredEvents = filteredEvents.stream()
-                .filter(e -> e.getType().equals(category))
-                .toList();
+                    .filter(e -> e.getType().equals(category))
+                    .toList();
         }
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
@@ -63,7 +74,7 @@ public class EventController {
         model.addAttribute("body", "/WEB-INF/views/layout/introduction.jsp?login=true");
         return "layout/main";
     }
-    
+
     @GetMapping("/about")
     public String aboutUs(Model model) {
         model.addAttribute("body", "/WEB-INF/views/user/event/about.jsp");
@@ -73,13 +84,13 @@ public class EventController {
 
     @PostMapping("/login")
     public String processLogin(@RequestParam String email,
-                               @RequestParam String password,
-                               RedirectAttributes ra) {
+            @RequestParam String password,
+            RedirectAttributes ra) {
         logger.info("Login attempt for email: {}", email);
         USER matchedUser = users.stream()
-            .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPassword().equals(password))
-            .findFirst()
-            .orElse(null);
+                .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
         if (matchedUser != null) {
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
             return "redirect:/";
@@ -154,6 +165,6 @@ public class EventController {
     }
 
     private String generateConfirmationCode() {
-        return "CONF-" + (int)(Math.random() * 10000);
+        return "CONF-" + (int) (Math.random() * 10000);
     }
 }

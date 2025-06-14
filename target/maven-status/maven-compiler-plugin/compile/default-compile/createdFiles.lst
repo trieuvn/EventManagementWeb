@@ -3,6 +3,7 @@ com\uef\utils\Map.class
 com\uef\model\LOCATION.class
 com\uef\model\PARTICIPANT.class
 com\uef\model\TAG.class
+com\uef\utils\QRCode.class
 com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
 com\uef\model\CATEGORY.class
