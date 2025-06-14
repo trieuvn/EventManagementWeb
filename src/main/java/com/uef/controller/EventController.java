@@ -55,6 +55,7 @@ public class EventController {
         model.addAttribute("userForm", new USER());
         model.addAttribute("body", "/WEB-INF/views/user/event/list.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
+        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
     }
 
@@ -105,6 +106,7 @@ public class EventController {
             ra.addFlashAttribute("error", "Vui lòng kiểm tra lại thông tin.");
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
             ra.addFlashAttribute("userForm", user);
+            ra.addFlashAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
             return "redirect:/?signup=true";
         }
 
