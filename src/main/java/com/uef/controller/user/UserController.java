@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@Controller("userUserController")
 @RequestMapping("/user")
 public class UserController {
     @Autowired

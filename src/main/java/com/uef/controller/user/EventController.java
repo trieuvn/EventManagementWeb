@@ -23,7 +23,7 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
+    /*private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     private List<EVENT> events = eventService.getAll();
 
@@ -66,7 +66,6 @@ public class EventController {
         return "event/about";
     }
 
-    /* UPDATE LATER
     @PostMapping("/register")
     public String registerEvent(@RequestParam int eventId, RedirectAttributes ra) {
         EVENT event = events.stream().filter(e -> e.getId() == eventId).findFirst().orElse(null);
