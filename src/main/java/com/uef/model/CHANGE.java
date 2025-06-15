@@ -1,29 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.uef.model;
 
-/**
- *
- * @author sang
- */
+import jakarta.persistence.*;
 
+import java.sql.Date;
+import java.sql.Time;
+
+@Entity
+@Table(name = "[CHANGE]")
 public class CHANGE {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Column(name = "subject", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String subject;
+
+    @Column(name = "description", length = 100, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String description;
-    private String date;
+
+    @Column(name = "date", nullable = false)
+    private Date date;
+
+    @Column(name = "time", nullable = false)
+    private Time time;
+    
+    @ManyToOne
+    @JoinColumn(name = "event", referencedColumnName = "id")
     private EVENT event;
 
-    // Constructors
-    public CHANGE() {}
-    public CHANGE(int id, String subject, String description, String date, EVENT event) {
+    public CHANGE(int id, String subject, String description, Date date, Time time, EVENT event) {
         this.id = id;
         this.subject = subject;
         this.description = description;
         this.date = date;
+        this.time = time;
         this.event = event;
+    }
+
+    public CHANGE() {
     }
 
     // Getters and Setters
@@ -33,8 +48,10 @@ public class CHANGE {
     public void setSubject(String subject) { this.subject = subject; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public String getDate() { return date; }
-    public void setDate(String date) { this.date = date; }
+    public Date getDate() { return date; }
+    public void setDate(Date date) { this.date = date; }
+    public Time getTime() { return time; }
+    public void setTime(Time time) { this.time = time; }
     public EVENT getEvent() { return event; }
     public void setEvent(EVENT event) { this.event = event; }
 }
