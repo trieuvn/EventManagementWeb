@@ -12,20 +12,20 @@ public class ORGANIZER {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "firstName")
+    @Column(name = "firstName", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "lastName", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
     private String lastName;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phoneNumber", length = 15, nullable = true, columnDefinition = "NVARCHAR(15)")
     private String phoneNumber;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String email;
 
-    @Column(name = "language")
-    private String language;
+    @Column(name = "avatar", nullable = true)
+    private byte[] avatar;
     
     @OneToMany(mappedBy = "organizer")
     private List<EVENT> events;
@@ -79,11 +79,13 @@ public class ORGANIZER {
         this.email = email;
     }
 
-    public String getLanguage() {
-        return language;
+    public byte[] getAvatar() {
+        return avatar;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
+
+
 }

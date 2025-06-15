@@ -7,10 +7,10 @@ import java.util.List;
 @Table(name = "[CATEGORY]")
 public class CATEGORY {
     @Id
-    @Column(name = "name")
+    @Column(name = "name", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String description;
     
     @OneToMany(mappedBy = "category")

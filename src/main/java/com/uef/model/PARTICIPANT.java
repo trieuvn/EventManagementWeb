@@ -15,13 +15,13 @@ public class PARTICIPANT {
     @JoinColumn(name = "ticket", referencedColumnName = "id")
     private TICKET ticket;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private int status;
 
-    @Column(name = "rate")
+    @Column(name = "rate", nullable = true)
     private int rate;
 
-    @Column(name = "comment")
+    @Column(name = "comment", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String comment;
 
     // Getters and Setters

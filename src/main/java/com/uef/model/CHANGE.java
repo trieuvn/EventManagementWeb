@@ -10,19 +10,19 @@ import java.sql.Time;
 public class CHANGE {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "subject")
+    @Column(name = "subject", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String subject;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 100, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String description;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "time")
+    @Column(name = "time", nullable = false)
     private Time time;
 
     @ManyToOne

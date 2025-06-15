@@ -8,16 +8,16 @@ import java.util.List;
 public class LOCATION {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", nullable = false)
     private float latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", nullable = false)
     private float longitude;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String name;
 
     @OneToMany(mappedBy = "location")
