@@ -14,7 +14,7 @@ public class TICKET {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "index", nullable = false)
+    @Column(name = "[index]", nullable = false)
     private int index;
     
     @Column(name = "name", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
