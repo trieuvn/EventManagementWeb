@@ -26,5 +26,13 @@ public class TAG {
     public void setCategory(CATEGORY category) {
         this.category = category;
     }
+
+    public TAG(CATEGORY category, EVENT event) {
+        this.category = category;
+        this.event = event;
+    }
+
+    public TAG() {
+    }
     
 }

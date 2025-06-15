@@ -29,4 +29,5 @@ public class UserService {
         List<USER> users = query.getResultList();
         return !users.isEmpty();
     }
+    
 }

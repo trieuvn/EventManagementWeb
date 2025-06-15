@@ -87,5 +87,18 @@ public class ORGANIZER {
         this.avatar = avatar;
     }
 
+    public ORGANIZER(int id, String firstName, String lastName, String phoneNumber, String email, byte[] avatar, List<EVENT> events) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.avatar = avatar;
+        this.events = events;
+    }
+
+    public ORGANIZER() {
+    }
+
 
 }

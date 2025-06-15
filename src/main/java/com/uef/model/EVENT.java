@@ -133,6 +133,23 @@ public class EVENT {
         this.image = image;
     }
 
+    public EVENT(int id, String name, String description, String type, String contactInfo, String target, byte[] image, List<TAG> tags, List<TICKET> tickets, List<CHANGE> changes, ORGANIZER organizer) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.contactInfo = contactInfo;
+        this.target = target;
+        this.image = image;
+        this.tags = tags;
+        this.tickets = tickets;
+        this.changes = changes;
+        this.organizer = organizer;
+    }
+
+    public EVENT() {
+    }
+
 
 
 }

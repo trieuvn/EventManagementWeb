@@ -73,14 +73,14 @@
                 <c:forEach var="e" items="${events}">
                     <div class="col">
                         <div class="card h-100 shadow-sm border-0 position-relative">
-                            <c:if test="${e.status == 'Mở'}">
-                                <span class="badge bg-danger text-white position-absolute top-0 start-0 m-2">MỞ</span>
-                            </c:if>
+                            <%--<c:if test="${e.status == 'Mở'}">--%>
+                                <!--<span class="badge bg-danger text-white position-absolute top-0 start-0 m-2">MỞ</span>-->
+                            <%--</c:if>--%> 
 
                             <!-- Hình ảnh: nếu rỗng thì hiển thị ảnh mặc định -->
                             <c:choose>
-                                <c:when test="${not empty e.imageUrl}">
-                                    <img src="${e.imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
+                                <c:when test="${not empty e.image}">
+                                    <img src="" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
                                 </c:when>
                                 <c:otherwise>
                                     <img src="${pageContext.request.contextPath}/assets/img/eventdefault.jpg" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Event Default Image" />
@@ -90,15 +90,13 @@
                             <div class="card-body">
                                 <h5 class="card-title text-center fw-bold">${e.name}</h5>
                                 <p><i class="fas fa-info-circle"></i> Mô tả: ${e.description}</p>
-                                <p><i class="fas fa-clock"></i> Thời lượng: ${e.duration} giờ</p>
+                                <p><i class="fas fa-clock"></i> Thời lượng: ${e.contactInfo} giờ</p>
                                 <p><i class="fas fa-tags"></i> Thể loại: <span class="badge bg-secondary">${e.type}</span></p>
-                                <p><i class="fas fa-calendar-alt"></i> Ngày diễn ra: ${e.date}</p>
-                                <p><i class="fas fa-calendar-check"></i> Hạn đăng ký: ${e.regDeadline}</p>
-                                <p><i class="fas fa-users"></i> Còn lại: ${e.slots} chỗ</p>
+                                <p><i class="fas fa-users"></i> Còn lại: 50 chỗ</p>
                             </div>
                             <div class="card-footer bg-transparent text-center">
                                 <c:choose>
-                                    <c:when test="${e.status == 'Mở' && e.slots > 0}">
+                                    <c:when test="${e.name != 'Mở'}">
                                         <form action="${pageContext.request.contextPath}/register" method="post">
                                             <input type="hidden" name="eventId" value="${e.id}" />
                                             <button type="submit" class="btn btn-primary w-100">Đăng ký</button>

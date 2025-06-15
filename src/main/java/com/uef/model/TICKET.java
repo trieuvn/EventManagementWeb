@@ -124,5 +124,27 @@ public class TICKET {
     public void setType(String type) {
         this.type = type;
     }
+
+    public TICKET(int id, int index, String name, String description, int price, Date date, Time duration, Date regDeadline, int slots, int status, int confirmCode, String qrCode, String type, EVENT event, LOCATION location, List<PARTICIPANT> participants) {
+        this.id = id;
+        this.index = index;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.date = date;
+        this.duration = duration;
+        this.regDeadline = regDeadline;
+        this.slots = slots;
+        this.status = status;
+        this.confirmCode = confirmCode;
+        this.qrCode = qrCode;
+        this.type = type;
+        this.event = event;
+        this.location = location;
+        this.participants = participants;
+    }
+
+    public TICKET() {
+    }
     
 }

@@ -24,10 +24,22 @@ public class CHANGE {
 
     @Column(name = "time", nullable = false)
     private Time time;
-
+    
     @ManyToOne
     @JoinColumn(name = "event", referencedColumnName = "id")
     private EVENT event;
+
+    public CHANGE(int id, String subject, String description, Date date, Time time, EVENT event) {
+        this.id = id;
+        this.subject = subject;
+        this.description = description;
+        this.date = date;
+        this.time = time;
+        this.event = event;
+    }
+
+    public CHANGE() {
+    }
 
     // Getters and Setters
     public int getId() { return id; }

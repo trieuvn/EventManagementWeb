@@ -49,5 +49,18 @@ public class USER {
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public int getRole() { return role; }
     public void setRole(int role) { this.role = role; }
+
+    public USER(String email, String firstName, String lastName, String password, String phoneNumber, int role, List<PARTICIPANT> participants) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.participants = participants;
+    }
+
+    public USER() {
+    }
     
 }

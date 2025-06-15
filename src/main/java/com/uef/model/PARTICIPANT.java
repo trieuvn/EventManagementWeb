@@ -66,5 +66,16 @@ public class PARTICIPANT {
         this.comment = comment;
     }
 
+    public PARTICIPANT(USER user, TICKET ticket, int status, int rate, String comment) {
+        this.user = user;
+        this.ticket = ticket;
+        this.status = status;
+        this.rate = rate;
+        this.comment = comment;
+    }
+
+    public PARTICIPANT() {
+    }
+
     
 }

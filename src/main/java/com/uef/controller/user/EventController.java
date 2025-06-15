@@ -3,6 +3,7 @@ package com.uef.controller.user;
 import com.uef.model.*;
 import com.uef.service.EventService;
 import com.uef.service.UserService;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +24,10 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    /*private static final Logger logger = LoggerFactory.getLogger(EventController.class);
+    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
-    private List<EVENT> events = eventService.getAll();
-
+    private List<EVENT> events;
+    
     public EventController() {
         //events.add(new EVENT(1, "Hội thảo Công nghệ 2025", "Sự kiện về công nghệ", "2025-07-01", 2, "Công nghệ", "2025-06-25", 0, "email@example.com", 50, "Mở"));
         //events.add(new EVENT(2, "Hòa nhạc Mùa hè", "Buổi hòa nhạc ngoài trời", "2025-08-15", 1, "Âm nhạc", "2025-08-01", 100, "music@example.com", 100, "Mở"));
@@ -37,6 +38,7 @@ public class EventController {
     public String home(Model model,
                        @RequestParam(value = "keyword", required = false) String keyword,
                        @RequestParam(value = "category", required = false) String category) {
+        events = eventService.getAll();
         List<String> categories = events.stream()
             .map(EVENT::getType)
             .distinct()
@@ -57,16 +59,21 @@ public class EventController {
         model.addAttribute("userForm", new USER());
         model.addAttribute("body", "/WEB-INF/views/user/events/list.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
+        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
     }
     
+    
     @GetMapping("/about")
-    public String aboutUs() {
-        // Trả về tên view (about.jsp)
-        return "event/about";
+    public String aboutUs(Model model) {
+        model.addAttribute("userForm", new USER());
+        model.addAttribute("body", "/WEB-INF/views/user/events/about.jsp");
+        model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
+        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
+        return "layout/main";
     }
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public String registerEvent(@RequestParam int eventId, RedirectAttributes ra) {
         EVENT event = events.stream().filter(e -> e.getId() == eventId).findFirst().orElse(null);
         if (event == null) {

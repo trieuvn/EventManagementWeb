@@ -32,4 +32,15 @@ public class LOCATION {
     public void setLongitude(float longitude) { this.longitude = longitude; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public LOCATION(int id, float latitude, float longitude, String name, List<TICKET> tickets) {
+        this.id = id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.name = name;
+        this.tickets = tickets;
+    }
+
+    public LOCATION() {
+    }
 }
