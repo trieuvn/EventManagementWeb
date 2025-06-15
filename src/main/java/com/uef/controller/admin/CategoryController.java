@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
 @RequestMapping("admin/categories")
 public class CategoryController {
     @Autowired
@@ -25,23 +24,14 @@ public class CategoryController {
         return "admin/categories/form";
     }
 
-    @PostMapping("/add")
-    public String addCategory(@ModelAttribute CATEGORY category) {
-        categoryService.set(category);
-        return "redirect:/admin/categories";
-    }
+   
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
         model.addAttribute("category", categoryService.getById(id));
         return "admin/categories/form";
     }
-
-    @PostMapping("/update")
-    public String updateCategory(@ModelAttribute CATEGORY category) {
-        categoryService.set(category);
-        return "redirect:/admin/categories";
-    }
+ 
 
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable int id) {

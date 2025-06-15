@@ -1,5 +1,6 @@
 com\uef\service\UserService.class
 com\uef\utils\Map.class
+com\uef\controller\admin\NewClass.class
 com\uef\model\LOCATION.class
 com\uef\service\EventService.class
 com\uef\model\TAG.class

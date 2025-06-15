@@ -24,17 +24,6 @@ public class ParticipantController {
         return "admin/participants/list";
     }
 
-    @PostMapping("/confirm/{id}")
-    public String confirmParticipant(@PathVariable int id) {
-        participantService.confirmRegistration(id,2);
-        return "redirect:/admin/participants/event/" + getEventIdFromRequest();
-    }
-
-    @PostMapping("/cancel/{id}")
-    public String cancelParticipant(@PathVariable int id) {
-        participantService.cancelRegistration(id);
-        return "redirect:/admin/participants/event/" + getEventIdFromRequest();
-    }
 
     // Placeholder method to get eventId (implement based on your request handling)
     private int getEventIdFromRequest() {

@@ -1,24 +1,28 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "LOCATION")
+@Table(name = "[LOCATION]")
 public class LOCATION {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", nullable = false)
     private float latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", nullable = false)
     private float longitude;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String name;
 
+    @OneToMany(mappedBy = "location")
+    private List<TICKET> tickets;
+    
     // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

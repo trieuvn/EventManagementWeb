@@ -22,14 +22,6 @@ public class CategoryService {
         return entityManager.find(CATEGORY.class, id);
     }
 
-    public void set(CATEGORY category) {
-        if (category.getId() == 0) {
-            entityManager.persist(category);
-        } else {
-            entityManager.merge(category);
-        }
-    }
-
     public void deleteById(int id) {
         CATEGORY category = getById(id);
         if (category != null) {

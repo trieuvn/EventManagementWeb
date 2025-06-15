@@ -6,36 +6,25 @@ import jakarta.persistence.*;
 @Table(name = "PARTICIPANT")
 public class PARTICIPANT {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
     @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "email")
+    @JoinColumn(name = "[user]", referencedColumnName = "email")
     private USER user;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "ticket", referencedColumnName = "id")
     private TICKET ticket;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private int status;
 
-    @Column(name = "rate")
+    @Column(name = "rate", nullable = true)
     private int rate;
 
-    @Column(name = "comment")
+    @Column(name = "comment", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String comment;
 
     // Getters and Setters
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public USER getUser() {
         return user;
@@ -76,5 +65,6 @@ public class PARTICIPANT {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
     
 }

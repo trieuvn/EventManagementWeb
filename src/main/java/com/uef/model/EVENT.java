@@ -5,32 +5,31 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "EVENT")
+@Table(name = "[EVENT]")
 public class EVENT {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 100, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String description;
 
-    @Column(name = "type")
+    @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
     private String type;
 
-    @Column(name = "contactInfo")
+    @Column(name = "contactInfo", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
     private String contactInfo;
 
-    @Column(name = "target")
+    @Column(name = "target", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String target;
 
-    @ManyToOne
-    @JoinColumn(name = "location", referencedColumnName = "id")
-    private LOCATION location;
+    @Column(name = "image", nullable = true)
+    private byte[] image;
 
     @OneToMany(mappedBy = "event")
     private List<TAG> tags;
@@ -94,14 +93,6 @@ public class EVENT {
         this.target = target;
     }
 
-    public LOCATION getLocation() {
-        return location;
-    }
-
-    public void setLocation(LOCATION location) {
-        this.location = location;
-    }
-
     public List<TAG> getTags() {
         return tags;
     }
@@ -109,8 +100,6 @@ public class EVENT {
     public void setTags(List<TAG> tags) {
         this.tags = tags;
     }
-
-    
 
     public List<TICKET> getTickets() {
         return tickets;
@@ -128,8 +117,6 @@ public class EVENT {
         this.changes = changes;
     }
 
-   
-
     public ORGANIZER getOrganizer() {
         return organizer;
     }
@@ -137,5 +124,15 @@ public class EVENT {
     public void setOrganizer(ORGANIZER organizer) {
         this.organizer = organizer;
     }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+
 
 }

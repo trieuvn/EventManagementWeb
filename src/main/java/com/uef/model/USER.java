@@ -4,40 +4,31 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "[USER]")
 public class USER {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "email")
+    @Column(name = "email", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String email;
 
-    @Column(name = "firstName")
+    @Column(name = "firstName", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "lastName", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
     private String lastName;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String password;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phoneNumber", length = 15, nullable = false, columnDefinition = "NVARCHAR(15)")
     private String phoneNumber;
 
     @Column(name = "role")
     private int role;
 
-    @Column(name = "language")
-    private String language;
-
     @OneToMany(mappedBy = "user")
     private List<PARTICIPANT> participants;
     
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
     public String getEmail() { return email; }
 
     public List<PARTICIPANT> getParticipants() {
@@ -58,6 +49,5 @@ public class USER {
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public int getRole() { return role; }
     public void setRole(int role) { this.role = role; }
-    public String getLanguage() { return language; }
-    public void setLanguage(String language) { this.language = language; }
+    
 }

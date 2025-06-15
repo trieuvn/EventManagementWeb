@@ -25,7 +25,6 @@
     <mvc:annotation-driven/>
 
     <!-- Bật hỗ trợ JPA repositories -->
-    <jpa:repositories base-package="com.uef"/>
 
     <!-- Cấu hình View Resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
