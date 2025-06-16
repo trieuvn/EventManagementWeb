@@ -54,4 +54,10 @@ public class EventController {
         eventService.setStatus(id, status);
         return "redirect:/admin/events";
     }
+    @GetMapping("/details")
+    public String eventDetails(Model model)
+    {
+        model.addAttribute("event", eventService.getAll());
+        return "admin/events/details";
+    }
 }
