@@ -1,6 +1,8 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -14,18 +16,26 @@ public class EVENT {
     private int id;
 
     @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotNull(message = "Name cannot be null")
+    @Size(max = 50, message = "Name must not exceed 50 characters")
     private String name;
 
     @Column(name = "description", length = 100, nullable = true, columnDefinition = "NVARCHAR(50)")
+    @Size(max = 100, message = "Description must not exceed 100 characters")
     private String description;
 
     @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
+    @NotNull(message = "Type cannot be null")
+    @Size(max = 30, message = "Type must be 'online', 'offline', or 'hybrid'")
     private String type;
 
     @Column(name = "contactInfo", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
+    @Size(max = 50, message = "Contact info must not exceed 50 characters")
     private String contactInfo;
 
     @Column(name = "target", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotNull(message = "Target cannot be null")
+    @Size(max = 50, message = "Target must not exceed 50 characters")
     private String target;
 
     @Column(name = "image", nullable = true)
