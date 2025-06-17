@@ -35,7 +35,7 @@
     <!-- Cấu hình DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-        <property name="url" value="jdbc:sqlserver://localhost:1433;databaseName=EventManagement;encrypt=true;trustServerCertificate=true"/>
+        <property name="url" value="jdbc:sqlserver://DESKTOP-5D4NT2T:1433;databaseName=EventManagement;encrypt=true;trustServerCertificate=true"/>
         <property name="username" value="sa"/>
         <property name="password" value="123"/>
     </bean>
