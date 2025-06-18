@@ -38,8 +38,7 @@
         </div>
         <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
         <jsp:include page="/WEB-INF/views/layout/introduction.jsp" />
-        <!-- Hero Section Begin -->
-        <section class="hero-section set-bg" data-setbg="${pageContext.request.contextPath}/assets/img/hero.jpg">
+            <section class="hero-section set-bg" data-setbg="${pageContext.request.contextPath}/assets/img/hero.jpg">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-7">
