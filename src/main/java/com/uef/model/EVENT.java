@@ -200,4 +200,38 @@ public class EVENT {
                 .flatMap(ticket -> ticket.getParticipants().stream())
                 .collect(Collectors.toList());
     }
+    
+    public List<Integer> getRates() {
+    if (tickets == null) {
+        return new ArrayList<>();
+    }
+    return tickets.stream()
+            .filter(ticket -> ticket.getParticipants() != null)
+            .flatMap(ticket -> ticket.getParticipants().stream())
+            .filter(participant -> {
+                Integer rate = participant.getRate();
+                return rate != null && rate.intValue() >= 0;
+            })
+            .map(PARTICIPANT::getRate)
+            .collect(Collectors.toList());
+}
+    
+    public float getAvgRate() {
+        List<Integer> rates = getRates();
+        if (rates.isEmpty()) {
+            return 0.0f;
+        }
+        return (float) rates.stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
+    }
+    
+    public boolean getStatus() {
+        if (tickets == null) {
+            return false;
+        }
+        return tickets.stream()
+                .anyMatch(ticket -> ticket.getSlots() > 0);
+    }
 }
