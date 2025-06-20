@@ -1,8 +1,10 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "[EVENT]")
@@ -174,6 +176,28 @@ public class EVENT {
         boolean removed = tags.removeIf(tag -> tag.getCategory().getName().equals(categoryName) && tag.getEvent().equals(this));
         return removed;
     }
+        
+    public boolean addChange() {
+        try {
+            CHANGE newChange = new CHANGE();
+            newChange.setEvent(this);
+            java.util.Date currentDate = new java.util.Date(); // 08:51 PM +07, 20/06/2025
+            newChange.setDate(new java.sql.Date(currentDate.getTime()));
+            newChange.setTime(new java.sql.Time(currentDate.getTime()));
+            changes.add(newChange);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-
+    public List<PARTICIPANT> getParticipants() {
+        if (tickets == null) {
+            return new ArrayList<>();
+        }
+        return tickets.stream()
+                .filter(ticket -> ticket.getParticipants() != null)
+                .flatMap(ticket -> ticket.getParticipants().stream())
+                .collect(Collectors.toList());
+    }
 }
