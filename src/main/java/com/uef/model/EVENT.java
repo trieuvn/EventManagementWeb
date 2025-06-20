@@ -149,7 +149,31 @@ public class EVENT {
 
     public EVENT() {
     }
+    public boolean addTag(String categoryName) {
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            return false;
+        }
+        // Kiểm tra xem TAG đã tồn tại với categoryName và event hiện tại chưa
+        for (TAG tag : tags) {
+            if (tag.getCategory().getName().equals(categoryName) && tag.getEvent().equals(this)) {
+                return false; // Tránh trùng lặp
+            }
+        }
+        // Tạo mới CATEGORY nếu cần (ở đây giả định CATEGORY đã tồn tại trong DB)
+        CATEGORY category = new CATEGORY();
+        category.setName(categoryName);
+        TAG newTag = new TAG(category, this);
+        tags.add(newTag);
+        return true;
+    }
 
+    public boolean removeTag(String categoryName) {
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            return false;
+        }
+        boolean removed = tags.removeIf(tag -> tag.getCategory().getName().equals(categoryName) && tag.getEvent().equals(this));
+        return removed;
+    }
 
 
 }
