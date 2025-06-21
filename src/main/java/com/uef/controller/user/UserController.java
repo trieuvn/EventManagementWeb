@@ -1,85 +1,80 @@
 package com.uef.controller.user;
 
-import com.uef.model.*;
+import com.uef.model.USER;
 import com.uef.service.UserService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import static org.hibernate.internal.CoreLogging.logger;
-import static org.hibernate.internal.HEMLogging.logger;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-@Controller("userUserController")
+@Controller
+@RequestMapping("/user")
 public class UserController {
-
     @Autowired
     private UserService userService;
 
     @GetMapping("/login")
-    public String showLogin(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/layout/introduction.jsp?login=true");
-        return "layout/main";
+    public String loginForm() {
+        return "user/login";
     }
 
     @PostMapping("/login")
-    public String processLogin(@RequestParam String email,
-            @RequestParam String password,
-            RedirectAttributes ra) {
-        if (userService.authenticate(email, password) == true) {
-            ra.addFlashAttribute("msg", "Đăng nhập thành công!");
+    public String login(@RequestParam String email, @RequestParam String password, Model model) {
+        USER user = userService.authenticate(email, password);
+        if (user != null) {
+            // Lưu thông tin user vào session (giả lập)
+            model.addAttribute("user", user);
             return "redirect:/";
         } else {
-            ra.addFlashAttribute("error", "Email hoặc mật khẩu không đúng.");
-            return "redirect:/?login=true";
+            model.addAttribute("error", "Invalid email or password");
+            return "user/login";
         }
     }
 
-    @GetMapping("/signup")
-    public String showSignup(Model model) {
-        model.addAttribute("userForm", new USER());
-        return "redirect:/?signup=true";
+    @GetMapping("/register")
+    public String registerForm(Model model) {
+        model.addAttribute("user", new USER());
+        return "user/register";
     }
 
-    @PostMapping("/signup")
-    public String processSignup(@Valid @ModelAttribute("userForm") USER user, BindingResult result, RedirectAttributes ra) {
-        if (result.hasErrors()) {
-            ra.addFlashAttribute("error", "Vui lòng kiểm tra lại thông tin.");
-            ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
-            ra.addFlashAttribute("userForm", user);
-            ra.addFlashAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
-            return "redirect:/?signup=true";
-        }
-
+    @PostMapping("/register")
+    public String register(@ModelAttribute USER user, Model model) {
         try {
-            USER exists = userService.getByEmail(user.getEmail());
-            if (exists != null) {
-                ra.addFlashAttribute("error", "Email đã được đăng ký.");
-                return "redirect:/?signup=true";
+            user.setRole(1); // Mặc định là user
+            boolean success = userService.set(user);
+            if (success) {
+                return "redirect:/user/login";
+            } else {
+                model.addAttribute("error", "Registration failed");
+                return "user/register";
             }
-            //userService.set(exists);
-            ra.addFlashAttribute("msg", "Đăng ký tài khoản thành công!");
-            return "redirect:/login";
-        } catch (Exception e) {
-            ra.addFlashAttribute("error", "Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.");
-            return "redirect:/?signup=true";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "user/register";
         }
     }
 
-    @GetMapping("/forgot-password")
-    public String showForgotPassword(Model model) {
-        // Placeholder: Bạn có thể thêm logic xử lý quên mật khẩu (ví dụ: gửi email reset)
-        model.addAttribute("body", "/WEB-INF/views/layout/forgot-password.jsp"); // Tạo file này nếu cần
-        return "layout/main";
-    }
-    
-    private String generateConfirmationCode() {
-        return "CONF-" + (int)(Math.random() * 10000);
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        // Giả lập lấy user từ session
+        USER user = userService.getByEmail("nguyenvana@uef.edu.vn"); // Thay bằng logic session thực tế
+        model.addAttribute("user", user);
+        return "user/profile";
     }
 
+    @PostMapping("/profile")
+    public String updateProfile(@ModelAttribute USER user, Model model) {
+        try {
+            boolean success = userService.set(user);
+            if (success) {
+                return "redirect:/user/profile";
+            } else {
+                model.addAttribute("error", "Update failed");
+                return "user/profile";
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "user/profile";
+        }
+    }
 }
