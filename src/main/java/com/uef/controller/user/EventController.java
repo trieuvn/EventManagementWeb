@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
@@ -63,6 +64,38 @@ public class EventController {
         return "layout/main";
     }
     
+    @GetMapping("/event/{id}")
+    public String getEventDetails(@PathVariable int id, Model model) {
+        // Fetch event by ID
+        EVENT event = eventService.getById(id);
+        if (event == null) {
+            return "error/404"; // Return 404 page if event not found
+        }
+
+        // Calculate total slots
+        int totalSlots = 50;
+
+        // Get first ticket price (if available)
+        double firstTicketPrice = event.getTickets().isEmpty() ? 0 : event.getTickets().get(0).getPrice();
+
+        // Get first ticket deadline (if available)
+        String firstTicketDeadline = event.getTickets().isEmpty() ? null :
+                event.getTickets().get(0).getRegDeadline() != null ?
+                        event.getTickets().get(0).getRegDeadline().toString():
+                        null;
+
+        // Add attributes to model
+        model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
+        model.addAttribute("event", event);
+        model.addAttribute("totalSlots", totalSlots);
+        model.addAttribute("firstTicketPrice", firstTicketPrice);
+        model.addAttribute("firstTicketDeadline", firstTicketDeadline);
+        model.addAttribute("userForm", new USER());
+        //model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
+        //model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
+        //model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
+        return "layout/main";
+    }
     
     @GetMapping("/about")
     public String aboutUs(Model model) {

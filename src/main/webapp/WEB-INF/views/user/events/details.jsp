@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card card-custom p-3 bg-light-custom">
-                    <img src="${event.imageUrl}" alt="Event Image" class="img-fluid rounded shadow-sm" />
+                    <img src="${event.image}" alt="Event Image" class="img-fluid rounded shadow-sm" />
                 </div>
             </div>
             <div class="col-md-8">
@@ -103,7 +103,7 @@
                 <div class="card card-custom p-4 bg-light-custom">
                     <h2 class="text-success">${event.name}</h2>
                     <p><strong>Description:</strong> ${event.description}</p>
-                    <p><strong>Location:</strong> ${event.location.name}</p>
+<!--                    <p><strong>Location:</strong> {event.location.name}</p>-->
                     <p><strong>Slots:</strong> ${totalSlots}</p>
                     <p><strong>Type:</strong> ${event.type}</p>
                     <p><strong>Deadline:</strong>
@@ -160,7 +160,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>${ticket.slot}</td>
+                                    <td>${ticket.slots}</td>
                                     <td>
                                         <c:if test="${event.type == 'upcoming' and ticket.status == 1}">
                                             <a href="${pageContext.request.contextPath}/user/registration/register/ticket/${ticket.id}" class="btn btn-primary btn-sm custom-register-btn">Register</a>
