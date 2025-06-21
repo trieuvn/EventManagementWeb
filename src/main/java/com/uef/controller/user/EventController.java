@@ -4,6 +4,7 @@ import com.uef.model.*;
 import com.uef.service.EventService;
 import com.uef.service.UserService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,7 @@ public class EventController {
     @GetMapping("/")
     public String home(Model model,
                        @RequestParam(value = "keyword", required = false) String keyword,
-                       @RequestParam(value = "category", required = false) String category) {
+                       @RequestParam(value = "category", required = false) String category, HttpSession session) {
         events = eventService.getAll();
         List<String> categories = events.stream()
             .map(EVENT::getType)

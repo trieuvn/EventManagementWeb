@@ -30,8 +30,10 @@ public class UserController {
     @PostMapping("/login")
     public String processLogin(@RequestParam String email,
             @RequestParam String password,
-            RedirectAttributes ra) {
+            RedirectAttributes ra, HttpSession session) {
         if (userService.authenticate(email, password) == true) {
+            USER user = userService.getByEmail(email);
+            session.setAttribute("user", user);
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
             return "redirect:/";
         } else {
