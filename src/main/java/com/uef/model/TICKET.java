@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -146,5 +147,34 @@ public class TICKET {
 
     public TICKET() {
     }
-    
+    public List<Integer> getRates() {
+        List<Integer> rates = new ArrayList<>();
+        if (this.participants != null) {
+            for (PARTICIPANT participant : this.participants) {
+                if (participant.getRate() != 0) { // Giả sử 0 là giá trị mặc định hoặc không hợp lệ
+                    rates.add(participant.getRate());
+                }
+            }
+        }
+        return rates;
+    }
+
+    public float getAvgRate() {
+        List<Integer> rates = getRates();
+        if (rates == null || rates.isEmpty()) {
+            return 0.0f;
+        }
+        int sum = 0;
+        for (Integer rate : rates) {
+            sum += rate;
+        }
+        return (float) sum / rates.size();
+    }
+
+    public int getAvailableSlots() {
+        if (this.participants == null) {
+            return this.slots;
+        }
+        return this.slots - this.participants.size();
+    }
 }
