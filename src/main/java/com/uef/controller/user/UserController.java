@@ -31,7 +31,7 @@ public class UserController {
     public String processLogin(@RequestParam String email,
             @RequestParam String password,
             RedirectAttributes ra, HttpSession session) {
-        if (userService.authenticate(email, password) == true) {
+        if (userService.authenticate(email, password) != null) {
             USER user = userService.getByEmail(email);
             session.setAttribute("user", user);
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
