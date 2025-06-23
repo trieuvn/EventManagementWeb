@@ -3,7 +3,9 @@ package com.uef.controller.user;
 import com.uef.model.*;
 import com.uef.service.EventService;
 import com.uef.service.CategoryService;
+import com.uef.service.TicketService;
 import com.uef.service.UserService;
+import com.uef.utils.Image;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -31,6 +33,9 @@ public class EventController {
 
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private TicketService ticketService;
 
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
@@ -41,26 +46,16 @@ public class EventController {
             @RequestParam(value = "date", required = false) Date date,
             HttpSession session) {
         // Sửa lỗi logic: sử dụng keyword cho name, bỏ category để tránh lỗi kiểu dữ liệu
-        /*List<EVENT> events;
-        if (category != null && !category.isEmpty()) {
-            // Nếu có category, sử dụng getByCategory thay vì searchEvents
-            events = eventService.getByCategory(category);
-        } else {
-            // Nếu không có category, sử dụng searchEvents chỉ với name và date
-            events = eventService.searchEvents(keyword, null, date);
-        }
-
         List<String> categories = categoryService.getAll().stream()
-                .map(CATEGORY::getName)
-                .collect(Collectors.toList());
-        List<EVENT> filteredEvents = new ArrayList<>(events);
+                                    .map(CATEGORY::getName)
+                                    .collect(Collectors.toList());
+        List<EVENT> filteredEvents = eventService.searchEvents(keyword, category, date);
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
         model.addAttribute("userForm", new USER());
         model.addAttribute("body", "/WEB-INF/views/user/events/list.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
-        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");*/
-        List<EVENT> events = eventService.getByCategory("Âm nhạc");
+        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
     }
 
@@ -71,25 +66,22 @@ public class EventController {
         if (event == null) {
             return "error/404"; // Return 404 page if event not found
         }
-
+        ORGANIZER organizer = event.getOrganizer();
+        List<TICKET> tickets = event.getTickets();
+        
         // Calculate total slots
         int totalSlots = 50;
-
-        // Get first ticket price (if available)
-        double firstTicketPrice = event.getTickets().isEmpty() ? 0 : event.getTickets().get(0).getPrice();
-
-        // Get first ticket deadline (if available)
-        String firstTicketDeadline = event.getTickets().isEmpty() ? null
-                : event.getTickets().get(0).getRegDeadline() != null
-                ? event.getTickets().get(0).getRegDeadline().toString()
-                : null;
 
         // Add attributes to model
         model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
         model.addAttribute("event", event);
+        //Ảnh dạng string base64 để up ảnh lên jsp
+        model.addAttribute("event_image", Image.convertByteToBase64(event.getImage()));
+        model.addAttribute("organizer", organizer);
+        //Ảnh dạng string base64 để up ảnh lên jsp
+        model.addAttribute("organizer_avatar", Image.convertByteToBase64(organizer.getAvatar()));
+        model.addAttribute("tickets", tickets);
         model.addAttribute("totalSlots", totalSlots);
-        model.addAttribute("firstTicketPrice", firstTicketPrice);
-        model.addAttribute("firstTicketDeadline", firstTicketDeadline);
         model.addAttribute("userForm", new USER());
         //model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
         //model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
@@ -106,21 +98,5 @@ public class EventController {
         return "layout/main";
     }
 
-    /*@PostMapping("/register")
-    public String registerEvent(@RequestParam int eventId, RedirectAttributes ra) {
-        EVENT event = events.stream().filter(e -> e.getId() == eventId).findFirst().orElse(null);
-        if (event == null) {
-            ra.addFlashAttribute("error", "Sự kiện không tồn tại.");
-            return "redirect:/";
-        }
-        if (!"Mở".equalsIgnoreCase(event.getStatus())) {
-            ra.addFlashAttribute("error", "Đăng ký đã đóng: Hạn đăng ký đã hết.");
-            return "redirect:/";
-        }
-        if (event.getSlots() <= 0) {
-            ra.addFlashAttribute("error", "Đăng ký thất bại: Sự kiện đã đầy.");
-            return "redirect:/";
-        }
-        return "redirect:/";
-    }*/
+    
 }
