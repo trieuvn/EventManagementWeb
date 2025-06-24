@@ -22,13 +22,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("userEventController")
 public class EventController {
+
     @Autowired
     private EventService eventService;
 
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     private List<EVENT> events;
-    
+
     public EventController() {
         //events.add(new EVENT(1, "Hội thảo Công nghệ 2025", "Sự kiện về công nghệ", "2025-07-01", 2, "Công nghệ", "2025-06-25", 0, "email@example.com", 50, "Mở"));
         //events.add(new EVENT(2, "Hòa nhạc Mùa hè", "Buổi hòa nhạc ngoài trời", "2025-08-15", 1, "Âm nhạc", "2025-08-01", 100, "music@example.com", 100, "Mở"));
@@ -37,23 +38,23 @@ public class EventController {
 
     @GetMapping("/")
     public String home(Model model,
-                       @RequestParam(value = "keyword", required = false) String keyword,
-                       @RequestParam(value = "category", required = false) String category) {
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "category", required = false) String category) {
         events = eventService.getAll();
         List<String> categories = events.stream()
-            .map(EVENT::getType)
-            .distinct()
-            .toList();
+                .map(EVENT::getType)
+                .distinct()
+                .toList();
         List<EVENT> filteredEvents = new ArrayList<>(events);
         if (keyword != null && !keyword.trim().isEmpty()) {
             filteredEvents = filteredEvents.stream()
-                .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()))
-                .toList();
+                    .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()))
+                    .toList();
         }
         if (category != null && !category.isEmpty()) {
             filteredEvents = filteredEvents.stream()
-                .filter(e -> e.getType().equals(category))
-                .toList();
+                    .filter(e -> e.getType().equals(category))
+                    .toList();
         }
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
@@ -63,7 +64,7 @@ public class EventController {
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
     }
-    
+
     @GetMapping("/event/{id}")
     public String getEventDetails(@PathVariable int id, Model model) {
         // Fetch event by ID
@@ -79,24 +80,20 @@ public class EventController {
         double firstTicketPrice = event.getTickets().isEmpty() ? 0 : event.getTickets().get(0).getPrice();
 
         // Get first ticket deadline (if available)
-        String firstTicketDeadline = event.getTickets().isEmpty() ? null :
-                event.getTickets().get(0).getRegDeadline() != null ?
-                        event.getTickets().get(0).getRegDeadline().toString():
-                        null;
+        String firstTicketDeadline = event.getTickets().isEmpty() ? null
+                : event.getTickets().get(0).getRegDeadline() != null
+                ? event.getTickets().get(0).getRegDeadline().toString()
+                : null;
 
-        // Add attributes to model
-        model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
+        model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp"); // Chỉ thêm một lần
         model.addAttribute("event", event);
         model.addAttribute("totalSlots", totalSlots);
         model.addAttribute("firstTicketPrice", firstTicketPrice);
         model.addAttribute("firstTicketDeadline", firstTicketDeadline);
         model.addAttribute("userForm", new USER());
-        //model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
-        //model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
-        //model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
     }
-    
+
     @GetMapping("/about")
     public String aboutUs(Model model) {
         model.addAttribute("userForm", new USER());
@@ -123,5 +120,4 @@ public class EventController {
         }
         return "redirect:/";
     }*/
-
 }
