@@ -18,6 +18,11 @@ public class ParticipantService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    // Lấy tất cả người tham gia
+    public List<PARTICIPANT> getAll() {
+        return entityManager.createQuery("SELECT p FROM PARTICIPANT p", PARTICIPANT.class).getResultList();
+    }
+
     // Lấy danh sách người tham gia theo sự kiện (mục 107)
     public List<PARTICIPANT> getAllByEvent(int eventId) {
         Query query = entityManager.createQuery(
@@ -53,6 +58,77 @@ public class ParticipantService {
         }
     }
 
+    // Thêm hoặc cập nhật người tham gia
+    public boolean set(PARTICIPANT participant) {
+        // Kiểm tra các trường bắt buộc (BR-10, BR-11)
+        if (participant.getUser() == null || participant.getTicket() == null) {
+            throw new IllegalArgumentException("Thông tin người dùng hoặc vé không được để trống");
+        }
+        try {
+            PARTICIPANT existing = getById(participant.getTicket().getId(), participant.getUser().getEmail());
+            if (existing == null) {
+                entityManager.persist(participant);
+            } else {
+                existing.setStatus(participant.getStatus());
+                existing.setRate(participant.getRate());
+                existing.setComment(participant.getComment());
+                entityManager.merge(existing);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // Thêm hoặc cập nhật người tham gia theo ticket.id và user.email
+    public boolean setById(int ticketId, String userEmail, int status, int rate, String comment) {
+        if (userEmail == null || userEmail.isEmpty()) {
+            throw new IllegalArgumentException("Email người dùng không được để trống");
+        }
+        if (ticketId <= 0) {
+            throw new IllegalArgumentException("ID vé không hợp lệ");
+        }
+        // Kiểm tra rate hợp lệ (BR-19: 0-5)
+        if (rate < 0 || rate > 5) {
+            throw new IllegalArgumentException("Điểm đánh giá phải từ 0 đến 5");
+        }
+        try {
+            PARTICIPANT existing = getById(ticketId, userEmail);
+            if (existing == null) {
+                // Tạo mới
+                Query userQuery = entityManager.createQuery("SELECT u FROM USER u WHERE u.email = :email", USER.class);
+                userQuery.setParameter("email", userEmail);
+                USER user = (USER) userQuery.getSingleResult();
+                if (user == null) {
+                    throw new IllegalArgumentException("Người dùng không tồn tại");
+                }
+                TICKET ticket = entityManager.find(TICKET.class, ticketId);
+                if (ticket == null) {
+                    throw new IllegalArgumentException("Vé không tồn tại");
+                }
+                // Kiểm tra slot còn trống (BR-11)
+                Query slotQuery = entityManager.createQuery(
+                        "SELECT COUNT(p) FROM PARTICIPANT p WHERE p.ticket.id = :ticketId");
+                slotQuery.setParameter("ticketId", ticketId);
+                long participantCount = (long) slotQuery.getSingleResult();
+                if (ticket.getSlots() != -1 && participantCount >= ticket.getSlots()) {
+                    throw new IllegalStateException("Không còn slot trống cho vé này");
+                }
+                PARTICIPANT participant = new PARTICIPANT(user, ticket, status, rate, comment);
+                entityManager.persist(participant);
+            } else {
+                // Cập nhật
+                existing.setStatus(status);
+                existing.setRate(rate);
+                existing.setComment(comment);
+                entityManager.merge(existing);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     // Xóa người tham gia (mục 89)
     public void delete(PARTICIPANT participant) {
         PARTICIPANT existing = entityManager.find(PARTICIPANT.class, 
@@ -60,6 +136,16 @@ public class ParticipantService {
         if (existing != null) {
             entityManager.remove(existing);
         }
+    }
+
+    // Xóa người tham gia theo ticket.id và user.email
+    public boolean deleteById(int ticketId, String userEmail) {
+        PARTICIPANT participant = getById(ticketId, userEmail);
+        if (participant != null) {
+            entityManager.remove(participant);
+            return true;
+        }
+        return false;
     }
 
     // Đặt đánh giá cho vé (mục 98)
