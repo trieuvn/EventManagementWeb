@@ -97,7 +97,7 @@
                             <div class="card-footer bg-transparent text-center">
                                 <c:choose>
                                     <c:when test="${e.name != 'Mở'}">
-                                        <form action="${pageContext.request.contextPath}/details" method="post">
+                                        <form action="${pageContext.request.contextPath}/event/${e.id}" method="post">
                                             <input type="hidden" name="eventId" value="${e.id}" />
                                             <button type="submit" class="btn btn-primary w-100">Xem chi tiết</button>
                                         </form>

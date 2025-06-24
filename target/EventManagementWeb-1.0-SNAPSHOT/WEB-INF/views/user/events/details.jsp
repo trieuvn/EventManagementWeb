@@ -87,26 +87,6 @@
                 <p><strong>Description:</strong> ${event.description}</p>
                 <p><strong>Slots:</strong> ${totalSlots}</p>
                 <p><strong>Type:</strong> ${event.type}</p>
-                <p><strong>Deadline:</strong>
-                    <c:choose>
-                        <c:when test="${not empty firstTicketDeadline}">
-                            ${firstTicketDeadline}
-                        </c:when>
-                        <c:otherwise>
-                            N/A
-                        </c:otherwise>
-                    </c:choose>
-                </p>
-                <p><strong>Price:</strong>
-                    <c:choose>
-                        <c:when test="${firstTicketPrice == 0}">
-                            Free
-                        </c:when>
-                        <c:otherwise>
-                            ${firstTicketPrice}
-                        </c:otherwise>
-                    </c:choose>
-                </p>
                 <p><strong>Target:</strong> ${event.target}</p>
                 <p><strong>Contact:</strong> ${event.contactInfo}</p>
             </div>

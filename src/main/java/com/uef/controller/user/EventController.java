@@ -59,13 +59,14 @@ public class EventController {
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
         model.addAttribute("userForm", new USER());
+        model.addAttribute("hero", "/WEB-INF/views/layout/hero.jsp");
         model.addAttribute("body", "/WEB-INF/views/user/events/list.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
     }
 
-    @GetMapping("/event/{id}")
+    @RequestMapping("/event/{id}")
     public String getEventDetails(@PathVariable int id, Model model) {
         // Fetch event by ID
         EVENT event = eventService.getById(id);

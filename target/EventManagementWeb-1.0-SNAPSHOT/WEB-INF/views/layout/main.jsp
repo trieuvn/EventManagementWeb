@@ -41,20 +41,9 @@
     <jsp:include page="/WEB-INF/views/layout/introduction.jsp" />
 
     <!-- Hero Section -->
-    <section class="hero-section set-bg" data-setbg="${pageContext.request.contextPath}/assets/img/hero.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="hero-text">
-                        <h2>Change Your Mind<br /> To Become Success</h2>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <img src="${pageContext.request.contextPath}/assets/img/hero-right.png" alt="">
-                </div>
-            </div>
-        </div>
-    </section>
+    <c:if test="${not empty hero}">
+        <jsp:include page="${hero}" />
+    </c:if>
 
     <!-- Dynamic Content -->
     <div class="container content">
