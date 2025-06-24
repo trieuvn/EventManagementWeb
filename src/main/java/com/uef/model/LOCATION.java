@@ -1,7 +1,9 @@
 package com.uef.model;
 
+import com.uef.utils.Map;
 import jakarta.persistence.*;
 import java.util.List;
+import org.springframework.ui.Model;
 
 @Entity
 @Table(name = "[LOCATION]")
@@ -42,5 +44,9 @@ public class LOCATION {
     }
 
     public LOCATION() {
+    }
+    
+    public String getRoadMap(Model model, Double latitude, Double longitude) throws Exception{
+        return Map.showMap(model, latitude, longitude, Double.valueOf(this.latitude), Double.valueOf(this.longitude), null, name);
     }
 }
