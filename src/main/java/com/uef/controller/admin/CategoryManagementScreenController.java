@@ -1,6 +1,7 @@
 
 package com.uef.controller.admin;
 
+
 import com.uef.model.CATEGORY;
 import com.uef.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,10 @@ public class CategoryManagementScreenController {
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "Danh mục không tồn tại.");
             }
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể xóa danh mục vì đang được sử dụng trong tag.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Không thể xóa danh mục: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa danh mục: " + e.getMessage());
         }
         return "redirect:/admin/categories";
     }
