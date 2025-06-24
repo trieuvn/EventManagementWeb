@@ -100,5 +100,19 @@ public class ORGANIZER {
     public ORGANIZER() {
     }
 
+    public EVENT createEvent(String eventName, String description, String type, String contactInfo, String target) {
+        if (eventName == null || type == null || target == null) {
+            throw new IllegalArgumentException("Event name, type, and target are required.");
+        }
 
+        EVENT event = new EVENT();
+        event.setName(eventName);
+        event.setDescription(description);
+        event.setType(type);
+        event.setContactInfo(contactInfo);
+        event.setTarget(target);
+        event.setOrganizer(this); // Gán organizer hiện tại (this là ORGANIZER)
+        events.add(event); // Thêm sự kiện vào danh sách events
+        return event;
+    }
 }
