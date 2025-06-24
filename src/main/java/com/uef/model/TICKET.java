@@ -1,6 +1,8 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -177,4 +179,14 @@ public class TICKET {
         }
         return this.slots - this.participants.size();
     }
+    
+    public String createQRCode() throws UnsupportedEncodingException, IOException {
+    // Tạo chuỗi kết hợp ticket id với thông tin khác (ví dụ: id và confirmCode)
+    String qrData = "TicketID:" + this.id + ",ConfirmCode:" + this.confirmCode;
+    // Gọi phương thức từ lớp QRCode để tạo chuỗi Base64
+    String qrCodeBase64 = com.uef.utils.QRCode.convertFromStringToBase64String(qrData);
+    // Lưu chuỗi Base64 vào thuộc tính qrCode
+    this.setQrCode(qrCodeBase64);
+    return qrCodeBase64;
+}
 }
