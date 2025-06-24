@@ -1,8 +1,11 @@
 package com.uef.controller.user;
 
 import com.uef.model.*;
+import com.uef.service.CategoryService;
 import com.uef.service.EventService;
+import com.uef.service.TicketService;
 import com.uef.service.UserService;
+import com.uef.utils.Image;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
