@@ -6,6 +6,7 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\CHANG
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\UserService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\LOCATION.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\interceptor\RoleInterceptor.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\CategoryService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\USER.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\EventController.java
@@ -15,6 +16,7 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\PARTI
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Map.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TagService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\RegistrationController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\testController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\ParticipantController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\EVENT.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TicketService.java

@@ -1,57 +1,68 @@
 package com.uef.controller.admin;
 
-import com.uef.model.*;
+import com.uef.model.EVENT;
 import com.uef.service.EventService;
+import com.uef.service.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller("adminEventController")
-@RequestMapping("admin/events")
+@Controller
+@RequestMapping("/admin/events")
 public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private OrganizerService organizerService;
+
     @GetMapping
     public String listEvents(Model model) {
         model.addAttribute("events", eventService.getAll());
-        return "admin/events/list";
+        return "admin/events";
     }
 
     @GetMapping("/add")
-    public String showAddForm(Model model) {
+    public String addEventForm(Model model) {
         model.addAttribute("event", new EVENT());
-        return "admin/events/form";
-    }
-
-    @PostMapping("/add")
-    public String addEvent(@ModelAttribute EVENT event) {
-        eventService.set(event);
-        return "redirect:/admin/events";
+        model.addAttribute("organizers", organizerService.getAll());
+        return "admin/edit_event";
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable int id, Model model) {
-        model.addAttribute("event", eventService.getById(id));
-        return "admin/events/form";
+    public String editEventForm(@PathVariable int id, Model model) {
+        EVENT event = eventService.getById(id);
+        if (event == null) {
+            return "redirect:/admin/events";
+        }
+        model.addAttribute("event", event);
+        model.addAttribute("organizers", organizerService.getAll());
+        return "admin/edit_event";
     }
 
-    @PostMapping("/update")
-    public String updateEvent(@ModelAttribute EVENT event) {
+    @PostMapping({"/add", "/update"})
+    public String saveEvent(@ModelAttribute EVENT event) {
         eventService.set(event);
         return "redirect:/admin/events";
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteEvent(@PathVariable int id) {
-        eventService.deleteById(id);
+        EVENT event = eventService.getById(id);
+        if (event != null) {
+            eventService.delete(event);
+        }
         return "redirect:/admin/events";
     }
 
     @PostMapping("/updateStatus")
     public String updateStatus(@RequestParam int id, @RequestParam String status) {
-        eventService.setStatus(id, status);
+        EVENT event = eventService.getById(id);
+        if (event != null) {
+            event.setType(status);
+            eventService.setStatus(event);
+        }
         return "redirect:/admin/events";
     }
     @GetMapping("/details")
