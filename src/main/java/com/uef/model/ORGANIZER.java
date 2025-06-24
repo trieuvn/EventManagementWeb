@@ -24,7 +24,7 @@ public class ORGANIZER {
     @Column(name = "email", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String email;
 
-    @Column(name = "avatar", nullable = true)
+    @Column(name = "avatar", nullable = true, columnDefinition = "VARBINARY(MAX)")
     private byte[] avatar;
     
     @OneToMany(mappedBy = "organizer")

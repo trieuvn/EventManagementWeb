@@ -16,7 +16,7 @@ public class EVENT {
     @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String name;
 
-    @Column(name = "description", length = 100, nullable = true, columnDefinition = "NVARCHAR(50)")
+    @Column(name = "description", nullable = true, columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
     @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
@@ -28,7 +28,7 @@ public class EVENT {
     @Column(name = "target", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
     private String target;
 
-    @Column(name = "image", nullable = true)
+    @Column(name = "image", nullable = true, columnDefinition = "VARBINARY(MAX)")
     private byte[] image;
 
     @OneToMany(mappedBy = "event")
@@ -149,7 +149,5 @@ public class EVENT {
 
     public EVENT() {
     }
-
-
 
 }
