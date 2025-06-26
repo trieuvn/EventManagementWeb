@@ -1,11 +1,13 @@
 package com.uef.service;
 
 import com.uef.model.EVENT;
+import com.uef.model.ORGANIZER;
 import com.uef.model.TAG;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -14,8 +16,12 @@ import java.util.List;
 @Service
 @Transactional
 public class EventService {
+
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private OrganizerService organizerService;
 
     // Lấy tất cả sự kiện (mục 84)
     public List<EVENT> getAll() {
@@ -29,18 +35,18 @@ public class EventService {
 
     // Thêm hoặc cập nhật sự kiện (mục 100)
     public void set(EVENT event) {
+        // Kiểm tra các trường bắt buộc (BR-23)
+        if (event.getName() == null || event.getType() == null || event.getTarget() == null || event.getOrganizer() == null) {
+            throw new IllegalArgumentException("Required fields are missing");
+        }
         if (event.getId() == 0) {
-            // Kiểm tra các trường bắt buộc (BR-23)
-            if (event.getName() == null || event.getType() == null || event.getTarget() == null || event.getOrganizer() == null) {
-                throw new IllegalArgumentException("Required fields are missing");
-            }
             entityManager.persist(event);
         } else {
             entityManager.merge(event);
         }
     }
 
-    // Xóa sự kiện (mục 101)
+    // Xóa sự kiện (mục 101, đã sửa theo yêu cầu trước)
     public boolean delete(EVENT event) {
         EVENT existingEvent = getById(event.getId());
         if (existingEvent != null) {
@@ -48,9 +54,7 @@ public class EventService {
             Query query = entityManager.createQuery("SELECT p FROM PARTICIPANT p WHERE p.ticket.event.id = :eventId");
             query.setParameter("eventId", event.getId());
             if (!query.getResultList().isEmpty()) {
-                existingEvent.setType("completed"); // Đánh dấu completed thay vì xóa
-                set(existingEvent);
-                return false;
+                throw new IllegalStateException("Không thể xóa sự kiện vì đã có người tham gia.");
             } else {
                 // Xóa các tag liên quan trước (BR-26, BR-27)
                 Query tagQuery = entityManager.createQuery("DELETE FROM TAG t WHERE t.event.id = :eventId");
@@ -77,7 +81,7 @@ public class EventService {
     // Lấy sự kiện theo danh mục (mục 86)
     public List<EVENT> getByCategory(String category) {
         Query query = entityManager.createQuery(
-            "SELECT e FROM EVENT e JOIN e.tags t WHERE t.category.name = :category", EVENT.class);
+                "SELECT e FROM EVENT e JOIN e.tags t WHERE t.category.name = :category", EVENT.class);
         query.setParameter("category", category);
         return query.getResultList();
     }
@@ -85,20 +89,20 @@ public class EventService {
     // Lấy sự kiện sắp tới (mục 82)
     public List<EVENT> getUpcomingEvents() {
         return entityManager.createQuery(
-            "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date > CURRENT_DATE AND t.status = 0", EVENT.class)
-            .getResultList();
+                "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date > CURRENT_DATE AND t.status = 0", EVENT.class)
+                .getResultList();
     }
 
     // Lấy sự kiện đã qua (mục 83)
     public List<EVENT> getPastEvents() {
         return entityManager.createQuery(
-            "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date < CURRENT_DATE AND t.status = 2", EVENT.class)
-            .getResultList();
+                "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date < CURRENT_DATE AND t.status = 2", EVENT.class)
+                .getResultList();
     }
 
     // Tìm kiếm sự kiện (mục 85)
     public List<EVENT> searchEvents(String name, String category, Date date) {
-        StringBuilder jpql = new StringBuilder("SELECT e FROM EVENT e LEFT JOIN e.tags t WHERE 1=1");
+        StringBuilder jpql = new StringBuilder("SELECT e FROM EVENT e LEFT JOIN e.tickets t WHERE 1=1");
         if (name != null && !name.isEmpty()) {
             jpql.append(" AND LOWER(e.name) LIKE :name");
         }
@@ -119,5 +123,21 @@ public class EventService {
             query.setParameter("date", date);
         }
         return query.getResultList();
+    }
+
+    // Tạo sự kiện mới cho nhà tổ chức (mục 68)
+    public EVENT createEvent(ORGANIZER organizer, EVENT event) {
+        // Kiểm tra nhà tổ chức tồn tại
+        ORGANIZER existingOrganizer = organizerService.getById(organizer.getId());
+        if (existingOrganizer == null) {
+            throw new IllegalArgumentException("Nhà tổ chức không tồn tại");
+        }
+        // Kiểm tra các trường bắt buộc của sự kiện (BR-23)
+        if (event.getName() == null || event.getType() == null || event.getTarget() == null) {
+            throw new IllegalArgumentException("Các trường bắt buộc của sự kiện bị thiếu");
+        }
+        event.setOrganizer(existingOrganizer);
+        entityManager.persist(event);
+        return event;
     }
 }
