@@ -2,6 +2,7 @@ com\uef\service\OrganizerService.class
 com\uef\service\UserService.class
 com\uef\service\ChangeService.class
 com\uef\model\LOCATION.class
+com\uef\utils\Email$EmailResult.class
 com\uef\controller\user\UserController.class
 com\uef\service\ParticipantService.class
 com\uef\controller\admin\EventController.class
@@ -15,7 +16,9 @@ com\uef\service\EventService.class
 com\uef\service\TicketService.class
 com\uef\model\TAG.class
 com\uef\controller\admin\ParticipantController.class
+com\uef\utils\Email.class
 com\uef\model\TICKET.class
+com\uef\utils\Email$1.class
 com\uef\controller\admin\CategoryController.class
 com\uef\model\PARTICIPANT.class
 com\uef\service\TagService.class
