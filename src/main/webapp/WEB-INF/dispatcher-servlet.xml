@@ -37,7 +37,7 @@
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
         <property name="url" value="jdbc:sqlserver://localhost:1433;databaseName=EventManagement;encrypt=true;trustServerCertificate=true"/>
         <property name="username" value="sa"/>
-        <property name="password" value="123456"/>
+        <property name="password" value="123"/>
     </bean>
 
     <!-- Cấu hình EntityManagerFactory -->

@@ -1,26 +1,27 @@
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\LOCATION.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\controller\user\RegistrationController.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\TagService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\controller\user\UserController.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\CategoryService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\UserService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\controller\user\EventController.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\utils\QRCode.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\EVENT.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\TICKET.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\LocationService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\OrganizerService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\PARTICIPANT.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\controller\admin\ParticipantController.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\controller\admin\EventController.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\utils\Map.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\TicketService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\controller\admin\CategoryController.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\TAG.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\CATEGORY.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\EventService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\CHANGE.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\ParticipantService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\USER.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\service\ChangeService.java
-C:\Users\sang\OneDrive\Máy tính\Hẹ hẹ\src\main\java\com\uef\model\ORGANIZER.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\TICKET.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\TagService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\admin\EventManagementController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\ORGANIZER.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\utils\QRCode.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\TicketService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\CHANGE.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\CategoryService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\LocationService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\ChangeService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\OrganizerService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\admin\ParticipantController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\TAG.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\EventService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\EVENT.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\user\RegistrationController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\ParticipantService.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\PARTICIPANT.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\admin\EventDetailController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\user\EventController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\utils\Map.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\CATEGORY.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\LOCATION.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\model\USER.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\user\UserController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\controller\admin\CategoryController.java
+C:\Users\huy59\Downloads\Event\src\main\java\com\uef\service\UserService.java
