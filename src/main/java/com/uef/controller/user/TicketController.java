@@ -60,7 +60,7 @@ public class TicketController {
         model.addAttribute("body", "/WEB-INF/views/user/tickets/detail.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
-        return "layout/main";
+        return "layout/main2";
     }
     
     @PostMapping("/register/{ticket_id}")

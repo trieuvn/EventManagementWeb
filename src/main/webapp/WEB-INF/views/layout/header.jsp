@@ -105,11 +105,11 @@
                     <li class="<%= uri.startsWith(context + "/about") ? "active" : "" %>">
                         <a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a>
                     </li>
-                    <li class="<%= uri.startsWith(context + "/checkin") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a>
+                    <li class="<%= uri.startsWith(context + "/news") ? "active" : "" %>">
+                        <a href="${pageContext.request.contextPath}/news">TIN TỨC</a>
                     </li>
-                    <li class="<%= uri.startsWith(context + "/history") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a>
+                    <li class="<%= uri.startsWith(context + "/contacts") ? "active" : "" %>">
+                        <a href="${pageContext.request.contextPath}/contacts">LIÊN HỆ</a>
                     </li>
                     <li>
                         <a href="#" data-toggle="modal" data-target="#loginModal">ĐĂNG NHẬP</a>

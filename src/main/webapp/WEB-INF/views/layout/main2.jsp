@@ -35,7 +35,7 @@
     </div>
 
     <!-- Header -->
-    <jsp:include page="/WEB-INF/views/layout/header.jsp" />
+    <jsp:include page="/WEB-INF/views/layout/header2.jsp" />
 
     <!-- Introduction Section -->
     <jsp:include page="/WEB-INF/views/layout/introduction.jsp" />
@@ -56,7 +56,7 @@
     </c:if>
 
     <!-- Footer -->
-    <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+    <jsp:include page="/WEB-INF/views/layout/footer2.jsp" />
 
     <!-- JavaScript Files -->
     <script src="${pageContext.request.contextPath}/assets/js/jquery-3.3.1.min.js"></script>
