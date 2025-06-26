@@ -1,15 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.uef.controller.admin;
-
-
-
 
 import com.uef.model.CATEGORY;
 import com.uef.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +15,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/categories")
+@PreAuthorize("hasRole('ADMIN')") // Kiểm tra quyền admin (BR-26)
 public class CategoryDetailScreenController {
 
     @Autowired
     private CategoryService categoryService;
 
-    // Hiển thị form thêm hoặc sửa danh mục
-    @GetMapping({"/add", "/edit{id}"})
-    public String showCategoryForm(@PathVariable(value = "id", required = false) String name, Model model) {
+    // Hiển thị form thêm hoặc chỉnh sửa danh mục
+    @GetMapping("/{name}")
+    public String showCategoryForm(@PathVariable(value = "name", required = false) String name, Model model) {
         CATEGORY category;
-        if (name != null) {
+        if (name != null && !name.trim().isEmpty()) { // Kiểm tra name hợp lệ
             category = categoryService.getById(name);
             if (category == null) {
                 model.addAttribute("errorMessage", "Danh mục không tồn tại.");
@@ -47,18 +42,25 @@ public class CategoryDetailScreenController {
     @PostMapping({"/add", "/update"})
     public String saveCategory(@ModelAttribute CATEGORY category, RedirectAttributes redirectAttributes) {
         try {
-            if (category.getName() == null || category.getName().isEmpty()) {
+            // Kiểm tra trường bắt buộc (BR-27)
+            if (category.getName() == null || category.getName().trim().isEmpty()) {
                 throw new IllegalArgumentException("Tên danh mục không được để trống.");
             }
+            // Kiểm tra tính duy nhất của tên danh mục (BR-27)
+            CATEGORY existingCategory = categoryService.getById(category.getName());
+            if (existingCategory != null && (category.getName() == null || !category.getName().equals(existingCategory.getName()))) {
+                throw new IllegalArgumentException("Tên danh mục đã tồn tại.");
+            }
             boolean saved = categoryService.set(category);
-            if (saved) {
-                redirectAttributes.addFlashAttribute("successMessage", 
-                    categoryService.getById(category.getName()) != null ? "Cập nhật danh mục thành công!" : "Thêm danh mục thành công!");
-            } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "Không thể lưu danh mục do lỗi hệ thống.");
+            redirectAttributes.addFlashAttribute("successMessage", 
+                existingCategory != null ? "Cập nhật danh mục thành công!" : "Thêm danh mục thành công!");
+            if (!saved) {
+                throw new IllegalStateException("Không thể lưu danh mục do lỗi hệ thống.");
             }
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi hệ thống khi lưu danh mục: " + e.getMessage());
         }
         return "redirect:/admin/categories";
     }
