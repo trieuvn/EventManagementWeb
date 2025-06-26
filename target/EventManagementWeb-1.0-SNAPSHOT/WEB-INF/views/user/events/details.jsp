@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <!-- Phần trên: Hình ảnh và Organizer -->
     <div class="row mb-5">
         <div class="col-md-4">
@@ -129,7 +129,7 @@
                                     </c:if>
 
                                     <!-- Nút View cải tiến -->
-                                    <a href="${pageContext.request.contextPath}/ticket/view/${ticket.id}" 
+                                    <a href="${pageContext.request.contextPath}/ticket/${ticket.id}" 
                                        class="btn btn-outline-info btn-sm ms-2 custom-view-btn">
                                         <i class="bi bi-eye"></i> View
                                     </a>

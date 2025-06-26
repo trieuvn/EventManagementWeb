@@ -21,12 +21,14 @@
         }
 
         .container {
+            display: flex;
             align-items: center;
             justify-content: space-between;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             flex-wrap: wrap;
+            margin-top: -30px;
         }
 
         .logo img {
@@ -34,7 +36,7 @@
             height: auto;
             width: auto;
             display: block;
-            margin-top: -40px;
+            margin-top: -10px;
             margin-left: -60px;
         }
 
@@ -66,9 +68,59 @@
         }
 
         .nav-menu li.active a {
-            color: #007bff; /* Màu nổi bật khi active */
+            color: #007bff;
             font-weight: bold;
             border-bottom: 2px solid #007bff;
+        }
+
+        .user-info {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: -10px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            font-family: Arial, sans-serif;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-width: 160px;
+            z-index: 999;
+            padding: 10px 0;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f2f2f2;
         }
 
         @media (max-width: 768px) {
@@ -90,7 +142,7 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <a href="${pageContext.request.contextPath}">
+            <a href="${pageContext.request.contextPath}/user-page">
                 <img src="${pageContext.request.contextPath}/assets/img/event-list.png" alt="Events">
             </a>
         </div>
@@ -100,23 +152,60 @@
             <nav class="mainmenu mobile-menu">
                 <ul>
                     <li class="<%= (uri.equals(context) || uri.equals(context + "/")) ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}">TRANG CHỦ</a>
-                    </li>
-                    <li class="<%= uri.startsWith(context + "/about") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a>
+                        <a href="${pageContext.request.contextPath}/user-page">TRANG CHỦ</a>
                     </li>
                     <li class="<%= uri.startsWith(context + "/checkin") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a>
+                        <a href="${pageContext.request.contextPath}/user-page/checkin">ĐIỂM DANH</a>
                     </li>
                     <li class="<%= uri.startsWith(context + "/history") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a>
+                        <a href="${pageContext.request.contextPath}/user-page/history">LỊCH SỬ</a>
                     </li>
                 </ul>
             </nav>
         </div>
 
+        <!-- Avatar + Email + Dropdown -->
+        <div class="user-info" id="userDropdownToggle">
+            <div class="avatar" id="avatar">?</div>
+            <span id="email">${user.email}</span>
+
+            <div class="dropdown-menu" id="userDropdownMenu">
+                <a href="${pageContext.request.contextPath}/user-page/profile">Thông tin cá nhân</a>
+                <a href="${pageContext.request.contextPath}/user-page/logout">Đăng xuất</a>
+            </div>
+        </div>
+
         <div id="mobile-menu"></div>
     </div>
 </header>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const emailEl = document.getElementById("email");
+        const avatarEl = document.getElementById("avatar");
+        const dropdownToggle = document.getElementById("userDropdownToggle");
+        const dropdownMenu = document.getElementById("userDropdownMenu");
+
+        if (emailEl && avatarEl) {
+            const email = emailEl.textContent.trim();
+            if (email.length > 0) {
+                const firstLetter = email.charAt(0).toUpperCase();
+                avatarEl.textContent = firstLetter;
+            }
+        }
+
+        // Toggle dropdown
+        dropdownToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", () => {
+            dropdownMenu.style.display = "none";
+        });
+    });
+</script>
+
 </body>
 </html>

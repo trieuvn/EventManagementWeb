@@ -10,9 +10,8 @@
                     <ul class="list-inline">
                         <li class="list-inline-item"><a href="${pageContext.request.contextPath}/">TRANG CHỦ</a></li>
                         <li class="list-inline-item"><a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/login">ĐĂNG NHẬP</a></li>
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/news">TIN TỨC</a></li>
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/contacts">LIÊN HỆ</a></li>
                     </ul>
                     <div class="copyright-text mt-3">
                         <p>Copyright ©<script>document.write(new Date().getFullYear());</script> - Ứng dụng Quản lý Sự kiện <i class="fa fa-heart" style="color: red;" aria-hidden="true"></i></p>

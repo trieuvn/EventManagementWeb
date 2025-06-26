@@ -4,6 +4,7 @@ import com.uef.model.*;
 import com.uef.service.EventService;
 import com.uef.service.UserService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,32 +66,35 @@ public class EventController {
     }
 
     @RequestMapping("/event/{id}")
-    public String getEventDetails(@PathVariable int id, Model model) {
+    public String getEventDetails(@PathVariable int id, Model model, HttpSession session) {
+        // Lấy user từ session
+        USER user = (USER) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("user", user); // Truyền user sang view
+        }
+
         // Fetch event by ID
         EVENT event = eventService.getById(id);
         if (event == null) {
-            return "error/404"; // Return 404 page if event not found
+            return "error/404";
         }
 
-        // Calculate total slots
         int totalSlots = 50;
 
-        // Get first ticket price (if available)
         double firstTicketPrice = event.getTickets().isEmpty() ? 0 : event.getTickets().get(0).getPrice();
-
-        // Get first ticket deadline (if available)
         String firstTicketDeadline = event.getTickets().isEmpty() ? null
                 : event.getTickets().get(0).getRegDeadline() != null
                 ? event.getTickets().get(0).getRegDeadline().toString()
                 : null;
 
-        model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp"); // Chỉ thêm một lần
+        model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
         model.addAttribute("event", event);
         model.addAttribute("totalSlots", totalSlots);
         model.addAttribute("firstTicketPrice", firstTicketPrice);
         model.addAttribute("firstTicketDeadline", firstTicketDeadline);
         model.addAttribute("userForm", new USER());
-        return "layout/main";
+
+        return "layout/main2";
     }
 
     @GetMapping("/about")
@@ -105,7 +109,14 @@ public class EventController {
     @GetMapping("/user-page")
     public String showMain2(Model model,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "category", required = false) String category) {
+            @RequestParam(value = "category", required = false) String category,
+            HttpSession session) {
+
+        USER user = (USER) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+
         List<EVENT> events = eventService.getAll();
         List<String> categories = events.stream()
                 .map(EVENT::getType)
@@ -134,7 +145,6 @@ public class EventController {
 
         return "layout/main2";
     }
-
 
     /*@PostMapping("/register")
     public String registerEvent(@RequestParam int eventId, RedirectAttributes ra) {
