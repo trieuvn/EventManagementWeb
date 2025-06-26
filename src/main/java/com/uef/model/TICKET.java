@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -265,4 +267,44 @@ public class TICKET {
         }
         return this.slots - this.participants.size();
     }
+    public List<Integer> getRates() {
+        List<Integer> rates = new ArrayList<>();
+        if (this.participants != null) {
+            for (PARTICIPANT participant : this.participants) {
+                if (participant.getRate() != 0) { // Giả sử 0 là giá trị mặc định hoặc không hợp lệ
+                    rates.add(participant.getRate());
+                }
+            }
+        }
+        return rates;
+    }
+
+    public float getAvgRate() {
+        List<Integer> rates = getRates();
+        if (rates == null || rates.isEmpty()) {
+            return 0.0f;
+        }
+        int sum = 0;
+        for (Integer rate : rates) {
+            sum += rate;
+        }
+        return (float) sum / rates.size();
+    }
+
+    public int getAvailableSlots() {
+        if (this.participants == null) {
+            return this.slots;
+        }
+        return this.slots - this.participants.size();
+    }
+
+    public String createQRCode() throws UnsupportedEncodingException, IOException {
+    // Tạo chuỗi kết hợp ticket id với thông tin khác (ví dụ: id và confirmCode)
+    String qrData = "TicketID:" + this.id + ",ConfirmCode:" + this.confirmCode;
+    // Gọi phương thức từ lớp QRCode để tạo chuỗi Base64
+    String qrCodeBase64 = com.uef.utils.QRCode.convertFromStringToBase64String(qrData);
+    // Lưu chuỗi Base64 vào thuộc tính qrCode
+    this.setQrCode(qrCodeBase64);
+    return qrCodeBase64;
+}
 }
