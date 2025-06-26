@@ -30,6 +30,7 @@ com\uef\model\PARTICIPANT.class
 com\uef\service\TagService.class
 com\uef\utils\QRCode.class
 com\uef\service\CategoryService.class
+com\uef\controller\user\test.class
 com\uef\controller\user\EventController.class
 com\uef\model\CATEGORY.class
 com\uef\model\EVENT.class

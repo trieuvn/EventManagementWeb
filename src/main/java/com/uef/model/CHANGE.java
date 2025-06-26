@@ -1,6 +1,8 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -14,15 +16,20 @@ public class CHANGE {
     private int id;
 
     @Column(name = "subject", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotNull(message = "Subject cannot be null")
+    @Size(max = 50, message = "Subject must not exceed 50 characters")
     private String subject;
 
     @Column(name = "description", length = 100, nullable = true, columnDefinition = "NVARCHAR(50)")
+    @Size(max = 100, message = "Description must not exceed 100 characters")
     private String description;
 
     @Column(name = "date", nullable = false)
+    @NotNull(message = "Date cannot be null")
     private Date date;
 
     @Column(name = "time", nullable = false)
+    @NotNull(message = "Time cannot be null")
     private Time time;
     
     @ManyToOne

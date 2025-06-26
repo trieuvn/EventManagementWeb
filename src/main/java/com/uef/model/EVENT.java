@@ -1,8 +1,12 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "[EVENT]")
@@ -14,18 +18,26 @@ public class EVENT {
     private int id;
 
     @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotNull(message = "Name cannot be null")
+    @Size(max = 50, message = "Name must not exceed 50 characters")
     private String name;
 
     @Column(name = "description", nullable = true, columnDefinition = "NVARCHAR(MAX)")
+    @Size(max = 100, message = "Description must not exceed 100 characters")
     private String description;
 
     @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
+    @NotNull(message = "Type cannot be null")
+    @Size(max = 30, message = "Type must be 'online', 'offline', or 'hybrid'")
     private String type;
 
     @Column(name = "contactInfo", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
+    @Size(max = 50, message = "Contact info must not exceed 50 characters")
     private String contactInfo;
 
     @Column(name = "target", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotNull(message = "Target cannot be null")
+    @Size(max = 50, message = "Target must not exceed 50 characters")
     private String target;
 
     @Column(name = "image", nullable = true, columnDefinition = "VARBINARY(MAX)")
@@ -149,5 +161,87 @@ public class EVENT {
 
     public EVENT() {
     }
+    public boolean addTag(String categoryName) {
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            return false;
+        }
+        // Kiểm tra xem TAG đã tồn tại với categoryName và event hiện tại chưa
+        for (TAG tag : tags) {
+            if (tag.getCategory().getName().equals(categoryName) && tag.getEvent().equals(this)) {
+                return false; // Tránh trùng lặp
+            }
+        }
+        // Tạo mới CATEGORY nếu cần (ở đây giả định CATEGORY đã tồn tại trong DB)
+        CATEGORY category = new CATEGORY();
+        category.setName(categoryName);
+        TAG newTag = new TAG(category, this);
+        tags.add(newTag);
+        return true;
+    }
 
+    public boolean removeTag(String categoryName) {
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            return false;
+        }
+        boolean removed = tags.removeIf(tag -> tag.getCategory().getName().equals(categoryName) && tag.getEvent().equals(this));
+        return removed;
+    }
+
+    public boolean addChange() {
+        try {
+            CHANGE newChange = new CHANGE();
+            newChange.setEvent(this);
+            java.util.Date currentDate = new java.util.Date(); // 08:51 PM +07, 20/06/2025
+            newChange.setDate(new java.sql.Date(currentDate.getTime()));
+            newChange.setTime(new java.sql.Time(currentDate.getTime()));
+            changes.add(newChange);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<PARTICIPANT> getParticipants() {
+        if (tickets == null) {
+            return new ArrayList<>();
+        }
+        return tickets.stream()
+                .filter(ticket -> ticket.getParticipants() != null)
+                .flatMap(ticket -> ticket.getParticipants().stream())
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> getRates() {
+    if (tickets == null) {
+        return new ArrayList<>();
+    }
+    return tickets.stream()
+            .filter(ticket -> ticket.getParticipants() != null)
+            .flatMap(ticket -> ticket.getParticipants().stream())
+            .filter(participant -> {
+                Integer rate = participant.getRate();
+                return rate != null && rate.intValue() >= 0;
+            })
+            .map(PARTICIPANT::getRate)
+            .collect(Collectors.toList());
+}
+
+    public float getAvgRate() {
+        List<Integer> rates = getRates();
+        if (rates.isEmpty()) {
+            return 0.0f;
+        }
+        return (float) rates.stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
+    }
+
+    public boolean getStatus() {
+        if (tickets == null) {
+            return false;
+        }
+        return tickets.stream()
+                .anyMatch(ticket -> ticket.getSlots() > 0);
+    }
 }
