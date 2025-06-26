@@ -25,13 +25,25 @@
 
 <!-- Hiển thị thông báo -->
 <c:if test="${not empty msg}">
-    <div class="alert alert-success">${msg}</div>
+    <div id="flash-msg" class="alert alert-success alert-dismissible fade show" role="alert">
+        ${msg}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Đóng">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <c:remove var="msg" scope="session"/>
 </c:if>
+
 <c:if test="${not empty error}">
-    <div class="alert alert-danger">${error}</div>
+    <div id="flash-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${error}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Đóng">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <c:remove var="error" scope="session"/>
 </c:if>
+
 
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -93,14 +105,6 @@
                         <form:password path="password" cssClass="form-control" id="password"/>
                         <form:errors path="password" cssClass="text-danger"/>
                     </div>
-                    <div class="form-group">
-                        <label for="role">Bạn là</label>
-                        <form:select path="role" cssClass="form-control" id="role">
-                            <form:option value="0" label="Người tổ chức"/>
-                            <form:option value="1" label="Người tham gia" selected="true"/>
-                        </form:select>
-                        <form:errors path="role" cssClass="text-danger"/>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
@@ -154,3 +158,11 @@
         });
     </script>
 </c:if>
+    <script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('#flash-msg').fadeOut(1000); // Mờ dần trong 1s
+            $('#flash-error').fadeOut(1000);
+        }, 10000); // Sau 10 giây
+    });
+</script>

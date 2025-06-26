@@ -1,33 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.uef.controller.admin;
 
-import com.uef.model.*;
+import com.uef.model.PARTICIPANT;
+import com.uef.model.TICKET;
+import com.uef.model.USER;
+import com.uef.service.EventService;
 import com.uef.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller("adminParticipantController")
-@RequestMapping("admin/participants")
+@Controller
+@RequestMapping("/admin/participants")
 public class ParticipantController {
     @Autowired
     private ParticipantService participantService;
 
-    @GetMapping("/event/{eventId}")
+    @Autowired
+    private EventService eventService;
+
+    @GetMapping("/{eventId}")
     public String listParticipants(@PathVariable int eventId, Model model) {
         model.addAttribute("participants", participantService.getAllByEvent(eventId));
         model.addAttribute("eventId", eventId);
-        return "admin/participants/list";
+        model.addAttribute("event", eventService.getById(eventId));
+        return "admin/participants";
     }
 
+    @PostMapping("/confirm/{userEmail}/{ticketId}")
+    public String confirmParticipant(@PathVariable String userEmail, @PathVariable int ticketId, @RequestParam int eventId) {
+        USER user = new USER();
+        user.setEmail(userEmail);
+        TICKET ticket = new TICKET();
+        ticket.setId(ticketId);
+        PARTICIPANT participant = new PARTICIPANT(user, ticket, 1, 0, null);
+        participantService.setRate(user, ticket, 0, null); // Cập nhật trạng thái
+        return "redirect:/admin/participants/" + eventId;
+    }
 
-    // Placeholder method to get eventId (implement based on your request handling)
-    private int getEventIdFromRequest() {
-        // Implement logic to retrieve eventId from session or request
-        return 1; // Default value, replace with actual logic
+    @PostMapping("/cancel/{userEmail}/{ticketId}")
+    public String cancelParticipant(@PathVariable String userEmail, @PathVariable int ticketId, @RequestParam int eventId) {
+        USER user = new USER();
+        user.setEmail(userEmail);
+        TICKET ticket = new TICKET();
+        ticket.setId(ticketId);
+        PARTICIPANT participant = new PARTICIPANT(user, ticket, 0, 0, null);
+        participantService.delete(participant);
+        return "redirect:/admin/participants/" + eventId;
     }
 }

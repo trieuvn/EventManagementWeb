@@ -1,6 +1,10 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "PARTICIPANT")
@@ -16,12 +20,16 @@ public class PARTICIPANT {
     private TICKET ticket;
 
     @Column(name = "status", nullable = false)
+    @NotNull(message = "Status cannot be null")
     private int status;
 
     @Column(name = "rate", nullable = true)
+    @Min(value = 0, message = "Rate must be between 0 and 5")
+    @Max(value = 5, message = "Rate must be between 0 and 5")
     private int rate;
 
     @Column(name = "comment", length = 50, nullable = true, columnDefinition = "NVARCHAR(50)")
+    @Size(max = 50, message = "Comment must not exceed 50 characters")
     private String comment;
 
     // Getters and Setters
