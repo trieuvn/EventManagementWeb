@@ -8,7 +8,6 @@ import com.uef.service.EventService;
 import com.uef.service.LocationService;
 import com.uef.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/tickets")
-@PreAuthorize("hasRole('ADMIN')")
 public class AdminTicketDetailScreenController {
 
     @Autowired
@@ -97,24 +95,24 @@ public class AdminTicketDetailScreenController {
     }
 
     // Xử lý xóa vé
-    @GetMapping("/delete/{id}")
-    public String deleteTicket(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
-        try {
-            TICKET ticket = ticketService.getById(id);
-            if (ticket == null) {
-                throw new IllegalArgumentException("Vé không tồn tại.");
-            }
-            List<PARTICIPANT> participants = participantService.getByTicket(id);
-            if (!participants.isEmpty()) {
-                throw new IllegalStateException("Không thể xóa vé vì đã có người tham gia.");
-            }
-            ticketService.deleteById(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Xóa vé thành công!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa vé: " + e.getMessage());
-        }
-        return "redirect:/admin/tickets";
-    }
+//    @GetMapping("/delete/{id}")
+//    public String deleteTicket(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+//        try {
+//            TICKET ticket = ticketService.getById(id);
+//            if (ticket == null) {
+//                throw new IllegalArgumentException("Vé không tồn tại.");
+//            }
+//            List<PARTICIPANT> participants = participantService.getByTicket(id);
+//            if (!participants.isEmpty()) {
+//                throw new IllegalStateException("Không thể xóa vé vì đã có người tham gia.");
+//            }
+//            ticketService.deleteById(id);
+//            redirectAttributes.addFlashAttribute("successMessage", "Xóa vé thành công!");
+//        } catch (Exception e) {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa vé: " + e.getMessage());
+//        }
+//        return "redirect:/admin/tickets";
+//    }
 
     // Kiểm tra tính hợp lệ của loại vé với loại sự kiện (BR-24)
     private boolean isValidTicketType(String eventType, String ticketType) {

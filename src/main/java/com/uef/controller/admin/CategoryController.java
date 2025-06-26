@@ -13,18 +13,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
-    public String listCategories(Model model) {
-        model.addAttribute("categories", categoryService.getAll());
-        return "admin/categories";
-    }
-
-    @GetMapping("/add")
-    public String addCategoryForm(Model model) {
-        model.addAttribute("category", new CATEGORY());
-        return "admin/edit_category";
-    }
-
     @GetMapping("/edit/{name}")
     public String editCategoryForm(@PathVariable String name, Model model) {
         CATEGORY category = categoryService.getById(name);
@@ -33,12 +21,6 @@ public class CategoryController {
         }
         model.addAttribute("category", category);
         return "admin/edit_category";
-    }
-
-    @PostMapping({"/add", "/update"})
-    public String saveCategory(@ModelAttribute CATEGORY category) {
-        categoryService.set(category);
-        return "redirect:/admin/categories";
     }
 
     @PostMapping("/delete/{name}")

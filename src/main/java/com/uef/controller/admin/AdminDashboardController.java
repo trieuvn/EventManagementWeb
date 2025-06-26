@@ -9,7 +9,6 @@ import com.uef.service.EventService;
 import com.uef.service.ParticipantService;
 import com.uef.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')")
 public class AdminDashboardController {
 
     @Autowired

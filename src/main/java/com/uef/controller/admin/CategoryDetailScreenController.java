@@ -3,7 +3,6 @@ package com.uef.controller.admin;
 import com.uef.model.CATEGORY;
 import com.uef.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/categories")
-@PreAuthorize("hasRole('ADMIN')") // Kiểm tra quyền admin (BR-26)
 public class CategoryDetailScreenController {
 
     @Autowired

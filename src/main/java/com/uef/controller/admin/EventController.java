@@ -23,24 +23,6 @@ public class EventController {
         return "admin/events";
     }
 
-    @GetMapping("/add")
-    public String addEventForm(Model model) {
-        model.addAttribute("event", new EVENT());
-        model.addAttribute("organizers", organizerService.getAll());
-        return "admin/edit_event";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String editEventForm(@PathVariable int id, Model model) {
-        EVENT event = eventService.getById(id);
-        if (event == null) {
-            return "redirect:/admin/events";
-        }
-        model.addAttribute("event", event);
-        model.addAttribute("organizers", organizerService.getAll());
-        return "admin/edit_event";
-    }
-
     @PostMapping({"/add", "/update"})
     public String saveEvent(@ModelAttribute EVENT event) {
         eventService.set(event);
