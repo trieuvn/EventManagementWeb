@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <!-- Phần dưới: Thông tin sự kiện (giữ nguyên) -->
+    <!-- Phần dưới: Thông tin sự kiện -->
     <div class="row mt-5">
         <div class="col-md-12">
             <div class="card card-custom p-4 bg-light-custom">
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <!-- Bảng danh sách vé (giữ nguyên) -->
+    <!-- Bảng danh sách vé -->
     <div class="row mt-5">
         <div class="col-md-12">
             <div class="card card-custom p-4 bg-light-custom">
@@ -123,16 +123,22 @@
                                 </td>
                                 <td>${ticket.slots}</td>
                                 <td>
-                                    <c:if test="${event.type == 'upcoming' and ticket.status == 1}">
-                                        <a href="${pageContext.request.contextPath}/user/registration/register/ticket/${ticket.id}" 
-                                           class="btn btn-primary btn-sm custom-register-btn">Register</a>
-                                    </c:if>
-
-                                    <!-- Nút View cải tiến -->
-                                    <a href="${pageContext.request.contextPath}/ticket/${ticket.id}" 
-                                       class="btn btn-outline-info btn-sm ms-2 custom-view-btn">
+                                    <!-- Nút View với data attributes để truyền dữ liệu -->
+                                    <button type="button" class="btn btn-outline-info btn-sm ms-2 custom-view-btn" 
+                                            data-bs-toggle="modal" data-bs-target="#ticketModal" 
+                                            data-ticket-id="${ticket.id}" 
+                                            data-ticket-date="${ticket.date}" 
+                                            data-ticket-description="${ticket.description}" 
+                                            data-ticket-duration="${ticket.duration}" 
+                                            data-ticket-index="${ticket.index}" 
+                                            data-ticket-name="${ticket.name}" 
+                                            data-ticket-price="${ticket.price}" 
+                                            data-ticket-regdeadline="${ticket.regDeadline}" 
+                                            data-ticket-slots="${ticket.slots}" 
+                                            data-ticket-status="${ticket.status}" 
+                                            data-ticket-type="${ticket.type}">
                                         <i class="bi bi-eye"></i> View
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -141,7 +147,70 @@
             </div>
         </div>
     </div>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ticketModalLabel">Ticket Details</h5>
+                    <button type="button" class="btn btn-link text-dark close-btn" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>ID:</strong> <span id="modal-ticket-id"></span></p>
+                    <p><strong>Date:</strong> <span id="modal-ticket-date"></span></p>
+                    <p><strong>Description:</strong> <span id="modal-ticket-description"></span></p>
+                    <p><strong>Duration:</strong> <span id="modal-ticket-duration"></span></p>
+                    <p><strong>Index:</strong> <span id="modal-ticket-index"></span></p>
+                    <p><strong>Name:</strong> <span id="modal-ticket-name"></span></p>
+                    <p><strong>Price:</strong> <span id="modal-ticket-price"></span></p>
+                    <p><strong>Reg Deadline:</strong> <span id="modal-ticket-regdeadline"></span></p>
+                    <p><strong>Slots:</strong> <span id="modal-ticket-slots"></span></p>
+                    <p><strong>Status:</strong> <span id="modal-ticket-status"></span></p>
+                    <p><strong>Type:</strong> <span id="modal-ticket-type"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success custom-register-btn">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Include Bootstrap JS and jQuery if not already included -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // JavaScript to populate modal with ticket details
+    $('#ticketModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var ticketId = button.data('ticket-id');
+        var ticketDate = button.data('ticket-date') || 'N/A';
+        var ticketDescription = button.data('ticket-description') || 'N/A';
+        var ticketDuration = button.data('ticket-duration') || 'N/A';
+        var ticketIndex = button.data('ticket-index') || 'N/A';
+        var ticketName = button.data('ticket-name');
+        var ticketPrice = button.data('ticket-price');
+        var ticketRegDeadline = button.data('ticket-regdeadline') || 'N/A';
+        var ticketSlots = button.data('ticket-slots');
+        var ticketStatus = button.data('ticket-status') === 1 ? 'Active' : 'Inactive';
+        var ticketType = button.data('ticket-type') || 'N/A';
+
+        // Update modal content
+        $('#modal-ticket-id').text(ticketId);
+        $('#modal-ticket-date').text(ticketDate);
+        $('#modal-ticket-description').text(ticketDescription);
+        $('#modal-ticket-duration').text(ticketDuration);
+        $('#modal-ticket-index').text(ticketIndex);
+        $('#modal-ticket-name').text(ticketName);
+        $('#modal-ticket-price').text(ticketPrice === 0 ? 'Free' : ticketPrice);
+        $('#modal-ticket-regdeadline').text(ticketRegDeadline);
+        $('#modal-ticket-slots').text(ticketSlots);
+        $('#modal-ticket-status').text(ticketStatus);
+        $('#modal-ticket-type').text(ticketType);
+    });
+</script>
 
 <style>
     .card-custom {
@@ -165,9 +234,9 @@
         vertical-align: middle;
     }
     .custom-register-btn {
-        padding: 2px 10px;
-        font-size: 0.875rem;
-        min-width: 70px;
+        padding: 10px 20px; /* Tăng padding để phóng to nút */
+        font-size: 1.1rem; /* Tăng kích thước chữ */
+        min-width: 120px; /* Tăng chiều rộng tối thiểu */
     }
     .free-badge {
         color: #28a745;
@@ -175,10 +244,9 @@
         font-size: 1.1em;
     }
     .organizer-avatar {
-        width: 150px; /* Giữ kích thước 150px */
+        width: 150px;
         height: 150px;
-        object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
-        /* Xóa border và box-shadow để không có viền hoặc nền ngoài */
+        object-fit: cover;
     }
     @media (max-width: 768px) {
         .organizer-avatar {
@@ -192,5 +260,17 @@
             justify-content: center;
             margin-bottom: 15px;
         }
+    }
+    .modal-header .close-btn {
+        padding: 0;
+        font-size: 1.5rem;
+        line-height: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: #000;
+    }
+    .modal-header .close-btn:hover {
+        color: #dc3545; /* Màu đỏ khi hover */
     }
 </style>
