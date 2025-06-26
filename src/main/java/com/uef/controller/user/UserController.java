@@ -30,12 +30,11 @@ public class UserController {
     @PostMapping("/login")
     public String processLogin(@RequestParam String email,
             @RequestParam String password,
-            RedirectAttributes ra, HttpSession session) {
-        if (userService.authenticate(email, password) != null) {
-            USER user = userService.getByEmail(email);
-            session.setAttribute("user", user);
+            RedirectAttributes ra) {
+        USER user = userService.authenticate(email, password);
+        if (user != null) {
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
-            return "redirect:/";
+            return "redirect:/user-page"; 
         } else {
             ra.addFlashAttribute("error", "Email hoặc mật khẩu không đúng.");
             return "redirect:/?login=true";
@@ -79,9 +78,9 @@ public class UserController {
         model.addAttribute("body", "/WEB-INF/views/layout/forgot-password.jsp"); // Tạo file này nếu cần
         return "layout/main";
     }
-    
+
     private String generateConfirmationCode() {
-        return "CONF-" + (int)(Math.random() * 10000);
+        return "CONF-" + (int) (Math.random() * 10000);
     }
 
 }

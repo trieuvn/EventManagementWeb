@@ -28,7 +28,7 @@
                                      class="img-fluid organizer-avatar" />
                             </c:when>
                             <c:otherwise>
-                                <img src="${pageContext.request.contextPath}/assets/img/bussinesspeoplee.jpg" 
+                                <img src="${pageContext.request.contextPath}/assets/img/bussinesspeople.jpg" 
                                      alt="Default Avatar" 
                                      class="img-fluid organizer-avatar" />
                             </c:otherwise>
@@ -124,8 +124,15 @@
                                 <td>${ticket.slots}</td>
                                 <td>
                                     <c:if test="${event.type == 'upcoming' and ticket.status == 1}">
-                                        <a href="${pageContext.request.contextPath}/user/registration/register/ticket/${ticket.id}" class="btn btn-primary btn-sm custom-register-btn">Register</a>
+                                        <a href="${pageContext.request.contextPath}/user/registration/register/ticket/${ticket.id}" 
+                                           class="btn btn-primary btn-sm custom-register-btn">Register</a>
                                     </c:if>
+
+                                    <!-- Nút View cải tiến -->
+                                    <a href="${pageContext.request.contextPath}/ticket/view/${ticket.id}" 
+                                       class="btn btn-outline-info btn-sm ms-2 custom-view-btn">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>
