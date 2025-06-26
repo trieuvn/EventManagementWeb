@@ -8,9 +8,9 @@
             <div class="col-lg-12 text-center">
                 <div class="footer-text">
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/user-page">TRANG CHỦ</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/user-page/checkin">ĐIỂM DANH</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/user-page/history">LỊCH SỬ</a></li>
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/">TRANG CHỦ</a></li>
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a></li>
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a></li>
                     </ul>
                     <div class="copyright-text mt-3">
                         <p>Copyright ©<script>document.write(new Date().getFullYear());</script> - Ứng dụng Quản lý Sự kiện 

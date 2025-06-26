@@ -102,7 +102,7 @@ public class EventService {
 
     // Tìm kiếm sự kiện (mục 85)
     public List<EVENT> searchEvents(String name, String category, Date date) {
-        StringBuilder jpql = new StringBuilder("SELECT e FROM EVENT e LEFT JOIN e.tickets t WHERE 1=1");
+        StringBuilder jpql = new StringBuilder("SELECT e FROM EVENT e LEFT JOIN e.tags t WHERE 1=1");
         if (name != null && !name.isEmpty()) {
             jpql.append(" AND LOWER(e.name) LIKE :name");
         }

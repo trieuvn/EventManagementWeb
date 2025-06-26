@@ -1,7 +1,9 @@
 package com.uef.controller.user;
 
 import com.uef.model.*;
+import com.uef.service.CategoryService;
 import com.uef.service.EventService;
+import com.uef.service.TicketService;
 import com.uef.service.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
@@ -27,6 +30,12 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private CategoryService categoryService;
+    
+    @Autowired
+    private TicketService ticketService;
+    
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     private List<EVENT> events;
@@ -38,23 +47,14 @@ public class EventController {
     @GetMapping("/")
     public String home(Model model,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "category", required = false) String category) {
-        events = eventService.getAll();
-        List<String> categories = events.stream()
-                .map(EVENT::getType)
-                .distinct()
-                .toList();
-        List<EVENT> filteredEvents = new ArrayList<>(events);
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            filteredEvents = filteredEvents.stream()
-                    .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()))
-                    .toList();
-        }
-        if (category != null && !category.isEmpty()) {
-            filteredEvents = filteredEvents.stream()
-                    .filter(e -> e.getType().equals(category))
-                    .toList();
-        }
+            @RequestParam(value = "category", required = false) String category,    
+            @RequestParam(value = "date", required = false) Date date,
+            HttpSession session) {
+        
+        List<String> categories = categoryService.getAll().stream()
+                                    .map(CATEGORY::getName)
+                                    .collect(Collectors.toList());
+        List<EVENT> filteredEvents = eventService.searchEvents(keyword, category, date);
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
         model.addAttribute("userForm", new USER());
@@ -62,13 +62,19 @@ public class EventController {
         model.addAttribute("body", "/WEB-INF/views/user/events/list.jsp");
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
+        USER user = (USER) session.getAttribute("user");
+        //Neu da dang nhap
+        if (user != null){
+            return "layout/main2";      
+        }
+        //Chua dang nhap
         return "layout/main";
     }
 
     @RequestMapping("/event/{id}")
     public String getEventDetails(@PathVariable int id, Model model, HttpSession session) {
         // Lấy user từ session
-        USER user = (USER) session.getAttribute("loggedInUser");
+        USER user = (USER) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("user", user); // Truyền user sang view
         }
@@ -104,46 +110,6 @@ public class EventController {
         model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         return "layout/main";
-    }
-
-    @GetMapping("/user-page")
-    public String showMain2(Model model,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "category", required = false) String category,
-            HttpSession session) {
-
-        USER user = (USER) session.getAttribute("loggedInUser");
-        if (user != null) {
-            model.addAttribute("user", user);
-        }
-
-        List<EVENT> events = eventService.getAll();
-        List<String> categories = events.stream()
-                .map(EVENT::getType)
-                .distinct()
-                .toList();
-
-        List<EVENT> filteredEvents = new ArrayList<>(events);
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            filteredEvents = filteredEvents.stream()
-                    .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()))
-                    .toList();
-        }
-        if (category != null && !category.isEmpty()) {
-            filteredEvents = filteredEvents.stream()
-                    .filter(e -> e.getType().equals(category))
-                    .toList();
-        }
-
-        model.addAttribute("events", filteredEvents);
-        model.addAttribute("categories", categories);
-        model.addAttribute("userForm", new USER());
-        model.addAttribute("hero", "/WEB-INF/views/layout/hero.jsp");
-        model.addAttribute("body", "/WEB-INF/views/user/events/list.jsp");
-        model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
-        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
-
-        return "layout/main2";
     }
 
     /*@PostMapping("/register")

@@ -4,6 +4,7 @@ com\uef\service\ChangeService.class
 com\uef\controller\admin\AdminDashboardController.class
 com\uef\model\LOCATION.class
 com\uef\controller\user\HistoryController.class
+com\uef\utils\Email$EmailResult.class
 com\uef\controller\user\UserController.class
 com\uef\service\ParticipantService.class
 com\uef\controller\admin\EventController.class
@@ -19,8 +20,10 @@ com\uef\service\TicketService.class
 com\uef\model\TAG.class
 com\uef\controller\admin\ParticipantController.class
 com\uef\controller\user\TicketController.class
+com\uef\utils\Email.class
 com\uef\controller\admin\CategoryDetailScreenController.class
 com\uef\model\TICKET.class
+com\uef\utils\Email$1.class
 com\uef\utils\Image.class
 com\uef\controller\admin\CategoryController.class
 com\uef\interceptor\RoleInterceptor.class

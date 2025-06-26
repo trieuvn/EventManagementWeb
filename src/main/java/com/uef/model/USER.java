@@ -1,6 +1,7 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -11,12 +12,14 @@ import java.util.List;
 public class USER {
     @Id
     @Column(name = "email", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
+    @NotBlank
     @NotNull(message = "Email cannot be null")
     @Size(max = 50, message = "Email must not exceed 50 characters")
     private String email;
 
     @Column(name = "firstName", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
     @NotNull(message = "First name cannot be null")
+    @NotBlank
     @Size(max = 30, message = "First name must not exceed 30 characters")
     private String firstName;
 

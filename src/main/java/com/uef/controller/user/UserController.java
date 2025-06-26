@@ -35,26 +35,27 @@ public class UserController {
             HttpSession session) {
         USER user = userService.authenticate(email, password);
         if (user != null) {
-            session.setAttribute("loggedInUser", user); // Lưu vào session
+            session.setAttribute("user", user); // Lưu vào session
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
-            return "redirect:/user-page";
+            return "redirect:/";
         } else {
             ra.addFlashAttribute("error", "Email hoặc mật khẩu không đúng.");
             return "redirect:/?login=true";
         }
     }
 
-    @GetMapping("/user-page/logout")
-    public String logout() {
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.setAttribute("user", null);
         return "redirect:/";
     }
-
+    
+    
     @PostMapping("/signup")
     public String processSignup(
             @Valid @ModelAttribute("userForm") USER user,
             BindingResult result,
             RedirectAttributes ra) {
-
         if (result.hasErrors()) {
             ra.addFlashAttribute("error", "Vui lòng kiểm tra lại thông tin.");
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);

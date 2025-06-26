@@ -142,7 +142,7 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <a href="${pageContext.request.contextPath}/user-page">
+            <a href="${pageContext.request.contextPath}/">
                 <img src="${pageContext.request.contextPath}/assets/img/event-list.png" alt="Events">
             </a>
         </div>
@@ -152,13 +152,13 @@
             <nav class="mainmenu mobile-menu">
                 <ul>
                     <li class="<%= (uri.equals(context) || uri.equals(context + "/")) ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/user-page">TRANG CHỦ</a>
+                        <a href="${pageContext.request.contextPath}/">TRANG CHỦ</a>
                     </li>
                     <li class="<%= uri.startsWith(context + "/checkin") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/user-page/checkin">ĐIỂM DANH</a>
+                        <a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a>
                     </li>
                     <li class="<%= uri.startsWith(context + "/history") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/user-page/history">LỊCH SỬ</a>
+                        <a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a>
                     </li>
                 </ul>
             </nav>
@@ -170,8 +170,8 @@
             <span id="email">${user.email}</span>
 
             <div class="dropdown-menu" id="userDropdownMenu">
-                <a href="${pageContext.request.contextPath}/user-page/profile">Thông tin cá nhân</a>
-                <a href="${pageContext.request.contextPath}/user-page/logout">Đăng xuất</a>
+                <a href="${pageContext.request.contextPath}/profile">Thông tin cá nhân</a>
+                <a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
             </div>
         </div>
 

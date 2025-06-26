@@ -97,9 +97,9 @@
                     <div class="card-body">
                         <h5 class="card-title text-center fw-bold">${e.name}</h5>
                         <p><i class="fas fa-info-circle"></i> Mô tả: ${e.description}</p>
-                        <p><i class="fas fa-clock"></i> Thời lượng: ${e.contactInfo} giờ</p>
+                        <p><i class="fas fa-clock"></i> Tổ chức: ${e.contactInfo}</p>
                         <p><i class="fas fa-tags"></i> Thể loại: <span class="badge bg-secondary">${e.type}</span></p>
-                        <p><i class="fas fa-users"></i> Còn lại: 50 chỗ</p>
+                        <p><i class="fas fa-users"></i> Đánh giá: ${e.getAvgRate()}/5.0</p>
                     </div>
 
                     <div class="card-footer bg-transparent text-center">
