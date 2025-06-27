@@ -62,7 +62,7 @@
             "text": ["Đi đến trang chủ nào!"]
         },
         {
-            "selector": "a[href$='/EventRegistration/about']",
+            "selector": "a[href$='/about']",
             "text": ["Khám phá giới thiệu về hệ thống!"]
         },
         {

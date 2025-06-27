@@ -21,6 +21,7 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\Par
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\PARTICIPANT.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Map.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryManagementScreenController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\QRCodeController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TagService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\testController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\ParticipantController.java
