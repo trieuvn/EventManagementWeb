@@ -1,5 +1,6 @@
 package com.uef.model;
 
+import com.uef.utils.QRCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -267,15 +268,9 @@ public class TICKET {
         }
         return this.slots - this.participants.size();
     }
-    
 
-    public String createQRCode() throws UnsupportedEncodingException, IOException {
-    // Tạo chuỗi kết hợp ticket id với thông tin khác (ví dụ: id và confirmCode)
-    String qrData = "TicketID:" + this.id + ",ConfirmCode:" + this.confirmCode;
-    // Gọi phương thức từ lớp QRCode để tạo chuỗi Base64
-    String qrCodeBase64 = com.uef.utils.QRCode.convertFromStringToBase64String(qrData);
-    // Lưu chuỗi Base64 vào thuộc tính qrCode
-    this.setQrCode(qrCodeBase64);
-    return qrCodeBase64;
-}
+    public void createNewQRCode() throws UnsupportedEncodingException, IOException {
+        // Tạo chuỗi kết hợp ticket id với thông tin khác (ví dụ: id và confirmCode)
+        this.confirmCode = QRCode.generateRandomInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
 }

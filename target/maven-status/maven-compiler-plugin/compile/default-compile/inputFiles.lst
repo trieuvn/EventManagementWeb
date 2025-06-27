@@ -2,6 +2,7 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\EventService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventDetailController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\UserController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\annotation\RoleRequired.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\HistoryController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\AdminTicketDetailScreenController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\AdminDashboardController.java
@@ -20,6 +21,7 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\Par
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\PARTICIPANT.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Map.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryManagementScreenController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\QRCodeController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TagService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\testController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\ParticipantController.java
@@ -35,4 +37,3 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\CATEG
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\TICKET.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\LocationService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\OrganizerService.java
-D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\test.java
