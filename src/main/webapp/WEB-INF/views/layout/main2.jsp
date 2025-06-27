@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" type="text/css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/benefit.css" type="text/css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/live2d/waifu.css">
     </head>
 
     <body>
@@ -77,7 +78,11 @@
                         );
             }
         </script>
+        
         <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script src="${pageContext.request.contextPath}/assets/live2d/live2d.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/live2d/waifu-tips.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/live2d/autoload.js"></script>
     </body>
 </html>
 
