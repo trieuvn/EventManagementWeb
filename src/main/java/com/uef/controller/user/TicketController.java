@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,8 +63,10 @@ public class TicketController {
                           @RequestParam(required = false) String endName) throws Exception {
         return Map.showMap(model, startLat, startLng, endLat, endLng, startName, endName);
     }
+    
+    
     @PostMapping("/register/{ticket_id}")
-    public String registerTicket(@RequestParam int ticket_id, RedirectAttributes ra, HttpSession session) {
+    public String registerTicket(@PathVariable int ticket_id, RedirectAttributes ra, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
         if (user == null){
             //redirect Dang nhap
@@ -89,6 +92,10 @@ public class TicketController {
         participant.setStatus(0);
         
         //Thêm participant vào database (Sang chưa code à? Chịu luôn)
+        boolean result = participantService.set(participant);
+        if (result != true){
+            ra.addFlashAttribute("message", "Có lỗi xảy ra vui lòng thử lại.");
+        }
         ra.addFlashAttribute("message", "Thêm sự kiện thành công.");
         return "redirect:/ticket/"+ticket_id;
     }

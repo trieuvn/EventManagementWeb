@@ -93,14 +93,17 @@ public class EventController {
                 : event.getTickets().get(0).getRegDeadline() != null
                 ? event.getTickets().get(0).getRegDeadline().toString()
                 : null;
-
+        
         model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
         model.addAttribute("event", event);
         model.addAttribute("totalSlots", totalSlots);
         model.addAttribute("firstTicketPrice", firstTicketPrice);
         model.addAttribute("firstTicketDeadline", firstTicketDeadline);
         model.addAttribute("userForm", new USER());
-
+        
+        if (user == null){
+            return "layout/main";
+        }
         return "layout/main2";
     }
 

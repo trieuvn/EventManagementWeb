@@ -87,7 +87,7 @@
                         <div class="card h-100 shadow-sm border-0 position-relative">
                             <c:choose>
                                 <c:when test="${not empty e.image}">
-                                    <img src="" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
+                                    <img src="data:image/jpeg;base64,${e.getBase64Image()}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="${e.name}" />
                                 </c:when>
                                 <c:otherwise>
                                     <img src="${pageContext.request.contextPath}/assets/img/eventdefault.jpg" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Event Default Image" />

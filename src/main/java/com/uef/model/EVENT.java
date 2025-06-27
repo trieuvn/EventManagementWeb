@@ -1,5 +1,6 @@
 package com.uef.model;
 
+import com.uef.utils.Image;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -244,5 +245,17 @@ public class EVENT {
         }
         return tickets.stream()
                 .anyMatch(ticket -> ticket.getSlots() > 0);
+    }
+    
+    public String getBase64Image() {
+        return Image.convertByteToBase64(image);
+    }
+    
+    public int getSlots(){
+        int totalSlots = 0;
+        for (TICKET ticket : tickets){
+            totalSlots += ticket.getSlots();
+        }
+        return totalSlots;
     }
 }
