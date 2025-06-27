@@ -1,4 +1,3 @@
-com\uef\controller\user\QRCodeController.class
 com\uef\service\OrganizerService.class
 com\uef\service\UserService.class
 com\uef\service\ChangeService.class
@@ -32,7 +31,6 @@ com\uef\utils\Image.class
 com\uef\controller\admin\CategoryController.class
 com\uef\interceptor\RoleInterceptor.class
 com\uef\controller\admin\AdminTicketDetailScreenController.class
-com\uef\controller\user\testController.class
 com\uef\model\PARTICIPANT.class
 com\uef\service\TagService.class
 com\uef\utils\QRCode.class

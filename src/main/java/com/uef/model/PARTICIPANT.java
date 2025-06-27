@@ -23,7 +23,7 @@ public class PARTICIPANT {
     private TICKET ticket;
 
     @Column(name = "status", nullable = false)
-    @NotBlank(message = "Status cannot be null")
+    @NotNull(message = "Status cannot be null")
     private int status;
 
     @Column(name = "rate", nullable = true)

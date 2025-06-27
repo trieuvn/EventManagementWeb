@@ -108,7 +108,10 @@
                                             data-ticket-regdeadline="${ticket.regDeadline}"
                                             data-ticket-slots="${ticket.slots}"
                                             data-ticket-status="${ticket.status}"
-                                            data-ticket-type="${ticket.type}">
+                                            data-ticket-type="${ticket.type}"
+                                        data-ticket-lat="${ticket.location.latitude}"
+                                        data-ticket-lng="${ticket.location.longitude}"
+                                        data-ticket-endname="${ticket.location.name}">
                                         <i class="bi bi-eye"></i> View
                                     </button>
                                 </td>
@@ -156,7 +159,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <form id="registerForm" action="${pageContext.request.contextPath}/ticket/register" method="post">
+                    <form id="registerForm" method="post">
                         <c:if test="${not empty _csrf}">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </c:if>
@@ -186,9 +189,13 @@
                     regDeadline: button.data('ticket-regdeadline') || 'N/A',
                     slots: button.data('ticket-slots'),
                     status: button.data('ticket-status') === 1 ? 'Active' : 'Inactive',
-                    type: button.data('ticket-type') || 'N/A'
+                    type: button.data('ticket-type') || 'N/A',
+                    lat: button.data('ticket-lat'),
+                    lng: button.data('ticket-lng'),
+                    endname:button.data('ticket-endname')
+                    
                 };
-
+                $('#registerForm').attr('action', '${pageContext.request.contextPath}/ticket/register/' + ticketData.id);
                 // Gửi ticketId lên controller lưu vào session
                 $.ajax({
                     url: '${pageContext.request.contextPath}/event/save-ticket-id',
@@ -215,13 +222,16 @@
 
                 // Tạo URL bản đồ với điểm đến mặc định
                 const mapUrl = '${pageContext.request.contextPath}/ticket/show-map'
-                        + '?endLat=16.0544&endLng=108.2022'
+                        + '?endLat=' + ticketData.lat
+                        + '&endLng=' + ticketData.lng
                         + '&startName=' + encodeURIComponent('You are here')
-                        + '&endName=' + encodeURIComponent(ticketData.name);
-                
+                        + '&endName=' + ticketData.endname
+
                 $('#mapIframe').attr('src', mapUrl);
-                
-                
+
+
+
+
             });
         });
     </script>
@@ -243,8 +253,8 @@
             const form = document.getElementById('registerForm');
             form.action = `${form.getAttribute('action')}/${ticket.id}`;
 
-            // Hiển thị modal
-            const modal = new bootstrap.Modal(document.getElementById('ticketModal'));
-            modal.show();
-        }
+                    // Hiển thị modal
+                    const modal = new bootstrap.Modal(document.getElementById('ticketModal'));
+                    modal.show();
+                }
     </script>
