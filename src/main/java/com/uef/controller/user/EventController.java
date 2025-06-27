@@ -104,7 +104,6 @@ public class EventController {
         return "layout/main2";
     }
 
-    @RoleRequired({"ADMIN"})
     @GetMapping("/about")
     public String aboutUs(Model model) {
         model.addAttribute("userForm", new USER());
