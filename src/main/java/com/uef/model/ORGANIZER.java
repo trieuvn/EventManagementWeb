@@ -1,5 +1,6 @@
 package com.uef.model;
 
+import com.uef.utils.Image;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -94,6 +95,10 @@ public class ORGANIZER {
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
+    }
+    
+    public String getBase64Avatar() {
+        return Image.convertByteToBase64(avatar);
     }
 
     public ORGANIZER(int id, String firstName, String lastName, String phoneNumber, String email, byte[] avatar, List<EVENT> events) {
