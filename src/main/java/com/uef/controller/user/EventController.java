@@ -1,5 +1,6 @@
 package com.uef.controller.user;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.*;
 import com.uef.service.CategoryService;
 import com.uef.service.EventService;

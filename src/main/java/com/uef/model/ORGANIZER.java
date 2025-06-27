@@ -1,6 +1,7 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ORGANIZER {
     private String firstName;
 
     @Column(name = "lastName", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
-    @NotNull(message = "Last name cannot be null")
+    @NotBlank(message = "Last name cannot be null")
     @Size(max = 30, message = "Last name must not exceed 30 characters")
     private String lastName;
 
@@ -28,7 +29,7 @@ public class ORGANIZER {
     private String phoneNumber;
 
     @Column(name = "email", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
-    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be null")
     @Size(max = 50, message = "Email must not exceed 50 characters")
     private String email;
 

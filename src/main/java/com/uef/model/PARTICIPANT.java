@@ -3,8 +3,11 @@ package com.uef.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @Entity
 @Table(name = "PARTICIPANT")
@@ -20,7 +23,7 @@ public class PARTICIPANT {
     private TICKET ticket;
 
     @Column(name = "status", nullable = false)
-    @NotNull(message = "Status cannot be null")
+    @NotBlank(message = "Status cannot be null")
     private int status;
 
     @Column(name = "rate", nullable = true)
@@ -85,5 +88,11 @@ public class PARTICIPANT {
     public PARTICIPANT() {
     }
 
-    
+    public String getQRCode() throws UnsupportedEncodingException, IOException {
+        // Tạo chuỗi kết hợp ticket id với thông tin khác (ví dụ: id và confirmCode)
+        String qrData = this.user.getEmail() + "/" + String.valueOf(this.ticket.getId()) + "/" + this.ticket.getConfirmCode() +"/";
+        // Gọi phương thức từ lớp QRCode để tạo chuỗi Base64
+        String qrCodeBase64 = com.uef.utils.QRCode.convertFromStringToBase64String(qrData);
+        return qrCodeBase64;
+    }
 }

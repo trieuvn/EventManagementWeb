@@ -56,6 +56,7 @@ public class UserController {
             @Valid @ModelAttribute("userForm") USER user,
             BindingResult result,
             RedirectAttributes ra) {
+        user.setRole(1);
         if (result.hasErrors()) {
             ra.addFlashAttribute("error", "Vui lòng kiểm tra lại thông tin.");
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
