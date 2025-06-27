@@ -3,6 +3,7 @@ package com.uef.model;
 import com.uef.utils.QRCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.IOException;
@@ -23,11 +24,11 @@ public class TICKET {
     private int id;
 
     @Column(name = "[index]", nullable = false)
-    @NotNull(message = "Index cannot be null")
+    @NotBlank(message = "Index cannot be null")
     private int index;
 
     @Column(name = "name", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
-    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be null")
     @Size(max = 30, message = "Name must not exceed 30 characters")
     private String name;
 
@@ -36,48 +37,48 @@ public class TICKET {
     private String description;
 
     @Column(name = "price", nullable = false)
-    @NotNull(message = "Price cannot be null")
+    @NotBlank(message = "Price cannot be null")
     @Min(value = 0, message = "Price must be zero or greater")
     private int price;
 
     @Column(name = "date", nullable = false)
-    @NotNull(message = "Date cannot be null")
+    @NotBlank(message = "Date cannot be null")
     private Date date;
 
     @Column(name = "duration", nullable = false)
-    @NotNull(message = "Duration cannot be null")
+    @NotBlank(message = "Duration cannot be null")
     private Time duration;
 
     @Column(name = "regDeadline", nullable = false)
-    @NotNull(message = "Registration deadline cannot be null")
+    @NotBlank(message = "Registration deadline cannot be null")
     private Date regDeadline;
 
     @Column(name = "slots", nullable = false)
-    @NotNull(message = "Slots cannot be null")
+    @NotBlank(message = "Slots cannot be null")
     @Min(value = -1, message = "Slots must be -1 or greater")
     private int slots;
 
     @Column(name = "status", nullable = false)
-    @NotNull(message = "Status cannot be null")
+    @NotBlank(message = "Status cannot be null")
     private int status;
 
     @Column(name = "confirmCode", nullable = false)
-    @NotNull(message = "Confirm code cannot be null")
+    @NotBlank(message = "Confirm code cannot be null")
     private int confirmCode;
 
     @Column(name = "qrCode", length = 100, nullable = false, columnDefinition = "NVARCHAR(100)")
-    @NotNull(message = "QR code cannot be null")
+    @NotBlank(message = "QR code cannot be null")
     @Size(max = 100, message = "QR code must not exceed 100 characters")
     private String qrCode;
 
     @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
-    @NotNull(message = "Type cannot be null")
+    @NotBlank(message = "Type cannot be null")
     @Size(max = 30, message = "Type must not exceed 30 characters")
     private String type;
 
     @ManyToOne
     @JoinColumn(name = "event", referencedColumnName = "id", nullable = false)
-    @NotNull(message = "Event cannot be null")
+    @NotBlank(message = "Event cannot be null")
     private EVENT event;
 
     @ManyToOne
