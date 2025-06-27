@@ -2,6 +2,7 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\EventService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventDetailController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\UserController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\annotation\RoleRequired.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\HistoryController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\AdminTicketDetailScreenController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\AdminDashboardController.java

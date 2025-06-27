@@ -27,6 +27,14 @@
 
     <!-- Serve static resources -->
     <mvc:resources mapping="/assets/**" location="/assets/" />
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.uef.interceptor.RoleInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 
     <!-- Configure View Resolver for JSP -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

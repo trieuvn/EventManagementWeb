@@ -14,6 +14,7 @@ com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
 com\uef\service\LocationService.class
 com\uef\controller\admin\CategoryManagementScreenController.class
+com\uef\annotation\RoleRequired.class
 com\uef\utils\Map.class
 com\uef\service\EventService.class
 com\uef\service\TicketService.class
