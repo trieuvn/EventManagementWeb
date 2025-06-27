@@ -14,6 +14,7 @@ com\uef\model\USER.class
 com\uef\controller\admin\EventDetailController.class
 com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
+com\uef\model\QRDataDTO.class
 com\uef\service\LocationService.class
 com\uef\controller\admin\CategoryManagementScreenController.class
 com\uef\annotation\RoleRequired.class
