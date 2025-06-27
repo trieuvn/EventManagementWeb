@@ -3,6 +3,7 @@ package com.uef.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class PARTICIPANT {
     private TICKET ticket;
 
     @Column(name = "status", nullable = false)
-    @NotNull(message = "Status cannot be null")
+    @NotBlank(message = "Status cannot be null")
     private int status;
 
     @Column(name = "rate", nullable = true)
