@@ -1,3 +1,4 @@
+com\uef\controller\user\QRCodeController.class
 com\uef\service\OrganizerService.class
 com\uef\service\UserService.class
 com\uef\service\ChangeService.class
