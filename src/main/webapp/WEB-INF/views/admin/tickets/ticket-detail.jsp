@@ -165,7 +165,7 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn-primary">Lưu thay đổi</button>
-                        <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn-secondary">Hủy</a>
+                        <a href="${pageContext.request.contextPath}/admin/tickets/edit/${ticket.id}" class="btn-secondary">Hủy</a>
                     </div>
                 </form:form>
             </div>

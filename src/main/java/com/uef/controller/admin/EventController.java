@@ -12,6 +12,7 @@ import com.uef.service.OrganizerService;
 import com.uef.service.ParticipantService;
 import com.uef.service.UserService;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -187,7 +188,7 @@ public class EventController {
 
     // Redirect tới form thêm vé
     @GetMapping("/edit/{id}/add-ticket")
-    public String showAddTicketForm(@PathVariable int id, Model model) {
+    public String showAddTicketForm(@PathVariable int id, Model model, RedirectAttributes redirectAttributes) throws IOException {
         EVENT event = eventService.getById(id);
         if (event == null) {
             model.addAttribute("errorMessage", "Sự kiện không tồn tại.");
@@ -206,6 +207,6 @@ public class EventController {
         ticket.setConfirmCode(123456); // Mã xác nhận mặc định
         ticket.setQrCode("QR_DEFAULT"); // QR code mặc định
         model.addAttribute("ticket", ticket);
-        return "admin/tickets/add-ticket";
+        return "/admin/tickets/add-ticket";
     }
 }

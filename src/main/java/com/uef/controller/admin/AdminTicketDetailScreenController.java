@@ -139,18 +139,18 @@ public class AdminTicketDetailScreenController {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi thêm vé: " + e.getMessage());
             return "redirect:/admin/tickets/add?eventId=" + (ticket.getEvent() != null ? ticket.getEvent().getId() : "unknown");
         }
-        return "redirect:/admin/tickets"; // Chuyển hướng về danh sách vé
+        return "redirect:/admin/tickets/edit/" + String.valueOf(ticket.getId()); // Chuyển hướng về danh sách vé
     }
 
     // Hiển thị form chỉnh sửa vé
-    @GetMapping("/edit/{id}")
+    @RequestMapping({"/edit/{id}", "/view/{id}"})
     public String showEditForm(@PathVariable("id") int id, Model model, RedirectAttributes redirectAttributes) {
         TICKET ticket = ticketService.getById(id);
         if (ticket == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Vé không tồn tại.");
             return "redirect:/admin/tickets";
         }
-        List<PARTICIPANT> participants = participantService.getAll();
+        List<PARTICIPANT> participants = ticket.getParticipants();
         model.addAttribute("ticket", ticket);
         model.addAttribute("participantList", participants);
         model.addAttribute("events", eventService.getAll());
@@ -232,7 +232,7 @@ public class AdminTicketDetailScreenController {
             System.err.println("Error saving ticket at " + LocalDate.now() + " " + LocalTime.now() + ": " + e.getMessage());
             redirectAttributes.addFlashAttribute("message", "Lỗi khi lưu vé: " + e.getMessage());
         }
-        return "redirect:/admin/tickets"; // Chuyển hướng về danh sách vé
+        return "redirect:/admin/tickets/edit/"+ String.valueOf(ticketId); // Chuyển hướng về danh sách vé
     }
 
     // Xử lý cập nhật vé
@@ -272,14 +272,15 @@ public class AdminTicketDetailScreenController {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi cập nhật vé: " + e.getMessage());
             return "redirect:/admin/tickets/edit/" + ticket.getId(); // Quay lại form chỉnh sửa
         }
-        return "redirect:/admin/tickets"; // Chuyển hướng về danh sách vé
+        return "redirect:/admin/tickets/edit" + String.valueOf(ticket.getId()); // Chuyển hướng về danh sách vé
     }
 
     // Xử lý xóa vé (bỏ qua theo yêu cầu)
     @GetMapping("/delete/{id}")
     public String deleteTicket(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+        TICKET ticket = new TICKET();
         try {
-            TICKET ticket = ticketService.getById(id);
+            ticket = ticketService.getById(id);
             if (ticket == null) {
                 throw new IllegalArgumentException("Vé không tồn tại.");
             }
@@ -292,7 +293,8 @@ public class AdminTicketDetailScreenController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa vé: " + e.getMessage());
         }
-        return "redirect:/admin/tickets";
+        
+        return "redirect:/admin/events/edit/" +String.valueOf(ticket.getEvent().getId());
     }
 
     // Kiểm tra tính hợp lệ của loại vé với loại sự kiện (BR-24)
