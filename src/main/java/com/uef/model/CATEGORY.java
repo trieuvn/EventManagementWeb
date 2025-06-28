@@ -27,6 +27,15 @@ public class CATEGORY {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    public List<TAG> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TAG> tags) {
+        this.tags = tags;
+    }
+    
+
     public CATEGORY(String name, String description, List<TAG> tags) {
         this.name = name;
         this.description = description;

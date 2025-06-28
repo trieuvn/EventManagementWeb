@@ -124,6 +124,8 @@ public class ReportController {
             if (reportType.equals("eventByCategory") || reportType.equals("eventByType") || reportType.equals("eventByStatus")) {
                 headerRow.createCell(0).setCellValue("Danh mục");
                 headerRow.createCell(1).setCellValue("Số sự kiện");
+                headerRow.createCell(2).setCellValue("Số lượng đăng ký");
+                headerRow.createCell(3).setCellValue("Số lượng tham gia");
             } else if (reportType.equals("participantsByEvent")) {
                 headerRow.createCell(0).setCellValue("Tên sự kiện");
                 headerRow.createCell(1).setCellValue("Số người tham gia");
@@ -141,6 +143,8 @@ public class ReportController {
                 if (reportType.equals("eventByCategory") || reportType.equals("eventByType") || reportType.equals("eventByStatus")) {
                     row.createCell(0).setCellValue((String) data[0]);
                     row.createCell(1).setCellValue(((Long) data[1]).intValue());
+                    row.createCell(1).setCellValue(((Long) data[2]).intValue());
+                    row.createCell(1).setCellValue(((Long) data[3]).intValue());
                 } else if (reportType.equals("participantsByEvent")) {
                     row.createCell(0).setCellValue((String) data[0]);
                     row.createCell(1).setCellValue(((Long) data[1]).intValue());
