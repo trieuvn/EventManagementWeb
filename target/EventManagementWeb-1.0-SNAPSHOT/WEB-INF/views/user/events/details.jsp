@@ -2,8 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="container-fluid mt-4">
+    <!-- Display flash message if it exists -->
+    <c:if test="${not empty message}">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            ${message}
+        </div>
+    </c:if>
+
     <!-- Hình ảnh và thông tin tổ chức -->
-    <div class="row mb-5 mt-5"> <!-- ĐÃ THÊM mt-5 ở đây -->
+    <div class="row mb-5 mt-5">
         <div class="col-md-4">
             <div class="card card-custom p-3 bg-light-custom">
                 <c:choose>
@@ -102,16 +109,15 @@
                                             data-ticket-date="${ticket.date}"
                                             data-ticket-description="${ticket.description}"
                                             data-ticket-duration="${ticket.duration}"
-                                            data-ticket-index="${ticket.index}"
                                             data-ticket-name="${ticket.name}"
                                             data-ticket-price="${ticket.price}"
                                             data-ticket-regdeadline="${ticket.regDeadline}"
                                             data-ticket-slots="${ticket.slots}"
                                             data-ticket-status="${ticket.status}"
                                             data-ticket-type="${ticket.type}"
-                                        data-ticket-lat="${ticket.location.latitude}"
-                                        data-ticket-lng="${ticket.location.longitude}"
-                                        data-ticket-endname="${ticket.location.name}">
+                                            data-ticket-lat="${ticket.location.latitude}"
+                                            data-ticket-lng="${ticket.location.longitude}"
+                                            data-ticket-endname="${ticket.location.name}">
                                         <i class="bi bi-eye"></i> View
                                     </button>
                                 </td>
@@ -124,9 +130,8 @@
     </div>
 
     <!-- Modal -->
-    <!-- Modal -->
     <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> <!-- Kích thước lớn hơn -->
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ticketModalLabel">Ticket Details</h5>
@@ -173,7 +178,6 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         $(document).ready(function () {
             $('.custom-view-btn').click(function () {
@@ -192,24 +196,13 @@
                     type: button.data('ticket-type') || 'N/A',
                     lat: button.data('ticket-lat'),
                     lng: button.data('ticket-lng'),
-                    endname:button.data('ticket-endname')
-                    
+                    endname: button.data('ticket-endname')
                 };
-                $('#registerForm').attr('action', '${pageContext.request.contextPath}/ticket/register/' + ticketData.id);
-                // Gửi ticketId lên controller lưu vào session
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/event/save-ticket-id',
-                    type: 'POST',
-                    data: {ticketId: ticketData.id},
-                    success: function () {
-                        console.log('Saved ticketId to session: ' + ticketData.id);
-                    },
-                    error: function () {
-                        console.error('Error saving ticketId');
-                    }
-                });
 
-                // Hiển thị dữ liệu vào modal
+                // Set form action with ticket ID
+                $('#registerForm').attr('action', '${pageContext.request.contextPath}/ticket/register/' + ticketData.id);
+
+                // Populate modal with ticket data
                 $('#modal-ticket-date').text(ticketData.date);
                 $('#modal-ticket-description').text(ticketData.description);
                 $('#modal-ticket-duration').text(ticketData.duration);
@@ -220,41 +213,14 @@
                 $('#modal-ticket-status').text(ticketData.status);
                 $('#modal-ticket-type').text(ticketData.type);
 
-                // Tạo URL bản đồ với điểm đến mặc định
+                // Create map URL
                 const mapUrl = '${pageContext.request.contextPath}/ticket/show-map'
-                        + '?endLat=' + ticketData.lat
-                        + '&endLng=' + ticketData.lng
-                        + '&startName=' + encodeURIComponent('You are here')
-                        + '&endName=' + ticketData.endname
+                    + '?endLat=' + ticketData.lat
+                    + '&endLng=' + ticketData.lng
+                    + '&startName=' + encodeURIComponent('You are here')
+                    + '&endName=' + encodeURIComponent(ticketData.endname);
 
                 $('#mapIframe').attr('src', mapUrl);
-
-
-
-
             });
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function openTicketModal(ticket) {
-            // Cập nhật thông tin vé trong modal
-            document.getElementById('modal-ticket-date').textContent = ticket.date;
-            document.getElementById('modal-ticket-description').textContent = ticket.description;
-            document.getElementById('modal-ticket-duration').textContent = ticket.duration;
-            document.getElementById('modal-ticket-name').textContent = ticket.name;
-            document.getElementById('modal-ticket-price').textContent = ticket.price;
-            document.getElementById('modal-ticket-regdeadline').textContent = ticket.regdeadline;
-            document.getElementById('modal-ticket-slots').textContent = ticket.slots;
-            document.getElementById('modal-ticket-status').textContent = ticket.status;
-            document.getElementById('modal-ticket-type').textContent = ticket.type;
-
-            // Cập nhật action của form với ticket_id
-            const form = document.getElementById('registerForm');
-            form.action = `${form.getAttribute('action')}/${ticket.id}`;
-
-                    // Hiển thị modal
-                    const modal = new bootstrap.Modal(document.getElementById('ticketModal'));
-                    modal.show();
-                }
     </script>
