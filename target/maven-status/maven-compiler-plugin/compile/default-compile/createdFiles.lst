@@ -31,6 +31,7 @@ com\uef\utils\Email$1.class
 com\uef\utils\Image.class
 com\uef\controller\admin\CategoryController.class
 com\uef\interceptor\RoleInterceptor.class
+com\uef\controller\admin\ReportController.class
 com\uef\controller\admin\AdminTicketDetailScreenController.class
 com\uef\model\PARTICIPANT.class
 com\uef\service\TagService.class
@@ -39,4 +40,5 @@ com\uef\service\CategoryService.class
 com\uef\controller\user\EventController.class
 com\uef\model\CATEGORY.class
 com\uef\model\EVENT.class
+com\uef\service\ReportService.class
 com\uef\controller\admin\EventManagementController.class

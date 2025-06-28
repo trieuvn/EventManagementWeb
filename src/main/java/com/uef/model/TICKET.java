@@ -216,6 +216,26 @@ public class TICKET {
     public void setType(String type) {
         this.type = type;
     }
+    
+    public List<PARTICIPANT> getRegisteredParticipant(){
+        List<PARTICIPANT> result = new ArrayList();
+        for (PARTICIPANT participant : this.participants){
+            if (participant.getStatus() != -1){
+                result.add(participant);
+            }
+        }
+        return result;
+    }
+    
+    public List<PARTICIPANT> getJoinedParticipant(){
+        List<PARTICIPANT> result = new ArrayList();
+        for (PARTICIPANT participant : this.participants){
+            if (participant.getStatus() == 1 || participant.getStatus() == 2){
+                result.add(participant);
+            }
+        }
+        return result;
+    }
 
     public TICKET(int id, int index, String name, String description, int price, Date date, Time duration, Date regDeadline, int slots, int status, int confirmCode, String qrCode, String type, EVENT event, LOCATION location, List<PARTICIPANT> participants) {
         this.id = id;
