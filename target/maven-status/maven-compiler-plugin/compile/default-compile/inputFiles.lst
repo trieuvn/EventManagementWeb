@@ -1,40 +1,41 @@
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\EventManagementController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\OrganizerService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\AdminDashboardController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\user\HistoryController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\TAG.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\user\UserController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\CategoryDetailScreenController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\CategoryController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\EVENT.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\AdminTicketDetailScreenController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\UserService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\ORGANIZER.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\CATEGORY.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\utils\Map.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\CategoryManagementScreenController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\QRCodeController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\USER.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\LOCATION.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\TICKET.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\user\EventController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\utils\Image.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\user\TicketController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\ParticipantService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\annotation\RoleRequired.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\TicketService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\ChangeService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\utils\Email.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\user\QRCodeController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\CategoryService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\QRDataDTO.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\utils\QRCode.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\interceptor\RoleInterceptor.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\LocationService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\TagService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\PARTICIPANT.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\model\CHANGE.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\service\EventService.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\ParticipantController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\EventDetailController.java
-C:\Users\phuc\Documents\Web Management\src\main\java\com\uef\controller\admin\EventController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\QRCodeController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\EventService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventDetailController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\UserController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\annotation\RoleRequired.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\HistoryController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\AdminTicketDetailScreenController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\AdminDashboardController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\ChangeService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\CHANGE.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\UserService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\LOCATION.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\interceptor\RoleInterceptor.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\CategoryService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\USER.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\EventController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\TAG.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\QRDataDTO.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryDetailScreenController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\ParticipantService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\PARTICIPANT.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Map.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryManagementScreenController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\QRCodeController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TagService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\testController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\ParticipantController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\TicketController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Image.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\EVENT.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\EventManagementController.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TicketService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\ORGANIZER.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\QRCode.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Email.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\CATEGORY.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\TICKET.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\LocationService.java
+D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\OrganizerService.java
