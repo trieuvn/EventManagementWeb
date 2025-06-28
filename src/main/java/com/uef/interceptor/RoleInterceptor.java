@@ -32,9 +32,9 @@ public class RoleInterceptor implements HandlerInterceptor {
                 if (user == null){
                     role = "";
                 }else if (user.getRole() == 0){
-                    role = "ADMIN";
+                    role = "admin";
                 }else if (user.getRole() == 1){
-                    role = "USER";
+                    role = "user";
                 }
                 String[] allowedRoles = roleRequired.value();
                 String[] userRoles = role.split(",");

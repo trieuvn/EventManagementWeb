@@ -1,5 +1,6 @@
 package com.uef.controller.user;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.PARTICIPANT;
 import com.uef.model.USER;
 import com.uef.service.ParticipantService;
@@ -30,7 +31,7 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ParticipantService participantService;
-
+    @RoleRequired({"user", "admin"})
     @GetMapping("/profile")
     public String showProfile(Model model, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
@@ -51,6 +52,10 @@ public class UserController {
         if (user != null) {
             session.setAttribute("user", user);
             ra.addFlashAttribute("msg", "Đăng nhập thành công!");
+            //admin
+            if (user.getRole() == 0){
+                return "redirect:/admin/events";
+            }
             return "redirect:/";
         } else {
             ra.addFlashAttribute("error", "Email hoặc mật khẩu không đúng.");
@@ -87,7 +92,8 @@ public class UserController {
             return "redirect:/?signup=true";
         }
     }
-
+    
+    
     @PostMapping("/send-otp")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> sendOtp(@RequestParam(value = "email", required = false) String email,

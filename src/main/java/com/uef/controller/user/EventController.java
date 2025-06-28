@@ -44,7 +44,7 @@ public class EventController {
     public EventController() {
 
     }
-
+    
     @GetMapping("/")
     public String home(Model model,
             @RequestParam(value = "keyword", required = false) String keyword,
@@ -71,7 +71,8 @@ public class EventController {
         //Chua dang nhap
         return "layout/main";
     }
-
+    
+    @RoleRequired({"user", "admin"})
     @RequestMapping("/event/{id}")
     public String getEventDetails(@PathVariable int id, Model model, HttpSession session) {
         // Lấy user từ session
@@ -125,7 +126,7 @@ public class EventController {
         //Chua dang nhap
         return "layout/main";
     }
-
+    
     @PostMapping("/event/{id}")
     public String handleEventDetailPost(@PathVariable("id") int eventId,
             HttpSession session,

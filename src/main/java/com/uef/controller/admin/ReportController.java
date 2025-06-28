@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.service.ReportService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,6 +22,7 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    @RoleRequired({"admin"})
     @GetMapping
     public String viewReports(
             @RequestParam(value = "reportType", required = false) String reportType,
@@ -64,6 +66,7 @@ public class ReportController {
         }
     }
 
+    @RoleRequired({"admin"})
     @GetMapping("/export")
     public void exportReport(
             @RequestParam(value = "type") String reportType,

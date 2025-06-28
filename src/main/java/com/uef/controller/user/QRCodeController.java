@@ -11,6 +11,7 @@ package com.uef.controller.user;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import com.uef.annotation.RoleRequired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +24,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class QRCodeController {
-
+    @RoleRequired({"user", "admin"})
     @GetMapping("/test")
     public String showQRForm(Model model) {
         return "qr-result-content";
     }
-    
+    @RoleRequired({"user", "admin"})
     @PostMapping("/decode")
     public String decodeImage(Model model, @RequestParam("imageFile") MultipartFile imageFile) {
         // Validate file

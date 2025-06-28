@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.CHANGE;
 import com.uef.model.EVENT;
 import com.uef.model.ORGANIZER;
@@ -41,7 +42,8 @@ public class EventController {
     
     @Autowired
     private UserService userService;
-
+    
+    @RoleRequired({"admin"})
     @GetMapping
     public String listEvents(Model model) {
         // Fetch event list
@@ -85,7 +87,8 @@ public class EventController {
         model.addAttribute("body", "/WEB-INF/views/admin/event/event-management.jpg");
         return "admin/event/event-management";
     }
-
+    
+    @RoleRequired({"admin"})
     @PostMapping("/save/{id}")
     public String saveEditedEvent(
             @PathVariable("id") int eventId,
@@ -126,6 +129,7 @@ public class EventController {
         return "redirect:/admin/events/edit/"+eventId;
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/delete/{id}")
     public String deleteEvent(@PathVariable int id, RedirectAttributes redirectAttributes) {
         EVENT event = eventService.getById(id);
@@ -147,6 +151,7 @@ public class EventController {
         return "redirect:/admin/events";
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/create")
     public String createEvent() {
         // TODO: Implement logic to redirect to event creation form
@@ -160,6 +165,7 @@ public class EventController {
         return "redirect:/admin/events/edit/" + String.valueOf(id);
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/updateStatus")
     public String updateStatus(@RequestParam int id, @RequestParam String status) {
         EVENT event = eventService.getById(id);
@@ -169,6 +175,8 @@ public class EventController {
         }
         return "redirect:/admin/events";
     }
+    
+    @RoleRequired({"admin"})
     @GetMapping("/details")
     public String eventDetails(Model model)
     {

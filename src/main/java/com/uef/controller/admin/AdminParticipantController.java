@@ -8,6 +8,7 @@ package com.uef.controller.admin;
  *
  * @author Administrator
  */
+import com.uef.annotation.RoleRequired;
 import com.uef.model.PARTICIPANT;
 import com.uef.model.EVENT;
 import com.uef.service.ParticipantService;
@@ -30,6 +31,7 @@ public class AdminParticipantController {
     private EventService eventService;
 
     // Lấy danh sách participant theo eventId nếu có
+    @RoleRequired({"admin"})
     @GetMapping
     public String viewParticipants(@RequestParam(required = false) Integer eventId, Model model) {
         List<PARTICIPANT> participants;
@@ -48,6 +50,7 @@ public class AdminParticipantController {
     }
 
     // Xác nhận participant (status = 1)
+    @RoleRequired({"admin"})
     @PostMapping("/confirm")
     public String confirmParticipant(@RequestParam int ticketId, @RequestParam String userEmail) {
         PARTICIPANT participant = participantService.getById(ticketId, userEmail);
@@ -60,6 +63,7 @@ public class AdminParticipantController {
     }
 
     // Hủy xác nhận participant (status = 0)
+    @RoleRequired({"admin"})
     @PostMapping("/cancel")
     public String cancelParticipant(@RequestParam int ticketId, @RequestParam String userEmail) {
         PARTICIPANT participant = participantService.getById(ticketId, userEmail);

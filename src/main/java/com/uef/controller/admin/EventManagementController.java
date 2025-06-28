@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.EVENT;
 import com.uef.service.EventService;
 import jakarta.validation.Valid;
@@ -18,12 +19,14 @@ public class EventManagementController {
     @Autowired
     private EventService eventService;
 
+    @RoleRequired({"admin"})
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("event", new EVENT());
         return "admin/form";
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/add")
     public String addEvent(@Valid @ModelAttribute EVENT event, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -38,6 +41,7 @@ public class EventManagementController {
         }
     }
 
+    @RoleRequired({"admin"})
     @RequestMapping({"/edit/{id}", "/view/{id}"})
     public String showEditForm(@PathVariable int id, Model model) {
         EVENT event = eventService.getById(id);
@@ -49,7 +53,7 @@ public class EventManagementController {
     }
 
 
-
+    @RoleRequired({"admin"})
     @PostMapping("/update")
     public String updateEvent(@Valid @ModelAttribute EVENT event, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -64,6 +68,7 @@ public class EventManagementController {
         }
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/update-status")
     public String updateStatus(@ModelAttribute EVENT event, Model model) {
         try {

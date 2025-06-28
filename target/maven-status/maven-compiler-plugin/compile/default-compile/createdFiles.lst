@@ -2,7 +2,6 @@ com\uef\controller\user\QRCodeController.class
 com\uef\service\OrganizerService.class
 com\uef\service\UserService.class
 com\uef\service\ChangeService.class
-com\uef\controller\admin\AdminDashboardController.class
 com\uef\model\LOCATION.class
 com\uef\controller\user\HistoryController.class
 com\uef\utils\Email$EmailResult.class

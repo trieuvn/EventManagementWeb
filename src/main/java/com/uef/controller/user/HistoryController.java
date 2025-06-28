@@ -1,5 +1,6 @@
 package com.uef.controller.user;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.PARTICIPANT;
 import com.uef.model.TICKET;
 import com.uef.model.USER;
@@ -30,7 +31,7 @@ public class HistoryController {
 
     @Autowired
     private TicketService ticketService;
-
+    
     @GetMapping("/history")
     public String history(Model model, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
@@ -42,7 +43,8 @@ public class HistoryController {
         model.addAttribute("body", "/WEB-INF/views/user/events/history.jsp");
         return "layout/main2";
     }
-
+    
+    @RoleRequired({"user", "admin"})
     @GetMapping("/user/qr")
     public String showQRCode(@RequestParam("ticket_id") int ticketId, Model model, HttpSession session) {
         // Lấy user từ session
@@ -66,7 +68,8 @@ public class HistoryController {
             return "redirect:/history";
         }
     }
-
+    
+    @RoleRequired({"user", "admin"})
     @GetMapping("/user/rate")
     @ResponseBody
     public ResponseEntity<String> rate(

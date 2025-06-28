@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.CATEGORY;
 import com.uef.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     // Hiển thị danh sách danh mục với tìm kiếm
+    @RoleRequired({"admin"})
     @GetMapping
     public String listCategories(@RequestParam(value = "name", required = false) String name, Model model) {
         model.addAttribute("categories", categoryService.searchByName(name));
@@ -24,6 +26,7 @@ public class CategoryController {
     }
 
     // Hiển thị form thêm danh mục
+    @RoleRequired({"admin"})
     @GetMapping("/add")
     public String showAddCategoryForm(Model model) {
         model.addAttribute("category", new CATEGORY());
@@ -31,6 +34,7 @@ public class CategoryController {
     }
 
     // Hiển thị form chỉnh sửa danh mục
+    @RoleRequired({"admin"})
     @GetMapping("/edit/{name}")
     public String showEditCategoryForm(@PathVariable String name, Model model) {
         CATEGORY category = categoryService.getById(name);
@@ -43,6 +47,7 @@ public class CategoryController {
     }
 
     // Lưu hoặc cập nhật danh mục
+    @RoleRequired({"admin"})
     @PostMapping("/save")
     public String saveCategory(@ModelAttribute CATEGORY category, RedirectAttributes redirectAttributes) {
         try {
@@ -61,6 +66,7 @@ public class CategoryController {
     }
 
     // Xóa danh mục
+    @RoleRequired({"admin"})
     @GetMapping("/delete/{name}")
     public String deleteCategory(@PathVariable String name, RedirectAttributes redirectAttributes) {
         try {

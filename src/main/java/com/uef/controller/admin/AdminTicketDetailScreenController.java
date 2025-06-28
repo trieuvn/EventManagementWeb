@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.TICKET;
 import com.uef.model.EVENT;
 import com.uef.model.PARTICIPANT;
@@ -35,6 +36,7 @@ public class AdminTicketDetailScreenController {
     private ParticipantService participantService;
 
     // Hiển thị danh sách vé
+    @RoleRequired({"admin"})
     @GetMapping
     public String listTickets(Model model) {
         List<TICKET> tickets = ticketService.getAll();
@@ -43,6 +45,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Hiển thị form thêm vé mới
+    @RoleRequired({"admin"})
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("ticket", new TICKET());
@@ -52,6 +55,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Xử lý thêm vé mới
+    @RoleRequired({"admin"})
     @PostMapping("/add")
     public String addTicket(@ModelAttribute TICKET ticket, RedirectAttributes redirectAttributes) {
         try {
@@ -68,6 +72,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Hiển thị form chỉnh sửa vé
+    @RoleRequired({"admin"})
     @RequestMapping({"/edit/{id}", "/view/{id}"})
     public String showEditForm(@PathVariable("id") int id, Model model, RedirectAttributes redirectAttributes) {
         TICKET ticket = ticketService.getById(id);
@@ -82,7 +87,8 @@ public class AdminTicketDetailScreenController {
         model.addAttribute("locationList", locationService.getAll());
         return "admin/ticket/ticket-detail";
     }
-
+    
+    @RoleRequired({"admin"})
     @PostMapping("/save/{id}")
     public String saveEditedTicket(
             @PathVariable("id") int ticketId,
@@ -110,6 +116,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Xử lý cập nhật vé
+    @RoleRequired({"admin"})
     @PostMapping("/update")
     public String updateTicket(@ModelAttribute TICKET ticket, RedirectAttributes redirectAttributes) {
         try {

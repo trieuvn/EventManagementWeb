@@ -4,6 +4,7 @@
  */
 package com.uef.controller.user;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.EVENT;
 import com.uef.model.PARTICIPANT;
 import com.uef.model.TICKET;
@@ -48,14 +49,14 @@ public class TicketController {
 
     @Autowired
     private ParticipantService participantService;
-
+    @RoleRequired({"user", "admin"})
     @PostMapping("/event/save-ticket-id")
     @ResponseBody
     public ResponseEntity<String> saveTicketIdToSession(@RequestParam("ticketId") int ticketId, HttpSession session) {
         session.setAttribute("selectedTicketId", ticketId);
         return ResponseEntity.ok("Saved successfully");
     }
-
+    @RoleRequired({"user", "admin"})
     @GetMapping("/show-map")
     public String showMap(Model model,
             @RequestParam(required = false) Double startLat,
@@ -66,7 +67,7 @@ public class TicketController {
             @RequestParam(required = false) String endName) throws Exception {
         return Map.showMap(model, startLat, startLng, endLat, endLng, startName, endName);
     }
-
+    @RoleRequired({"user", "admin"})
     @PostMapping("/register/{ticket_id}")
     public String registerTicket(@PathVariable int ticket_id, RedirectAttributes ra, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
