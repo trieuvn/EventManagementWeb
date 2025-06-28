@@ -151,6 +151,7 @@
                                             <input type="hidden" name="eventId" value="${e.id}" />
                                             <button type="submit" class="btn btn-primary w-100">Xem chi tiết</button>
                                         </form>
+
                                     </c:when>
                                     <c:otherwise>
                                         <span class="text-danger">Không thể đăng ký</span>
