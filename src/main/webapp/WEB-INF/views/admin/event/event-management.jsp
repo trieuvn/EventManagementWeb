@@ -2,11 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="vi">
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Event Admin Dashboard</title>
         <!-- Google Font & Icons -->
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
@@ -14,9 +14,72 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-style.css">
+        <style>
+            /* Popup styles */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                max-width: 400px;
+                width: 100%;
+                text-align: center;
+            }
+            .popup.show {
+                display: block;
+            }
+            .popup-header {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .popup-content {
+                margin-bottom: 20px;
+            }
+            .popup-close {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .popup-close:hover {
+                background-color: #0056b3;
+            }
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            .overlay.show {
+                display: block;
+            }
+        </style>
     </head>
 
     <body>
+        <!-- Popup for displaying messages -->
+        <c:if test="${not empty message}">
+            <div class="overlay show"></div>
+            <div class="popup show">
+                <div class="popup-header">Thông báo</div>
+                <div class="popup-content">${message}</div>
+                <button class="popup-close" onclick="closePopup()">Đóng</button>
+            </div>
+        </c:if>
+
         <div class="dashboard">
             <!-- Sidebar Filters -->
             <aside class="sidebar">
@@ -34,9 +97,8 @@
                 <label>Trạng thái</label>
                 <select>
                     <option value="">Tất cả</option>
-                    <option>Chuẩn bị</option>
-                    <option>Đang diễn ra</option>
-                    <option>Hoàn thành</option>
+                    <option>Đang mở</option>
+                    <option>Đã đóng</option>
                 </select>
                 <label>Tìm kiếm</label>
                 <input type="search" placeholder="Tên sự kiện hoặc địa điểm">
@@ -83,11 +145,11 @@
                             <c:forEach var="event" items="${eventList}">
                                 <tr>
                                     <td>${event.name}</td>
-                                    <td>${event.getParticipants().size()}</td>
+                                    <td>${event.participants.size()}</td>
                                     <td>${event.type}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${event.getStatus()}">
+                                            <c:when test="${event.status}">
                                                 <span class="status upcoming">Đang mở</span>
                                             </c:when>
                                             <c:otherwise>
@@ -151,7 +213,7 @@
                                 <tr>
                                     <th>Email</th>
                                     <th>Họ tên</th>
-                                    <th>sdt</th>
+                                    <th>SĐT</th>
                                     <th>Số sự kiện</th>
                                 </tr>
                             </thead>
@@ -161,7 +223,7 @@
                                         <td>${student.email}</td>
                                         <td>${student.firstName} ${student.lastName}</td>
                                         <td>${student.phoneNumber}</td>
-                                        <td>${student.getTotalParticipated()}</td>
+                                        <td>${student.totalParticipated}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -182,6 +244,13 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function closePopup() {
+                document.querySelector('.popup').classList.remove('show');
+                document.querySelector('.overlay').classList.remove('show');
+            }
+        </script>
     </body>
 
 </html>

@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/events")
@@ -60,7 +61,7 @@ public class EventController {
 
         List<USER> topStudents;
         topStudents = userService.getAll();
-        topStudents.sort(Comparator.comparingLong(USER::getTotalParticipated));
+        topStudents.sort(Comparator.comparingLong(USER::getTotalParticipated).reversed());
         
         model.addAttribute("topStudents", topStudents);
 
@@ -126,11 +127,17 @@ public class EventController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteEvent(@PathVariable int id) {
+    public String deleteEvent(@PathVariable int id, RedirectAttributes redirectAttributes) {
         EVENT event = eventService.getById(id);
         if (event != null) {
-            eventService.delete(event);
+            try{
+                eventService.delete(event);
+            }catch(IllegalStateException e){
+                redirectAttributes.addFlashAttribute("message", e.getMessage());
+                return "redirect:/admin/events";
+            }
         }
+        
         CHANGE change = new CHANGE();
         change.setDate(Date.valueOf(LocalDate.now()));
         change.setTime(Time.valueOf(LocalTime.now()));
@@ -140,10 +147,17 @@ public class EventController {
         return "redirect:/admin/events";
     }
 
-    @PostMapping("/events/create")
+    @PostMapping("/create")
     public String createEvent() {
         // TODO: Implement logic to redirect to event creation form
-        return "redirect:/admin/dashboard";
+        EVENT event = new EVENT();
+        event.setTarget("Sinh viên UEF");
+        event.setContactInfo("trieu123ok@gmail.com");
+        event.setName("Sự kiện mới");
+        event.setType("Hybrid");
+        eventService.set(event);
+        int id = event.getId();
+        return "redirect:/admin/events/edit/" + String.valueOf(id);
     }
 
     @PostMapping("/updateStatus")
