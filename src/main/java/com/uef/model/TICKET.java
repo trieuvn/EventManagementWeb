@@ -24,7 +24,6 @@ public class TICKET {
     private int id;
 
     @Column(name = "[index]", nullable = false)
-    @NotBlank(message = "Index cannot be null")
     private int index;
 
     @Column(name = "name", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
@@ -37,33 +36,33 @@ public class TICKET {
     private String description;
 
     @Column(name = "price", nullable = false)
-    @NotBlank(message = "Price cannot be null")
+    @NotNull(message = "Price cannot be null")
     @Min(value = 0, message = "Price must be zero or greater")
     private int price;
 
     @Column(name = "date", nullable = false)
-    @NotBlank(message = "Date cannot be null")
+    @NotNull(message = "Date cannot be null")
     private Date date;
 
     @Column(name = "duration", nullable = false)
-    @NotBlank(message = "Duration cannot be null")
+    @NotNull(message = "Duration cannot be null")
     private Time duration;
 
     @Column(name = "regDeadline", nullable = false)
-    @NotBlank(message = "Registration deadline cannot be null")
+    @NotNull(message = "Registration deadline cannot be null")
     private Date regDeadline;
 
     @Column(name = "slots", nullable = false)
-    @NotBlank(message = "Slots cannot be null")
+    @NotNull(message = "Slots cannot be null")
     @Min(value = -1, message = "Slots must be -1 or greater")
     private int slots;
 
     @Column(name = "status", nullable = false)
-    @NotBlank(message = "Status cannot be null")
+    @NotNull(message = "Status cannot be null")
     private int status;
 
     @Column(name = "confirmCode", nullable = false)
-    @NotBlank(message = "Confirm code cannot be null")
+    @NotNull(message = "Confirm code cannot be null")
     private int confirmCode;
 
     @Column(name = "qrCode", length = 100, nullable = false, columnDefinition = "NVARCHAR(100)")
@@ -78,7 +77,7 @@ public class TICKET {
 
     @ManyToOne
     @JoinColumn(name = "event", referencedColumnName = "id", nullable = false)
-    @NotBlank(message = "Event cannot be null")
+    @NotNull(message = "Event cannot be null")
     private EVENT event;
 
     @ManyToOne

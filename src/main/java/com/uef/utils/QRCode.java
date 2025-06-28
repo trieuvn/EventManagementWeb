@@ -84,14 +84,27 @@ public class QRCode {
             throw new IllegalArgumentException("QR data cannot be null or empty");
         }
 
-        String[] parts = qrData.split("/");
-        if (parts.length != 4 || parts[3].isEmpty()) {
-            throw new IllegalArgumentException("Invalid QR data format. Expected: email/ticketId/confirmCode/");
+        String[] parts = new String[3];
+        parts[0] = "";
+        parts[1] = "";
+        parts[2] = "";
+       
+        String email = "";
+        String ticketIdStr = "";
+        String confirmCode = "";
+        
+        int i = 0;
+        for (char c : qrData.toCharArray()){
+            if (c == '/'){
+                i++;
+                continue;
+            }
+            parts[i]+=c;
         }
-
-        String email = parts[0];
-        String ticketIdStr = parts[1];
-        String confirmCode = parts[2];
+        
+        email = parts[0];
+        ticketIdStr = parts[1];
+        confirmCode = parts[2];
 
         // Validate email format
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {

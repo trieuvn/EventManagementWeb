@@ -46,8 +46,7 @@ public class QRCodeController {
 
     @GetMapping("/qrscan")
     public String showQRForm(Model model) {
-        model.addAttribute("body", "admin/qrscan/qr-result-content");
-        return "admin/layout/main";
+        return "admin/qrscan/qr-result-content";
     }
 
     @PostMapping("/decode")
@@ -55,16 +54,14 @@ public class QRCodeController {
         // Validate file
         if (imageFile == null || imageFile.isEmpty()) {
             model.addAttribute("message", "Please upload an image file.");
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main"; // JSP view to display result or error
+            return "admin/qrscan/qr-result-content"; // JSP view to display result or error
         }
 
         // Validate file type (optional: restrict to image types)
         String contentType = imageFile.getContentType();
         if (!contentType.startsWith("image/")) {
             model.addAttribute("message", "Uploaded file must be an image (e.g., PNG, JPEG).");
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         }
 
         try {
@@ -78,8 +75,15 @@ public class QRCodeController {
 
             // Add decoded string to model
             model.addAttribute("decodedText", result.getText());
-
-            QRDataDTO data = parseQRData(result.getText());
+            QRDataDTO data = new QRDataDTO();
+            try{
+                data = parseQRData(result.getText());
+            }catch(Exception e){
+                model.addAttribute("message", "Mã QR không hợp lệ.");
+                return "admin/qrscan/qr-result-content";
+            }
+            
+            
             String userEmail = data.getEmail();
             Integer ticketId = data.getTicketId();
             String confirmCode = data.getConfirmCode();
@@ -88,10 +92,10 @@ public class QRCodeController {
             USER user = userService.getByEmail(userEmail);
             PARTICIPANT participant = participantService.getById(ticketId, userEmail);
             
-            if (String.valueOf(ticket.getConfirmCode()) != confirmCode) {
+            
+            if (ticket.getConfirmCode() != Integer.parseInt(confirmCode)) {
                 model.addAttribute("message", "QRCode and ticket not matched.");
-                model.addAttribute("body", "admin/qrscan/qr-result-content");
-                return "admin/layout/main";
+                return "admin/qrscan/qr-result-content";
             }
             
             if (participant == null){
@@ -104,20 +108,19 @@ public class QRCodeController {
                 participant.setStatus(1);
                 participantService.set(participant);
             }
-            model.addAttribute("message", "Check in thành công cho " + user.getFirstName() + " " + user.getLastName());
+            model.addAttribute("message", "Checkin thành công\n"+user.getFirstName() + " " + user.getLastName()+"\nSự kiện: "+ticket.getEvent().getName());
+            model.addAttribute("username", user.getFirstName() + " " + user.getLastName());
+            model.addAttribute("eventname", ticket.getEvent().getName());
         } catch (NotFoundException e) {
             // Handle case where image is not a QR code
             model.addAttribute("message", "The uploaded image is not a valid QR code.");
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         } catch (IOException e) {
             // Handle other potential errors (e.g., corrupted image)
             model.addAttribute("message", "Error processing the image: " + e.getMessage());
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         }
 
-        model.addAttribute("body", "admin/qrscan/qr-result-content");
-        return "admin/layout/main"; // JSP view to display result or error
+        return "admin/qrscan/qr-result-content"; // JSP view to display result or error
     }
 }
