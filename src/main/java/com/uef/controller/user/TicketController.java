@@ -15,6 +15,7 @@ import com.uef.service.TicketService;
 import com.uef.utils.Image;
 import com.uef.utils.Map;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -69,33 +70,34 @@ public class TicketController {
     @PostMapping("/register/{ticket_id}")
     public String registerTicket(@PathVariable int ticket_id, RedirectAttributes ra, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
-        if (user == null) {
-            //redirect Dang nhap
-            ra.addFlashAttribute("message", "Hãy đăng nhập trước khi đăng ký sự kiện.");
-            return "redirect:/";
-        }
         TICKET ticket = ticketService.getById(ticket_id);
         if (ticket == null) {
             ra.addFlashAttribute("message", "Sự kiện không tồn tại.");
-            return "redirect:/";
+            return "redirect:/events"; 
         }
 
-        PARTICIPANT participant = null;
-        if (participant != null) {
-            ra.addFlashAttribute("message", "Bạn đã đăng ký sự kiện này rồi!.");
-            return "redirect:/ticket/";
+        List<PARTICIPANT> participants = participantService.getByUser(user);
+        boolean alreadyRegistered = participants.stream()
+                .anyMatch(p -> p.getTicket().getId() == ticket_id);
+
+        if (alreadyRegistered) {
+            ra.addFlashAttribute("message", "Bạn đã đăng ký sự kiện này rồi!");
+            return "redirect:/event/" + ticket.getEvent().getId();
         }
 
-        participant = new PARTICIPANT();
+        PARTICIPANT participant = new PARTICIPANT();
         participant.setUser(user);
         participant.setTicket(ticket);
         participant.setStatus(0);
+
         boolean result = participantService.set(participant);
-        if (result != true) {
-            ra.addFlashAttribute("message", "Có lỗi xảy ra vui lòng thử lại.");
+        if (!result) {
+            ra.addFlashAttribute("message", "Có lỗi xảy ra, vui lòng thử lại.");
+        } else {
+            ra.addFlashAttribute("message", "Đăng ký sự kiện thành công.");
         }
-        ra.addFlashAttribute("message", "Thêm sự kiện thành công.");
-        return "redirect:/";
+
+        return "redirect:/event/" + ticket.getEvent().getId();
     }
 
 }

@@ -114,11 +114,15 @@ public class EventController {
     }
 
     @GetMapping("/about")
-    public String aboutUs(Model model) {
+    public String aboutUs(Model model,HttpSession session) {
         model.addAttribute("userForm", new USER());
+        USER user = (USER) session.getAttribute("user");
         model.addAttribute("body", "/WEB-INF/views/user/events/about.jsp");
-        model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
+        if (user != null) {
+            return "layout/main2";
+        }
+        //Chua dang nhap
         return "layout/main";
     }
 
