@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -16,6 +15,13 @@
         <style>
             body {
                 font-family: 'Segoe UI', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            main {
+                display: block;
+                width: 100%;
+                padding-top: 30px; /* Đẩy xuống để không bị header đè */
             }
             section {
                 padding: 60px 0;
@@ -52,7 +58,6 @@
             .card {
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
-
             .card:hover {
                 transform: translateY(-8px);
                 box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
@@ -61,8 +66,8 @@
     </head>
     <body>
 
-        <!-- Header Section -->
-        <header class="bg-light py-4 mb-5 shadow-sm" data-aos="fade-up" >
+        <!-- VỀ CHÚNG TÔI -->
+        <section class="bg-light py-5 shadow-sm" style="margin-top: 80px;" data-aos="fade-up">
             <div class="container text-center">
                 <h1 class="section-title">🎯Về Chúng Tôi</h1>
                 <p>
@@ -80,164 +85,158 @@
                     <p class="mb-0">"Chúng tôi không chỉ tổ chức sự kiện – chúng tôi xây dựng cộng đồng."</p>
                 </blockquote>
             </div>
-        </header>
 
-        <!-- Giới thiệu -->
-        <section class="bg-white py-5" data-aos="fade-up">
-            <div class="container">
-                <h2 class="section-title text-center mb-4">Chúng tôi là ai?</h2>
-                <div class="row justify-content-center">
-                    <div class="col-md-10">
-                        <p class="lead text-center">
-                            <strong>Festivo</strong> là nền tảng quản lý sự kiện hiện đại, nơi người tổ chức và người tham gia cùng nhau kiến tạo nên những khoảnh khắc ý nghĩa và truyền cảm hứng.
+            <!-- Main content -->
+            <main>
+                <div class="container">
+
+                    <!-- Giới thiệu -->
+                    <section class="bg-white py-5" data-aos="fade-up">
+                        <h2 class="section-title text-center mb-4">Chúng tôi là ai?</h2>
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <p class="lead text-center">
+                                    <strong>Festivo</strong> là nền tảng quản lý sự kiện hiện đại, nơi người tổ chức và người tham gia cùng nhau kiến tạo nên những khoảnh khắc ý nghĩa và truyền cảm hứng.
+                                </p>
+                                <p class="text-center">
+                                    Trong thời đại kết nối, chúng tôi hiểu rằng sự kiện không chỉ là điểm đến – mà là hành trình kết nối <strong>ý tưởng, con người và cộng đồng</strong>. 
+                                    Với giao diện trực quan, tính năng mạnh mẽ và hỗ trợ toàn diện, <strong>Festivo</strong> giúp mọi người tạo sự kiện nhanh chóng, quản lý dễ dàng và truyền cảm hứng sâu sắc.
+                                </p>
+                                <blockquote class="blockquote text-center mt-4">
+                                    <p class="mb-0"><em>"Chúng tôi không chỉ tạo ra nền tảng – chúng tôi tạo ra trải nghiệm."</em></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Sứ mệnh & Tầm nhìn -->
+                    <section class="bg-light" data-aos="fade-up">
+                        <h2 class="section-title text-center">Sứ mệnh & Tầm nhìn</h2>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card shadow h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-bullseye fa-2x text-primary mb-3"></i>
+                                        <h5 class="card-title">Sứ mệnh</h5>
+                                        <p class="card-text">Mang lại một trải nghiệm liền mạch và đầy cảm hứng cho cả người tổ chức lẫn người tham gia sự kiện.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-eye fa-2x text-success mb-3"></i>
+                                        <h5 class="card-title">Tầm nhìn</h5>
+                                        <p class="card-text">Trở thành nền tảng tổ chức sự kiện hàng đầu tại Việt Nam và vươn ra khu vực.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Người dùng -->
+                    <section class="bg-white" data-aos="fade-up">
+                        <h2 class="section-title text-center">Chúng tôi dành cho ai?</h2>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card shadow h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-users fa-2x text-info mb-3"></i>
+                                        <h5 class="card-title">Người tham gia sự kiện</h5>
+                                        <p class="card-text">Tìm kiếm, đăng ký và theo dõi các sự kiện phù hợp dễ dàng chỉ với vài cú click.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow h-100 text-center">
+                                    <div class="card-body">
+                                        <i class="fas fa-chalkboard-teacher fa-2x text-warning mb-3"></i>
+                                        <h5 class="card-title">Người tổ chức sự kiện</h5>
+                                        <p class="card-text">Tạo, quản lý và đo lường sự kiện hiệu quả trên một nền tảng duy nhất.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tính năng -->
+                    <section class="bg-light" data-aos="fade-up">
+                        <h2 class="section-title text-center">🛠️ Những gì chúng tôi mang lại</h2>
+                        <p class="lead text-center mb-5">Chúng tôi không chỉ cung cấp công cụ. Chúng tôi tạo ra trải nghiệm.</p>
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card h-100 text-center shadow border-0 feature-card">
+                                    <div class="card-body">
+                                        <i class="fas fa-file-invoice-dollar fa-2x text-primary mb-3"></i>
+                                        <h5 class="card-title">Đăng ký & thanh toán trực tuyến</h5>
+                                        <p class="card-text">Không còn xếp hàng hay giấy tờ rườm rà.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card h-100 text-center shadow border-0 feature-card">
+                                    <div class="card-body">
+                                        <i class="fas fa-rocket fa-2x text-success mb-3"></i>
+                                        <h5 class="card-title">Tạo sự kiện đơn giản</h5>
+                                        <p class="card-text">Giao diện thân thiện, dễ dùng – dù bạn là ai.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card h-100 text-center shadow border-0 feature-card">
+                                    <div class="card-body">
+                                        <i class="fas fa-bell fa-2x text-warning mb-3"></i>
+                                        <h5 class="card-title">Thông báo & email tự động</h5>
+                                        <p class="card-text">Giữ kết nối với người tham dự trong suốt hành trình.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card h-100 text-center shadow border-0 feature-card">
+                                    <div class="card-body">
+                                        <i class="fas fa-chart-bar fa-2x text-danger mb-3"></i>
+                                        <h5 class="card-title">Thống kê thông minh</h5>
+                                        <p class="card-text">Hiểu rõ sự kiện của bạn đang hoạt động ra sao.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Câu chuyện -->
+                    <section class="bg-light" data-aos="fade-up">
+                        <h2 class="section-title text-center">💡Câu chuyện của chúng tôi</h2>
+                        <p>
+                            Chúng tôi từng là sinh viên tổ chức sự kiện thủ công. Từ trải nghiệm ấy, chúng tôi tạo nên Festivo để giúp mọi người tập trung vào điều quan trọng – 
+                            <strong>chất lượng sự kiện và kết nối con người</strong>.
                         </p>
-                        <p class="text-center">
-                            Trong thời đại kết nối, chúng tôi hiểu rằng sự kiện không chỉ là điểm đến – mà là hành trình kết nối <strong>ý tưởng, con người và cộng đồng</strong>. Với giao diện trực quan, tính năng mạnh mẽ và hỗ trợ toàn diện, <strong>Festivo</strong> giúp mọi người tạo sự kiện nhanh chóng, quản lý dễ dàng và truyền cảm hứng sâu sắc.
-                        </p>
-                        <blockquote class="blockquote text-center mt-4">
-                            <p class="mb-0"><em>"Chúng tôi không chỉ tạo ra nền tảng – chúng tôi tạo ra trải nghiệm."</em></p>
+                        <blockquote class="blockquote border-start ps-3 mt-4">
+                            <p class="mb-0">"Chúng tôi xây dựng <strong>Festivo</strong> không phải từ lý thuyết, mà từ thực tế."</p>
                         </blockquote>
-                    </div>
+                    </section>
+
+                    <!-- Liên hệ -->
+                    <section class="bg-dark text-white py-5 w-100" data-aos="fade-up">
+                        <div class="container-fluid text-center">
+                            <h2 class="section-title text-white">Liên hệ với chúng tôi</h2>
+                            <p class="lead">
+                                Email: support@tennenentang.vn<br>
+                                Hotline: 0123 456 789<br>
+                                Địa chỉ: Số 123 Nguyễn Văn Cừ, Quận 1, TP.HCM
+                            </p>
+                        </div>
+                    </section>
+
                 </div>
-            </div>
-        </section>
+            </main>
 
-
-        <!-- Sứ mệnh & Tầm nhìn dưới dạng Card -->
-        <section class="bg-light" data-aos="fade-up">
-            <div class="container">
-                <h2 class="section-title text-center">Sứ mệnh & Tầm nhìn</h2>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card shadow h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-bullseye fa-2x text-primary mb-3"></i>
-                                <h5 class="card-title">Sứ mệnh</h5>
-                                <p class="card-text">Mang lại một trải nghiệm liền mạch và đầy cảm hứng cho cả người tổ chức lẫn người tham gia sự kiện. Chúng tôi tin rằng mỗi sự kiện là một cơ hội để học hỏi, kết nối và phát triển – và Festivo chính là người đồng hành tận tụy để hiện thực hóa điều đó.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card shadow h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-eye fa-2x text-success mb-3"></i>
-                                <h5 class="card-title">Tầm nhìn</h5>
-                                <p class="card-text">Trở thành nền tảng tổ chức sự kiện hàng đầu tại Việt Nam và vươn ra khu vực, nơi mọi ý tưởng đều có thể bùng cháy và lan tỏa đến đúng người, đúng thời điểm, đúng cách.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Người tham gia & Người tổ chức dưới dạng Card -->
-        <section class="bg-white" data-aos="fade-up">
-            <div class="container">
-                <h2 class="section-title text-center">Chúng tôi dành cho ai?</h2>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card shadow h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-users fa-2x text-info mb-3"></i>
-                                <h5 class="card-title">Người tham gia sự kiện</h5>
-                                <p class="card-text">Bạn đam mê học hỏi, khám phá? Bạn muốn tham gia vào những cộng đồng cùng chí hướng? Tại Festivo, bạn có thể dễ dàng tìm kiếm các sự kiện phù hợp với sở thích, đăng ký chỉ trong vài giây, lưu lại lịch trình và nhận thông báo nhắc nhở – để không bỏ lỡ bất kỳ trải nghiệm nào.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card shadow h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-chalkboard-teacher fa-2x text-warning mb-3"></i>
-                                <h5 class="card-title">Người tổ chức sự kiện</h5>
-                                <p class="card-text">Bạn có một ý tưởng tuyệt vời và muốn lan tỏa nó? Hãy để chúng tôi giúp bạn biến điều đó thành hiện thực. Chỉ trong vài bước đơn giản, bạn có thể tạo sự kiện, mở bán vé, theo dõi số lượng đăng ký, giao tiếp với người tham dự và đánh giá hiệu quả sau sự kiện – tất cả trong một nền tảng duy nhất.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Tính năng nổi bật - dạng card với icon và hover -->
-        <section class="bg-light" data-aos="fade-up">
-            <div class="container">
-                <h2 class="section-title text-center">🛠️ Những gì chúng tôi mang lại</h2>
-                <p class="lead text-center mb-5">Chúng tôi không chỉ cung cấp công cụ. Chúng tôi tạo ra trải nghiệm.</p>
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 text-center shadow border-0 feature-card hover-shadow">
-                            <div class="card-body">
-                                <i class="fas fa-file-invoice-dollar fa-2x text-primary mb-3"></i>
-                                <h5 class="card-title">Đăng ký & thanh toán trực tuyến</h5>
-                                <p class="card-text">Không còn xếp hàng hay giấy tờ rườm rà.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 text-center shadow border-0 feature-card hover-shadow">
-                            <div class="card-body">
-                                <i class="fas fa-rocket fa-2x text-success mb-3"></i>
-                                <h5 class="card-title">Tạo sự kiện đơn giản</h5>
-                                <p class="card-text">Giao diện thân thiện, dễ dùng – dù bạn là ai.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 text-center shadow border-0 feature-card hover-shadow">
-                            <div class="card-body">
-                                <i class="fas fa-bell fa-2x text-warning mb-3"></i>
-                                <h5 class="card-title">Thông báo & email tự động</h5>
-                                <p class="card-text">Giữ kết nối với người tham dự trong suốt hành trình.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 text-center shadow border-0 feature-card hover-shadow">
-                            <div class="card-body">
-                                <i class="fas fa-chart-bar fa-2x text-danger mb-3"></i>
-                                <h5 class="card-title">Thống kê thông minh</h5>
-                                <p class="card-text">Hiểu rõ sự kiện của bạn đang hoạt động ra sao.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="bg-light" data-aos="fade-up">
-            <div class="container">
-                <h2 class="section-title text-center">💡Câu chuyện của chúng tôi</h2>
-                <p>
-                    Chúng tôi là những người trẻ, từng loay hoay tổ chức sự kiện sinh viên, từng quên mất giờ diễn vì không nhận được nhắc nhở, từng phải xử lý thủ công hàng trăm danh sách đăng ký.
-                    Chính từ những trải nghiệm thật ấy, chúng tôi hiểu rằng: một nền tảng tốt có thể
-                    <strong>giải phóng năng lượng sáng tạo</strong>, và giúp mọi người tập trung vào điều quan trọng nhất – 
-                    <strong>chất lượng sự kiện và kết nối con người</strong>.
-                </p>
-                <blockquote class="blockquote border-start ps-3 mt-4">
-                    <p class="mb-0">"Chúng tôi xây dựng <strong>Festivo</strong> không phải từ lý thuyết, mà từ chính những khó khăn thực tế mà người làm sự kiện từng trải qua."</p>
-                </blockquote>
-            </div>
-        </section>
-
-
-        <!-- Liên hệ -->
-        <section class="bg-dark text-white" data-aos="fade-up">
-            <div class="container text-center">
-                <h2 class="section-title">Liên hệ với chúng tôi</h2>
-                <p class="lead">
-                    Email: support@tennenentang.vn<br>
-                    Hotline: 0123 456 789<br>
-                    Địa chỉ: Số 123 Nguyễn Văn Cừ, Quận 1, TP.HCM
-                </p>
-            </div>
-        </section>
-
-        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-        <script>
-            AOS.init({
-                duration: 800, // Thời gian chạy hiệu ứng (ms)
-                once: false       // Cho phép chạy lại mỗi khi phần tử xuất hiện lại
-            });
-        </script>
+            <!-- Script AOS -->
+            <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+            <script>
+                AOS.init({
+                    duration: 800,
+                    once: false
+                });
+            </script>
     </body>
 </html>

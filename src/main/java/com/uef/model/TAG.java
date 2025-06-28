@@ -1,6 +1,7 @@
 package com.uef.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -9,13 +10,13 @@ public class TAG {
     @Id
     @ManyToOne
     @JoinColumn(name = "category", referencedColumnName = "name")
-    @NotNull(message = "Category cannot be null")
+    @NotBlank(message = "Category cannot be null")
     private CATEGORY category;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "event", referencedColumnName = "id")
-    @NotNull(message = "Event cannot be null")
+    @NotBlank(message = "Event cannot be null")
     private EVENT event;
 
     // Getters and Setters

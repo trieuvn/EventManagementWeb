@@ -57,8 +57,13 @@
         shadowSize: [41, 41]
     });
 
-    L.marker(start, { icon: redIcon }).addTo(map).bindPopup(nameA).openPopup();
-    L.marker(end, { icon: redIcon }).addTo(map).bindPopup(nameB);
+    // Marker vị trí hiện tại
+    const currentMarker = L.marker(start, { icon: redIcon })
+        .addTo(map)
+        .bindPopup("📍 Vị trí hiện tại của bạn");
+
+    // Marker điểm đến
+    const destinationMarker = L.marker(end, { icon: redIcon }).addTo(map);
 
     // OSRM routing API
     const url = "https://router.project-osrm.org/route/v1/driving/" + startLng + "," + startLat + ";" + endLng + "," + endLat + "?overview=full&geometries=geojson";
@@ -73,12 +78,27 @@
                 alert("Không tìm thấy đường đi.");
                 return;
             }
-            const route = data.routes[0].geometry;
-            const routeLayer = L.geoJSON(route, {
+
+            const route = data.routes[0];
+            const routeLayer = L.geoJSON(route.geometry, {
                 style: { color: 'blue', weight: 5 }
             }).addTo(map);
 
             map.fitBounds(routeLayer.getBounds());
+
+            // Mở popup vị trí hiện tại
+            currentMarker.openPopup();
+
+            // Tạo nội dung popup điểm đến
+            const popupContent = `
+                📍 ${nameB}<br/>
+            `;
+
+            // Mở popup điểm đến bằng addTo(map) để không đóng popup trước
+            L.popup({ offset: [0, -30] })
+                .setLatLng(end)
+                .setContent(popupContent)
+                .addTo(map);
         })
         .catch(error => {
             console.error("Lỗi tuyến đường:", error);

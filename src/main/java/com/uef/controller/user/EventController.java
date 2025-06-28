@@ -1,5 +1,6 @@
 package com.uef.controller.user;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.*;
 import com.uef.service.CategoryService;
 import com.uef.service.EventService;
@@ -32,10 +33,10 @@ public class EventController {
 
     @Autowired
     private CategoryService categoryService;
-    
+
     @Autowired
     private TicketService ticketService;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     private List<EVENT> events;
@@ -43,17 +44,17 @@ public class EventController {
     public EventController() {
 
     }
-
+    
     @GetMapping("/")
     public String home(Model model,
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "category", required = false) String category,    
+            @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "date", required = false) Date date,
             HttpSession session) {
-        
+
         List<String> categories = categoryService.getAll().stream()
-                                    .map(CATEGORY::getName)
-                                    .collect(Collectors.toList());
+                .map(CATEGORY::getName)
+                .collect(Collectors.toList());
         List<EVENT> filteredEvents = eventService.searchEvents(keyword, category, date);
         model.addAttribute("events", filteredEvents);
         model.addAttribute("categories", categories);
@@ -64,13 +65,14 @@ public class EventController {
         model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         USER user = (USER) session.getAttribute("user");
         //Neu da dang nhap
-        if (user != null){
-            return "layout/main2";      
+        if (user != null) {
+            return "layout/main2";
         }
         //Chua dang nhap
         return "layout/main";
     }
-
+    
+    @RoleRequired({"user", "admin"})
     @RequestMapping("/event/{id}")
     public String getEventDetails(@PathVariable int id, Model model, HttpSession session) {
         // Lấy user từ session
@@ -100,33 +102,43 @@ public class EventController {
         model.addAttribute("firstTicketDeadline", firstTicketDeadline);
         model.addAttribute("userForm", new USER());
 
+        if (user == null) {
+            return "layout/main";
+        }
         return "layout/main2";
     }
 
-    @GetMapping("/about")
-    public String aboutUs(Model model) {
-        model.addAttribute("userForm", new USER());
-        model.addAttribute("body", "/WEB-INF/views/user/events/about.jsp");
-        model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
-        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
-        return "layout/main";
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.setAttribute("user", null);
+        return "redirect:/";
     }
 
-    /*@PostMapping("/register")
-    public String registerEvent(@RequestParam int eventId, RedirectAttributes ra) {
-        EVENT event = events.stream().filter(e -> e.getId() == eventId).findFirst().orElse(null);
-        if (event == null) {
-            ra.addFlashAttribute("error", "Sự kiện không tồn tại.");
+    @GetMapping("/about")
+    public String aboutUs(Model model,HttpSession session) {
+        model.addAttribute("userForm", new USER());
+        USER user = (USER) session.getAttribute("user");
+        model.addAttribute("body", "/WEB-INF/views/user/events/about.jsp");
+        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
+        if (user != null) {
+            return "layout/main2";
+        }
+        //Chua dang nhap
+        return "layout/main";
+    }
+    
+    @PostMapping("/event/{id}")
+    public String handleEventDetailPost(@PathVariable("id") int eventId,
+            HttpSession session,
+            RedirectAttributes ra) {
+        USER user = (USER) session.getAttribute("user");
+
+        if (user == null) {
+            ra.addFlashAttribute("error", "Vui lòng đăng nhập để xem chi tiết sự kiện.");
             return "redirect:/";
         }
-        if (!"Mở".equalsIgnoreCase(event.getStatus())) {
-            ra.addFlashAttribute("error", "Đăng ký đã đóng: Hạn đăng ký đã hết.");
-            return "redirect:/";
-        }
-        if (event.getSlots() <= 0) {
-            ra.addFlashAttribute("error", "Đăng ký thất bại: Sự kiện đã đầy.");
-            return "redirect:/";
-        }
-        return "redirect:/";
-    }*/
+
+        return "redirect:/event/" + eventId;
+    }
+
 }
