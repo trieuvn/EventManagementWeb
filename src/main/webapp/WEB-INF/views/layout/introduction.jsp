@@ -6,6 +6,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
 
+<!-- CSRF Token Meta Tags (for Spring Security) -->
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <style>
     .modal-dialog { max-width: 70vw; margin: auto; }
     .custom-modal-content { background-color: #fff; color: #000; border-radius: 10px; padding: 40px; text-align: center; position: relative; box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); }
@@ -28,7 +32,7 @@
     <div id="flash-msg" class="alert alert-success alert-dismissible fade show" role="alert">
         ${msg}
         <button type="button" class="close" data-dismiss="alert" aria-label="Đóng">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">×</span>
         </button>
     </div>
     <c:remove var="msg" scope="session"/>
@@ -38,13 +42,13 @@
     <div id="flash-error" class="alert alert-danger alert-dismissible fade show" role="alert">
         ${error}
         <button type="button" class="close" data-dismiss="alert" aria-label="Đóng">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">×</span>
         </button>
     </div>
     <c:remove var="error" scope="session"/>
 </c:if>
 
-
+<!-- Initial Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content custom-modal-content">
@@ -69,6 +73,7 @@
     </div>
 </div>
 
+<!-- Signup Modal -->
 <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -115,6 +120,7 @@
     </div>
 </div>
 
+<!-- Login Modal -->
 <div class="modal fade" id="loginModal2" tabindex="-1" role="dialog" aria-labelledby="loginModal2Label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content custom-modal-content">
@@ -132,7 +138,7 @@
                         <input type="password" class="form-control" id="loginPassword" name="password" required>
                     </div>
                     <div class="forgot-password">
-                        <a href="${pageContext.request.contextPath}/forgot-password">Quên mật khẩu?</a>
+                        <a href="#" data-toggle="modal" data-target="#forgotPasswordModal" data-dismiss="modal">Quên mật khẩu?</a>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -144,25 +150,229 @@
     </div>
 </div>
 
-<c:if test="${not empty error && !empty param.signup}">
-    <script>
-        $(document).ready(function() {
-            $('#signupModal').modal('show');
-        });
-    </script>
-</c:if>
-<c:if test="${not empty error && !empty param.login}">
-    <script>
-        $(document).ready(function() {
-            $('#loginModal2').modal('show');
-        });
-    </script>
-</c:if>
-    <script>
-    $(document).ready(function () {
-        setTimeout(function () {
-            $('#flash-msg').fadeOut(1000); // Mờ dần trong 1s
-            $('#flash-error').fadeOut(1000);
-        }, 10000); // Sau 10 giây
+<!-- Forgot Password Modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content custom-modal-content">
+            <button type="button" class="close-btn-topright" data-dismiss="modal" aria-label="Đóng">×</button>
+            <h2 class="custom-title">QUÊN MẬT KHẨU</h2>
+            <p class="custom-subtext">Nhập email của bạn để nhận mã OTP</p>
+            <form id="forgotPasswordForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email</label>
+                        <input type="email" class="form-control" id="forgotEmail" name="email" required>
+                    </div>
+                    <div class="form-group" id="otpSection" style="display: none;">
+                        <label for="otpCode">Mã OTP</label>
+                        <input type="text" class="form-control" id="otpCode" name="otp" required>
+                    </div>
+                    <div id="otpMessage" class="text-danger" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" id="sendOtpBtn" style="padding: 12px 20px; font-size: 15px;">GỬI OTP</button>
+                    <button type="submit" class="btn btn-success" id="verifyOtpBtn" style="display: none; padding: 12px 20px; font-size: 15px;">XÁC NHẬN OTP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content custom-modal-content">
+            <button type="button" class="close-btn-topright" data-dismiss="modal" aria-label="Đóng">×</button>
+            <h2 class="custom-title">ĐẶT LẠI MẬT KHẨU</h2>
+            <p class="custom-subtext">Nhập mật khẩu mới của bạn</p>
+            <form id="resetPasswordForm" action="${pageContext.request.contextPath}/reset-password" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="email" id="resetEmail">
+                    <div class="form-group">
+                        <label for="newPassword">Mật khẩu mới</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <div id="resetMessage" class="text-danger" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-success" style="padding: 12px 20px; font-size: 15px;">LƯU MẬT KHẨU</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    // Fade out flash messages after 10 seconds
+    setTimeout(function () {
+        $('#flash-msg').fadeOut(1000);
+        $('#flash-error').fadeOut(1000);
+    }, 10000);
+
+    // Show signup modal on error
+    <c:if test="${not empty error && !empty param.signup}">
+        $('#signupModal').modal('show');
+    </c:if>
+
+    // Show login modal on error
+    <c:if test="${not empty error && !empty param.login}">
+        $('#loginModal2').modal('show');
+    </c:if>
+
+    // Handle "Forgot Password" link click
+    $('a[data-target="#forgotPasswordModal"]').on('click', function (e) {
+        e.preventDefault();
+        $('#loginModal2').modal('hide');
+        $('#forgotPasswordModal').modal('show');
     });
+
+    // Handle "Send OTP" button click
+    $('#sendOtpBtn').on('click', function () {
+        console.log('Send OTP button clicked');
+        var email = $('#forgotEmail').val();
+        console.log('Email:', email, 'URL:', '${pageContext.request.contextPath}/send-otp');
+        if (!email) {
+            $('#otpMessage').text('Vui lòng nhập email').show();
+            return;
+        }
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/send-otp',
+            type: 'POST',
+            data: { email: email },
+            beforeSend: function(xhr) {
+                var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+                var csrfToken = $('meta[name="_csrf"]').attr('content');
+                if (csrfHeader && csrfToken) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                    console.log('CSRF header set:', csrfHeader, csrfToken);
+                } else {
+                    console.warn('CSRF token or header not found, skipping header set');
+                }
+            },
+            success: function (response) {
+                console.log('AJAX success:', response);
+                if (response.success) {
+                    $('#otpSection').show();
+                    $('#sendOtpBtn').hide();
+                    $('#verifyOtpBtn').show();
+                    $('#otpMessage').text('Mã OTP đã được gửi đến email của bạn')
+                        .removeClass('text-danger').addClass('text-success').show();
+                } else {
+                    $('#otpMessage').text(response.message || 'Không thể gửi OTP. Vui lòng thử lại.').show();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX error:', status, error, 'Response:', xhr.responseText);
+                $('#otpMessage').text('Đã xảy ra lỗi: ' + (xhr.responseText || 'Vui lòng thử lại.')).show();
+            }
+        });
+    });
+
+    // Handle OTP verification
+    $('#forgotPasswordForm').on('submit', function (e) {
+        e.preventDefault();
+        var email = $('#forgotEmail').val();
+        var otp = $('#otpCode').val();
+
+        if (!otp) {
+            $('#otpMessage').text('Vui lòng nhập mã OTP').show();
+            return;
+        }
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/verify-otp',
+            type: 'POST',
+            data: { email: email, otp: otp },
+            beforeSend: function(xhr) {
+                var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+                var csrfToken = $('meta[name="_csrf"]').attr('content');
+                if (csrfHeader && csrfToken) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            },
+            success: function (response) {
+                if (response.success) {
+                    $('#forgotPasswordModal').modal('hide');
+                    $('#resetEmail').val(email);
+                    $('#resetPasswordModal').modal('show');
+                } else {
+                    $('#otpMessage').text(response.message || 'Mã OTP không hợp lệ. Vui lòng thử lại.').show();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX error:', status, error, 'Response:', xhr.responseText);
+                $('#otpMessage').text('Đã xảy ra lỗi: ' + (xhr.responseText || 'Vui lòng thử lại.')).show();
+            }
+        });
+    });
+
+    // Handle reset password form submission
+    $('#resetPasswordForm').on('submit', function (e) {
+        e.preventDefault();
+        var email = $('#resetEmail').val();
+        var newPassword = $('#newPassword').val();
+        var confirmPassword = $('#confirmPassword').val();
+
+        if (newPassword !== confirmPassword) {
+            $('#resetMessage').text('Mật khẩu xác nhận không khớp').show();
+            return;
+        }
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/reset-password',
+            type: 'POST',
+            data: { email: email, newPassword: newPassword, confirmPassword: confirmPassword },
+            beforeSend: function(xhr) {
+                var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+                var csrfToken = $('meta[name="_csrf"]').attr('content');
+                if (csrfHeader && csrfToken) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                    console.log('CSRF header set:', csrfHeader, csrfToken);
+                } else {
+                    console.warn('CSRF token or header not found, skipping header set');
+                }
+            },
+            success: function (response) {
+                console.log('AJAX success:', response);
+                if (response.success) {
+                    $('#resetPasswordModal').modal('hide');
+                    $('#flash-msg').text('Mật khẩu đã được đặt lại thành công').show();
+                    $('#loginModal2').modal('show');
+                } else {
+                    $('#resetMessage').text(response.message || 'Không thể đặt lại mật khẩu. Vui lòng thử lại.').show();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX error:', status, error, 'Response:', xhr.responseText);
+                $('#resetMessage').text('Đã xảy ra lỗi: ' + (xhr.responseText || 'Vui lòng thử lại.')).show();
+            }
+        });
+    });
+
+    // Reset forgot password modal when closed
+    $('#forgotPasswordModal').on('hidden.bs.modal', function () {
+        $('#forgotEmail').val('');
+        $('#otpCode').val('');
+        $('#otpSection').hide();
+        $('#sendOtpBtn').show();
+        $('#verifyOtpBtn').hide();
+        $('#otpMessage').hide().text('');
+    });
+
+    // Reset reset password modal when closed
+    $('#resetPasswordModal').on('hidden.bs.modal', function () {
+        $('#resetEmail').val('');
+        $('#newPassword').val('');
+        $('#confirmPassword').val('');
+        $('#resetMessage').hide().text('');
+    });
+});
 </script>

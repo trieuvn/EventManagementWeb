@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
  * @author Administrator
  */
 public class Map {
+
     /*Cách sử dụng
     model: model của controller hiện tại
     startLat: tọa độ Lat của điểm bắt đầu (null: vị trí Lat hiện tại dựa trên IP)
@@ -26,25 +27,32 @@ public class Map {
     startName: tên điểm bắt đầu (null: You are here)
     endName: tên điểm kết thúc (null: Destination)
     return: jsp bản đồ
-    */
+     */
     public static String showMap(Model model, Double startLat, Double startLng, Double endLat, Double endLng, String startName, String endName) throws Exception {
-        // Tọa độ điểm start và end (ví dụ từ TP.HCM đến Đà Nẵng)
-        if (startLat == null || startLng == null){
+        if (startLat == null || startLng == null) {
             Double[] diachi = getCoordinates();
             startLat = diachi[0];
             startLng = diachi[1];
         }
+
         model.addAttribute("startLat", startLat);
         model.addAttribute("startLng", startLng);
         model.addAttribute("endLat", endLat);
         model.addAttribute("endLng", endLng);
-        if (startName == null) startName = "You are here";
-        if (endName == null) endName = "Destination";
+
+        if (startName == null) {
+            startName = "📍 Vị trí hiện tại của bạn";
+        }
+        if (endName == null) {
+            endName = "📍 Điểm đến";
+        }
+
         model.addAttribute("nameA", startName);
         model.addAttribute("nameB", endName);
+
         return "utils/openstreetmap";
     }
-    
+
     //[0] = lat, [1] = lon
     public static Double[] getCoordinates() throws Exception {
         URL url = new URL("http://ip-api.com/json");
@@ -61,9 +69,9 @@ public class Map {
 
         JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
         double lat = jsonResponse.has("lat") ? jsonResponse.get("lat").getAsDouble() : 0.0;
-        double lon = jsonResponse.has("lon") ? jsonResponse.get("lon").getAsDouble() : 0.0; 
+        double lon = jsonResponse.has("lon") ? jsonResponse.get("lon").getAsDouble() : 0.0;
 
         return new Double[]{lat, lon};
     }
-    
+
 }
