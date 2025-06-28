@@ -18,11 +18,9 @@ D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\USER.
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\EventController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\TAG.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\QRDataDTO.java
-D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryDetailScreenController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\ParticipantService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\model\PARTICIPANT.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\utils\Map.java
-D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\CategoryManagementScreenController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\user\QRCodeController.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\service\TagService.java
 D:\aDesktop\JavaProject\EventManagementProject\src\main\java\com\uef\controller\admin\ParticipantController.java

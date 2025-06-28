@@ -3,14 +3,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Event Admin Dashboard</title>
         <!-- Google Font & Icons -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
-              rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-style.css">
@@ -66,9 +64,45 @@
             .overlay.show {
                 display: block;
             }
+            /* Table styles for consistency */
+            .guests table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
+            .guests th, .guests td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            .guests th {
+                background-color: #f4f4f4;
+                font-weight: 600;
+            }
+            .guests td.actions {
+                display: flex;
+                gap: 10px;
+            }
+            .guests .btn-icon {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #007bff;
+                font-size: 16px;
+            }
+            .guests .btn-icon:hover {
+                color: #0056b3;
+            }
+            /* Responsive table */
+            @media (max-width: 768px) {
+                .guests table {
+                    display: block;
+                    overflow-x: auto;
+                    white-space: nowrap;
+                }
+            }
         </style>
     </head>
-
     <body>
         <!-- Popup for displaying messages -->
         <c:if test="${not empty message}">
@@ -158,15 +192,12 @@
                                         </c:choose>
                                     </td>
                                     <td class="actions">
-                                        <!-- Nút View: Gửi POST đến /admin/events/view/{id} -->
                                         <form action="${pageContext.request.contextPath}/admin/events/view/${event.id}" method="post">
                                             <button type="submit" class="btn-icon"><i class="fa fa-eye"></i></button>
                                         </form>
-                                        <!-- Nút Edit: Gửi POST đến /admin/events/edit/{id} -->
                                         <form action="${pageContext.request.contextPath}/admin/events/edit/${event.id}" method="post">
                                             <button type="submit" class="btn-icon"><i class="fa fa-edit"></i></button>
                                         </form>
-                                        <!-- Nút Delete: Gửi POST đến /admin/events/delete/{id} -->
                                         <form action="${pageContext.request.contextPath}/admin/events/delete/${event.id}" method="post">
                                             <button type="submit" class="btn-icon"><i class="fa fa-trash"></i></button>
                                         </form>
@@ -181,13 +212,19 @@
                 <section class="lower-panels">
                     <!-- Khách mời tham gia -->
                     <div class="guests">
-                        <h2>Tổ chức</h2>
+                        <div class="list-header">
+                            <h2>Tổ chức</h2>
+                            <form action="${pageContext.request.contextPath}/admin/organizations/create" method="post">
+                                <button type="submit" class="btn-primary"><i class="fa fa-plus"></i> Tạo mới</button>
+                            </form>
+                        </div>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Tên</th>
                                     <th>Email</th>
                                     <th>Điện thoại</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -196,6 +233,17 @@
                                         <td>${guest.firstName} ${guest.lastName}</td>
                                         <td>${guest.email}</td>
                                         <td>${guest.phoneNumber}</td>
+                                        <td class="actions">
+                                            <form action="${pageContext.request.contextPath}/admin/organizations/view/${guest.id}" method="post">
+                                                <button type="submit" class="btn-icon"><i class="fa fa-eye"></i></button>
+                                            </form>
+                                            <form action="${pageContext.request.contextPath}/admin/organizations/edit/${guest.id}" method="post">
+                                                <button type="submit" class="btn-icon"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                            <form action="${pageContext.request.contextPath}/admin/organizations/delete/${guest.id}" method="post">
+                                                <button type="submit" class="btn-icon"><i class="fa fa-trash"></i></button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -252,5 +300,4 @@
             }
         </script>
     </body>
-
 </html>
