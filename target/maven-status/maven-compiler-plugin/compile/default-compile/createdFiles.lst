@@ -9,6 +9,7 @@ com\uef\controller\user\UserController.class
 com\uef\service\ParticipantService.class
 com\uef\controller\admin\EventController.class
 com\uef\controller\admin\QRCodeController.class
+com\uef\controller\admin\AdminTicketDetailScreenController$1.class
 com\uef\model\USER.class
 com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
