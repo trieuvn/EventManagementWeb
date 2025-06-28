@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.PARTICIPANT;
 import com.uef.model.TICKET;
 import com.uef.model.USER;
@@ -19,6 +20,7 @@ public class ParticipantController {
     @Autowired
     private EventService eventService;
 
+    @RoleRequired({"admin"})
     @GetMapping("/{eventId}")
     public String listParticipants(@PathVariable int eventId, Model model) {
         model.addAttribute("participants", participantService.getAllByEvent(eventId));
@@ -27,6 +29,7 @@ public class ParticipantController {
         return "admin/participants";
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/confirm/{userEmail}/{ticketId}")
     public String confirmParticipant(@PathVariable String userEmail, @PathVariable int ticketId, @RequestParam int eventId) {
         USER user = new USER();
@@ -38,6 +41,7 @@ public class ParticipantController {
         return "redirect:/admin/participants/" + eventId;
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/cancel/{userEmail}/{ticketId}")
     public String cancelParticipant(@PathVariable String userEmail, @PathVariable int ticketId, @RequestParam int eventId) {
         USER user = new USER();

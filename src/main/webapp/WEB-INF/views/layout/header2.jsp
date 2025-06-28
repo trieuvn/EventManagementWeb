@@ -154,8 +154,8 @@
                     <li class="<%= (uri.equals(context) || uri.equals(context + "/")) ? "active" : "" %>">
                         <a href="${pageContext.request.contextPath}/">TRANG CHỦ</a>
                     </li>
-                    <li class="<%= uri.startsWith(context + "/checkin") ? "active" : "" %>">
-                        <a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a>
+                    <li class="<%= uri.startsWith(context + "/about") ? "active" : "" %>">
+                        <a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a>
                     </li>
                     <li class="<%= uri.startsWith(context + "/history") ? "active" : "" %>">
                         <a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a>

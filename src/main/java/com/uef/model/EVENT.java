@@ -1,6 +1,8 @@
 package com.uef.model;
 
+import com.uef.utils.Image;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,7 +20,7 @@ public class EVENT {
     private int id;
 
     @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
-    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be null")
     @Size(max = 50, message = "Name must not exceed 50 characters")
     private String name;
 
@@ -27,7 +29,7 @@ public class EVENT {
     private String description;
 
     @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
-    @NotNull(message = "Type cannot be null")
+    @NotBlank(message = "Type cannot be null")
     @Size(max = 30, message = "Type must be 'online', 'offline', or 'hybrid'")
     private String type;
 
@@ -36,7 +38,7 @@ public class EVENT {
     private String contactInfo;
 
     @Column(name = "target", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")
-    @NotNull(message = "Target cannot be null")
+    @NotBlank(message = "Target cannot be null")
     @Size(max = 50, message = "Target must not exceed 50 characters")
     private String target;
 
@@ -243,5 +245,17 @@ public class EVENT {
         }
         return tickets.stream()
                 .anyMatch(ticket -> ticket.getSlots() > 0);
+    }
+    
+    public String getBase64Image() {
+        return Image.convertByteToBase64(image);
+    }
+    
+    public int getSlots(){
+        int totalSlots = 0;
+        for (TICKET ticket : tickets){
+            totalSlots += ticket.getSlots();
+        }
+        return totalSlots;
     }
 }

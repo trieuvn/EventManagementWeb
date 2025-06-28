@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 @Transactional
 public class CategoryService {
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -20,34 +21,48 @@ public class CategoryService {
         return entityManager.createQuery("SELECT c FROM CATEGORY c", CATEGORY.class).getResultList();
     }
 
-    // Lấy danh mục theo ID
+    // Tìm kiếm danh mục theo tên
+    public List<CATEGORY> searchByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return getAll();
+        }
+        return entityManager.createQuery("SELECT c FROM CATEGORY c WHERE LOWER(c.name) LIKE :name", CATEGORY.class)
+                .setParameter("name", "%" + name.toLowerCase() + "%")
+                .getResultList();
+    }
+
+    // Lấy danh mục theo tên
     public CATEGORY getById(String name) {
         return entityManager.find(CATEGORY.class, name);
     }
 
-    // Thêm hoặc cập nhật danh mục (mục 105)
+    // Thêm hoặc cập nhật danh mục (BR-27)
     public boolean set(CATEGORY category) {
-        // Kiểm tra tên danh mục duy nhất (BR-27)
-        if (category.getName() != null && getById(category.getName()) != null && !getById(category.getName()).equals(category)) {
-            throw new IllegalArgumentException("Category name already exists");
+        if (category.getName() == null || category.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên danh mục không được để trống.");
+        }
+        // Kiểm tra tên danh mục duy nhất
+        CATEGORY existing = getById(category.getName());
+        if (existing != null && !existing.equals(category)) {
+            throw new IllegalArgumentException("Tên danh mục đã tồn tại.");
         }
         try {
-            if (getById(category.getName()) == null) {
+            if (existing == null) {
                 entityManager.persist(category);
             } else {
                 entityManager.merge(category);
             }
             return true;
         } catch (Exception e) {
-            return false;
+            throw new IllegalStateException("Lỗi hệ thống khi lưu danh mục: " + e.getMessage());
         }
     }
 
-    // Xóa danh mục (mục 106)
+    // Xóa danh mục (BR-26)
     public boolean delete(CATEGORY category) {
         CATEGORY existing = getById(category.getName());
         if (existing != null) {
-            // Xóa các tag liên quan trước (BR-26, BR-27)
+            // Xóa các TAG liên quan trước
             Query query = entityManager.createQuery("DELETE FROM TAG t WHERE t.category.name = :categoryName");
             query.setParameter("categoryName", category.getName());
             query.executeUpdate();
