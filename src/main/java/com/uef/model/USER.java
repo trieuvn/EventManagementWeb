@@ -146,4 +146,8 @@ public class USER {
         }
         return null; // Không có vé hợp lệ
     }
+    
+    public long getTotalParticipated() {
+        return participants.size(); // Không có vé hợp lệ
+    }
 }

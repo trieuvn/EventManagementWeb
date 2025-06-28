@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,6 +62,10 @@ public class UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+    
+    public List<USER> getAll() {
+        return entityManager.createQuery("SELECT u FROM USER u", USER.class).getResultList();
     }
 
     public boolean updateNameAndPhone(USER user) {

@@ -11,7 +11,6 @@ com\uef\service\ParticipantService.class
 com\uef\controller\admin\EventController.class
 com\uef\controller\admin\QRCodeController.class
 com\uef\model\USER.class
-com\uef\controller\admin\EventDetailController.class
 com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
 com\uef\model\QRDataDTO.class
