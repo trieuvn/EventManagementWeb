@@ -34,7 +34,10 @@ public class ParticipantService {
     // Lấy người tham gia theo user (mục 97)
     public List<PARTICIPANT> getByUser(USER user) {
         Query query = entityManager.createQuery(
-                "SELECT p FROM PARTICIPANT p WHERE p.user = :user", PARTICIPANT.class);
+                "SELECT p FROM PARTICIPANT p "
+                + "JOIN FETCH p.ticket t "
+                + "JOIN FETCH t.event e "
+                + "WHERE p.user = :user", PARTICIPANT.class);
         query.setParameter("user", user);
         return query.getResultList();
     }
@@ -131,7 +134,7 @@ public class ParticipantService {
 
     // Xóa người tham gia (mục 89)
     public void delete(PARTICIPANT participant) {
-        PARTICIPANT existing = entityManager.find(PARTICIPANT.class, 
+        PARTICIPANT existing = entityManager.find(PARTICIPANT.class,
                 new PARTICIPANT(participant.getUser(), participant.getTicket(), 0, 0, null));
         if (existing != null) {
             entityManager.remove(existing);
