@@ -1,53 +1,66 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>User Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1>Profile</h1>
-        <form action="${pageContext.request.contextPath}/user/profile" method="post">
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" name="email" value="${user.email}" class="form-control" readonly>
-            </div>
-            <div class="mb-3">
-                <label>Full Name</label>
-                <input type="text" name="firstName" value="${user.firstName}" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label>Phone Number</label>
-                <input type="text" name="phoneNumber" value="${user.phoneNumber}" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-        </form>
-        <h2>Registration History</h2>
-        <table class="table">
-            <thead>
+
+
+<!-- BODY CONTENT -->
+<div class="profile-wrapper container mt-5 mb-5">
+    <h1 class="mb-4">Thông tin cá nhân</h1>
+
+    <!-- Form cập nhật thông tin -->
+    <form action="${pageContext.request.contextPath}/user/profile" method="post">
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" value="${user.email}" class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Họ</label>
+            <input type="text" name="firstName" value="${user.firstName}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Tên</label>
+            <input type="text" name="lastName" value="${user.lastName}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" name="phoneNumber" value="${user.phoneNumber}" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </form>
+
+    <!-- Lịch sử đăng ký -->
+    <h2 class="mt-5 mb-3">Lịch sử đăng ký sự kiện</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Sự kiện</th>
+                <th>Trạng thái</th>
+            </tr>
+            </thea
+        <tbody>
+            <c:forEach var="participant" items="${participants}">
                 <tr>
-                    <th>Event</th>
-                    <th>Status</th>
-                    <c:if test="${user.role == 1}"><th>Actions</th></c:if>
+                    <td>${participant.ticket.event.name}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${participant.status == 1}">Đã xác nhận</c:when>
+                            <c:otherwise>Chờ xác nhận</c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="participant" items="${participants}">
-                    <tr>
-                        <td>${participant.ticket.event.name}</td>
-                        <td>${participant.status == 1 ? 'Confirmed' : 'Pending'}</td>
-                        <c:if test="${user.role == 1}">
-                            <td>
-                                <form action="${pageContext.request.contextPath}/user/registration/cancel/${participant.id}" method="post">
-                                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                                </form>
-                            </td>
-                        </c:if>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- FIX layout bị ngang do header -->
+<style>
+    .profile-wrapper {
+        display: block;
+        width: 100%;
+    }
+
+    body {
+        padding-top: 0px; /* tránh bị header che */
+    }
+</style>

@@ -33,7 +33,6 @@ com\uef\controller\admin\CategoryController.class
 com\uef\interceptor\RoleInterceptor.class
 com\uef\controller\admin\ReportController.class
 com\uef\controller\admin\AdminTicketDetailScreenController.class
-com\uef\controller\user\testController.class
 com\uef\model\PARTICIPANT.class
 com\uef\service\TagService.class
 com\uef\utils\QRCode.class

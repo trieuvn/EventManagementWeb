@@ -35,68 +35,67 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/ticket")
 public class TicketController {
+
     @Autowired
     private EventService eventService;
 
     @Autowired
     private CategoryService categoryService;
-    
+
     @Autowired
     private TicketService ticketService;
-    
+
     @Autowired
     private ParticipantService participantService;
-    
+
     @PostMapping("/event/save-ticket-id")
     @ResponseBody
     public ResponseEntity<String> saveTicketIdToSession(@RequestParam("ticketId") int ticketId, HttpSession session) {
         session.setAttribute("selectedTicketId", ticketId);
         return ResponseEntity.ok("Saved successfully");
     }
+
     @GetMapping("/show-map")
     public String showMap(Model model,
-                          @RequestParam(required = false) Double startLat,
-                          @RequestParam(required = false) Double startLng,
-                          @RequestParam Double endLat,
-                          @RequestParam Double endLng,
-                          @RequestParam(required = false) String startName,
-                          @RequestParam(required = false) String endName) throws Exception {
+            @RequestParam(required = false) Double startLat,
+            @RequestParam(required = false) Double startLng,
+            @RequestParam Double endLat,
+            @RequestParam Double endLng,
+            @RequestParam(required = false) String startName,
+            @RequestParam(required = false) String endName) throws Exception {
         return Map.showMap(model, startLat, startLng, endLat, endLng, startName, endName);
     }
-    
-    
+
     @PostMapping("/register/{ticket_id}")
     public String registerTicket(@PathVariable int ticket_id, RedirectAttributes ra, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
-        if (user == null){
+        if (user == null) {
             //redirect Dang nhap
             ra.addFlashAttribute("message", "Hãy đăng nhập trước khi đăng ký sự kiện.");
-            return "redirect:/login";
+            return "redirect:/";
         }
         TICKET ticket = ticketService.getById(ticket_id);
         if (ticket == null) {
             ra.addFlashAttribute("message", "Sự kiện không tồn tại.");
             return "redirect:/";
         }
-        
-        //fix sau khi them service
+
         PARTICIPANT participant = null;
-        if (participant != null){
+        if (participant != null) {
             ra.addFlashAttribute("message", "Bạn đã đăng ký sự kiện này rồi!.");
-            return "redirect:/ticket/"+ticket_id;
+            return "redirect:/ticket/";
         }
-        
+
         participant = new PARTICIPANT();
         participant.setUser(user);
         participant.setTicket(ticket);
         participant.setStatus(0);
-        
-        //Thêm participant vào database (Sang chưa code à? Chịu luôn)
         boolean result = participantService.set(participant);
-        if (result != true){
+        if (result != true) {
             ra.addFlashAttribute("message", "Có lỗi xảy ra vui lòng thử lại.");
         }
         ra.addFlashAttribute("message", "Thêm sự kiện thành công.");
-        return "redirect:/ticket/"+ticket_id;
+        return "redirect:/";
     }
+
 }
