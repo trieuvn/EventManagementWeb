@@ -36,9 +36,9 @@ public class EventService {
     // Thêm hoặc cập nhật sự kiện (mục 100)
     public void set(EVENT event) {
         // Kiểm tra các trường bắt buộc (BR-23)
-        if (event.getName() == null || event.getType() == null || event.getTarget() == null || event.getOrganizer() == null) {
-            throw new IllegalArgumentException("Required fields are missing");
-        }
+//        if (event.getName() == null || event.getType() == null || event.getTarget() == null || event.getOrganizer() == null) {
+//            throw new IllegalArgumentException("Required fields are missing");
+//        }
         if (event.getId() == 0) {
             entityManager.persist(event);
         } else {

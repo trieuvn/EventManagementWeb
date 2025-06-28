@@ -3,6 +3,7 @@ package com.uef.model;
 import com.uef.utils.QRCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.IOException;
@@ -23,11 +24,10 @@ public class TICKET {
     private int id;
 
     @Column(name = "[index]", nullable = false)
-    @NotNull(message = "Index cannot be null")
     private int index;
 
     @Column(name = "name", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
-    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be null")
     @Size(max = 30, message = "Name must not exceed 30 characters")
     private String name;
 
@@ -66,12 +66,12 @@ public class TICKET {
     private int confirmCode;
 
     @Column(name = "qrCode", length = 100, nullable = false, columnDefinition = "NVARCHAR(100)")
-    @NotNull(message = "QR code cannot be null")
+    @NotBlank(message = "QR code cannot be null")
     @Size(max = 100, message = "QR code must not exceed 100 characters")
     private String qrCode;
 
     @Column(name = "type", length = 30, nullable = false, columnDefinition = "NVARCHAR(30)")
-    @NotNull(message = "Type cannot be null")
+    @NotBlank(message = "Type cannot be null")
     @Size(max = 30, message = "Type must not exceed 30 characters")
     private String type;
 
@@ -214,6 +214,26 @@ public class TICKET {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public List<PARTICIPANT> getRegisteredParticipant(){
+        List<PARTICIPANT> result = new ArrayList();
+        for (PARTICIPANT participant : this.participants){
+            if (participant.getStatus() != -1){
+                result.add(participant);
+            }
+        }
+        return result;
+    }
+    
+    public List<PARTICIPANT> getJoinedParticipant(){
+        List<PARTICIPANT> result = new ArrayList();
+        for (PARTICIPANT participant : this.participants){
+            if (participant.getStatus() == 1 || participant.getStatus() == 2){
+                result.add(participant);
+            }
+        }
+        return result;
     }
 
     public TICKET(int id, int index, String name, String description, int price, Date date, Time duration, Date regDeadline, int slots, int status, int confirmCode, String qrCode, String type, EVENT event, LOCATION location, List<PARTICIPANT> participants) {
