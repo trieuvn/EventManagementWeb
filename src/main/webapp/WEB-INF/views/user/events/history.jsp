@@ -2,10 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>My Event History</title>
+    <title>Lịch Sử Sự Kiện</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -17,13 +17,17 @@
 
         .main-content {
             margin-top: 100px;
-            padding: 0 30px;
+            padding: 0 10px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .main-content h2 {
             margin-bottom: 30px;
-            font-size: 28px;
+            font-size: 32px;
             color: #333;
+            text-align: center;
         }
 
         table {
@@ -32,6 +36,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.05);
             overflow: hidden;
+            table-layout: fixed;
         }
 
         table thead {
@@ -43,6 +48,7 @@
             padding: 12px 15px;
             text-align: center;
             border-bottom: 1px solid #ddd;
+            word-wrap: break-word;
         }
 
         .status {
@@ -59,7 +65,6 @@
             padding: 6px 12px;
             border: none;
             border-radius: 6px;
-            margin: 0 5px;
             cursor: pointer;
             transition: background-color 0.2s;
         }
@@ -76,15 +81,15 @@
 
 <body>
 <div class="main-content">
-    <h2>My Event History</h2>
+    <h2>Lịch Sử Sự Kiện Của Tôi</h2>
     <table>
         <thead>
         <tr>
-            <th>Event</th>
-            <th>Ticket</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Sự kiện</th>
+            <th>Loại vé</th>
+            <th>Ngày</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -96,19 +101,24 @@
                 <td>
                     <c:choose>
                         <c:when test="${p.status == 0}">
-                            <span class="status upcoming">Upcoming</span>
+                            <span class="status upcoming">Đã Đăng ký</span>
                         </c:when>
                         <c:when test="${p.status == 1}">
-                            <span class="status completed">Completed</span>
+                            <span class="status completed">Đã tham gia</span>
                         </c:when>
-                        <c:otherwise>
-                            <span class="status canceled">Canceled</span>
-                        </c:otherwise>
+                        <c:when test="${p.status == 2}">
+                            <span class="status completed">Đã tham gia</span>
+                        </c:when>
+                        <c:when test="${p.status == -1}">
+                            <span class="status completed">Đã hủy</span>
+                        </c:when>
                     </c:choose>
                 </td>
                 <td>
-                    <button class="btn-icon btn-view view-qr-btn" data-ticket-id="${p.ticket.id}">View QR</button>
-                    <button class="btn-icon btn-rate rate-btn" data-ticket-id="${p.ticket.id}">Rate</button>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn-icon btn-view view-qr-btn" data-ticket-id="${p.ticket.id}">Xem QR</button>
+                        <button class="btn-icon btn-rate rate-btn" data-ticket-id="${p.ticket.id}">Đánh giá</button>
+                    </div>
                 </td>
             </tr>
         </c:forEach>
@@ -121,8 +131,8 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Your QR Code</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Mã QR Của Bạn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
             <div class="modal-body p-0">
                 <iframe id="qrIframe" src="" width="100%" height="400" style="border:none;"></iframe>
@@ -136,7 +146,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Rate Event</h5>
+                <h5 class="modal-title">Đánh Giá Sự Kiện</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
@@ -147,7 +157,7 @@
                     <i class="bi bi-star fs-3 text-secondary" data-star="4"></i>
                     <i class="bi bi-star fs-3 text-secondary" data-star="5"></i>
                 </div>
-                <button class="btn btn-warning" id="submitRating">Submit Rating</button>
+                <button class="btn btn-warning" id="submitRating">Gửi đánh giá</button>
             </div>
         </div>
     </div>
@@ -183,7 +193,6 @@
             });
         });
 
-        // Star click
         document.querySelectorAll('#stars i').forEach(star => {
             star.addEventListener('click', function () {
                 selectedStar = parseInt(this.getAttribute('data-star'));
@@ -200,20 +209,19 @@
             });
         });
 
-        // Submit rating
         document.getElementById("submitRating").addEventListener("click", function () {
             if (selectedStar === 0 || currentTicketId == null) {
-                alert("Please select a rating.");
+                alert("Vui lòng chọn số sao để đánh giá.");
                 return;
             }
 
             fetch("${pageContext.request.contextPath}/user/rate?ticket_id=" + currentTicketId + "&rate=" + selectedStar)
                 .then(response => {
                     if (response.ok) {
-                        alert("Rating submitted successfully.");
+                        alert("Gửi đánh giá thành công.");
                         bootstrap.Modal.getInstance(document.getElementById("rateModal")).hide();
                     } else {
-                        alert("Error submitting rating.");
+                        alert("Có lỗi khi gửi đánh giá.");
                     }
                 });
         });
