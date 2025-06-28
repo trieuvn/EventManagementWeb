@@ -17,11 +17,11 @@ public class LOCATION {
     private int id;
 
     @Column(name = "latitude", nullable = false)
-    @NotBlank(message = "Latitude cannot be null")
+    @NotNull(message = "Latitude cannot be null")
     private float latitude;
 
     @Column(name = "longitude", nullable = false)
-    @NotBlank(message = "Longitude cannot be null")
+    @NotNull(message = "Longitude cannot be null")
     private float longitude;
 
     @Column(name = "name", length = 50, nullable = false, columnDefinition = "NVARCHAR(50)")

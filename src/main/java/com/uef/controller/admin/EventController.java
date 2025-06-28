@@ -21,6 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -44,43 +46,23 @@ public class EventController {
 
     @GetMapping
     public String listEvents(Model model) {
-        // Fetch event list
-        // TODO: Replace with actual call to eventService.getAllEvents()
-        List<EVENT> eventList;
-        eventList = eventService.getAll();
-        // Example data structure (replace with service call)
-        // eventList.add(new Event("Spring Boot Workshop", "2025-07-10", "ĐH Bách Khoa", "Chuẩn bị", "upcoming"));
-        // eventList.add(new Event("Hackathon 2025", "2025-06-28", "Saigon Innovation Hub", "Đang diễn ra", "ongoing"));
+        List<EVENT> eventList = eventService.getAll();
         model.addAttribute("eventList", eventList);
 
-        // Fetch guest list
-        // TODO: Replace with actual call to guestService.getAllGuests()
-        List<ORGANIZER> guestList;
-        guestList = organizerService.getAll();
+        List<ORGANIZER> guestList = organizerService.getAll();
         model.addAttribute("guestList", guestList);
 
-        List<USER> topStudents;
-        topStudents = userService.getAll();
+        List<USER> topStudents = userService.getAll();
         topStudents.sort(Comparator.comparingLong(USER::getTotalParticipated).reversed());
-        
         model.addAttribute("topStudents", topStudents);
 
-        // Fetch notification list
-        // TODO: Replace with actual call to notificationService.getNotifications()
-        List<CHANGE> changes = new ArrayList<>();
-        changes = changeService.getAll();
+        List<CHANGE> changes = changeService.getAll();
         model.addAttribute("changes", changes);
 
-        // Fetch stats for quick stats section
-        // TODO: Replace with actual call to eventService.getUpcomingCount()
-        model.addAttribute("upcomingCount", 7); // Example value
-        // TODO: Replace with actual call to eventService.getOngoingCount()
-        model.addAttribute("ongoingCount", 2); // Example value
-        // TODO: Replace with actual call to eventService.getEndedCount()
-        model.addAttribute("endedCount", 12); // Example value
-        // TODO: Replace with actual call to notificationService.getNotificationCount()
-        model.addAttribute("notificationCount", 3); // Example value
-        
+        model.addAttribute("upcomingCount", 7); // Placeholder
+        model.addAttribute("ongoingCount", 2);  // Placeholder
+        model.addAttribute("endedCount", 12);   // Placeholder
+        model.addAttribute("notificationCount", 3); // Placeholder
         
         model.addAttribute("body", "/WEB-INF/views/admin/event/event-management.jpg");
         return "admin/event/event-management";
@@ -92,64 +74,76 @@ public class EventController {
             @Valid @ModelAttribute("event") EVENT event,
             BindingResult result,
             @RequestParam("imageFile") MultipartFile imageFile,
-            Model model) {
-        // Check for validation errors
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "redirect:/admin/events/edit/"+eventId; // Return to form with errors
+            redirectAttributes.addFlashAttribute("errorMessage", "Dữ liệu không hợp lệ: " + result.getAllErrors());
+            return "redirect:/admin/events/edit/" + eventId;
         }
 
-        // Ensure the event ID is set
         event.setId(eventId);
 
-        // Handle image upload
         try {
             if (!imageFile.isEmpty()) {
-                // TODO: Validate image file (size, type, etc.) if needed
                 event.setImage(imageFile.getBytes());
-            } else {
-                // TODO: If no new image is uploaded, retain the existing image
-                // Event existingEvent = eventService.getEventById(eventId);
-                // if (existingEvent != null && existingEvent.getImage() != null) {
-                //     event.setImage(existingEvent.getImage());
-                // }
             }
         } catch (Exception e) {
-            // TODO: Handle file upload errors (e.g., add error message to model)
-            model.addAttribute("message", "Lỗi khi tải lên hình ảnh: " + e.getMessage());
-            return "redirect:/admin/events/edit/"+eventId;
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi tải lên hình ảnh: " + e.getMessage());
+            return "redirect:/admin/events/edit/" + eventId;
         }
 
-        // TODO: Save the updated event to the database
-        // eventService.saveEvent(event);
         eventService.set(event);
-        // Redirect to dashboard after successful save
-        return "redirect:/admin/events/edit/"+eventId;
+        redirectAttributes.addFlashAttribute("successMessage", "Lưu thay đổi sự kiện thành công!");
+        return "redirect:/admin/events"; // Chuyển hướng về danh sách sự kiện
     }
 
     @PostMapping("/delete/{id}")
     public String deleteEvent(@PathVariable int id, RedirectAttributes redirectAttributes) {
         EVENT event = eventService.getById(id);
+        if (event == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Sự kiện không tồn tại.");
+            return "redirect:/admin/events";
+        }
+
+        try {
+            eventService.delete(event); // Giao dịch 1: Xóa sự kiện, TICKET, PARTICIPANT
+        } catch (Exception e) {
+            System.err.println("Error deleting event ID " + id + ": " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa sự kiện: " + e.getMessage());
+            return "redirect:/admin/events";
+        }
+
+        // Giao dịch 2: Ghi log thay đổi với REQUIRES_NEW
         if (event != null) {
-            try{
-                eventService.delete(event);
-            }catch(IllegalStateException e){
-                redirectAttributes.addFlashAttribute("message", e.getMessage());
-                return "redirect:/admin/events";
+            CHANGE change = new CHANGE();
+            change.setEvent(event);
+            change.setDate(Date.valueOf(LocalDate.now())); // 01:40 AM +07, 29/06/2025
+            change.setTime(Time.valueOf(LocalTime.of(1, 40))); // Thời gian hiện tại
+            change.setDescription("Đã xóa sự kiện: " + event.getName());
+            change.setSubject("Xóa sự kiện");
+            try {
+                saveChangeLog(change, redirectAttributes); // Gọi phương thức riêng với giao dịch mới
+            } catch (Exception e) {
+                System.err.println("Error saving change log for event ID " + id + ": " + e.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi ghi log thay đổi: " + e.getMessage());
             }
         }
-        
-        CHANGE change = new CHANGE();
-        change.setDate(Date.valueOf(LocalDate.now()));
-        change.setTime(Time.valueOf(LocalTime.now()));
-        change.setDescription("Đã xóa " + event.getName());
-        change.setSubject("Đã xóa " + event.getName());
-        changeService.set(change);
-        return "redirect:/admin/events";
+        redirectAttributes.addFlashAttribute("successMessage", "Xóa sự kiện thành công!");
+        return "redirect:/admin/events"; // Chuyển hướng tức thời, không cần reload
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveChangeLog(CHANGE change, RedirectAttributes redirectAttributes) {
+        try {
+            changeService.set(change);
+            System.out.println("Change log saved for event ID: " + (change.getEvent() != null ? change.getEvent().getId() : "null"));
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error in saveChangeLog: " + e.getMessage());
+            throw new RuntimeException("Lỗi khi lưu log thay đổi: " + e.getMessage(), e);
+        }
     }
 
     @PostMapping("/create")
-    public String createEvent() {
-        // TODO: Implement logic to redirect to event creation form
+    public String createEvent(RedirectAttributes redirectAttributes) {
         EVENT event = new EVENT();
         event.setTarget("Sinh viên UEF");
         event.setContactInfo("trieu123ok@gmail.com");
@@ -157,22 +151,61 @@ public class EventController {
         event.setType("Hybrid");
         eventService.set(event);
         int id = event.getId();
-        return "redirect:/admin/events/edit/" + String.valueOf(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Tạo sự kiện thành công!");
+        return "redirect:/admin/events/edit/" + id; // Chuyển hướng về trang chỉnh sửa để xem chi tiết
     }
 
     @PostMapping("/updateStatus")
-    public String updateStatus(@RequestParam int id, @RequestParam String status) {
+    public String updateStatus(@RequestParam int id, @RequestParam String status, RedirectAttributes redirectAttributes) {
         EVENT event = eventService.getById(id);
         if (event != null) {
             event.setType(status);
             eventService.setStatus(event);
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái sự kiện thành công!");
         }
         return "redirect:/admin/events";
     }
+
     @GetMapping("/details")
-    public String eventDetails(Model model)
-    {
+    public String eventDetails(Model model) {
         model.addAttribute("event", eventService.getAll());
         return "admin/events/details";
+    }
+
+    // Hiển thị form chỉnh sửa sự kiện với nút thêm vé
+    @GetMapping("/edit/{id}")
+    public String showEditEventForm(@PathVariable int id, Model model) {
+        EVENT event = eventService.getById(id);
+        if (event == null) {
+            model.addAttribute("errorMessage", "Sự kiện không tồn tại.");
+            return "redirect:/admin/events";
+        }
+        model.addAttribute("event", event);
+        model.addAttribute("tickets", event.getTickets());
+        return "admin/event/event-detail";
+    }
+
+    // Redirect tới form thêm vé
+    @GetMapping("/edit/{id}/add-ticket")
+    public String showAddTicketForm(@PathVariable int id, Model model) {
+        EVENT event = eventService.getById(id);
+        if (event == null) {
+            model.addAttribute("errorMessage", "Sự kiện không tồn tại.");
+            return "redirect:/admin/events";
+        }
+        TICKET ticket = new TICKET();
+        ticket.setEvent(event);
+        ticket.setName("Vé mặc định");
+        ticket.setPrice(0);
+        ticket.setDate(Date.valueOf(LocalDate.now()));
+        ticket.setDuration(Time.valueOf(LocalTime.of(2, 0))); // 2 giờ
+        ticket.setRegDeadline(Date.valueOf(LocalDate.now().plusDays(7))); // 7 ngày sau
+        ticket.setSlots(100);
+        ticket.setStatus(0); // Upcoming
+        ticket.setType(event.getType()); // Loại vé khớp với sự kiện
+        ticket.setConfirmCode(123456); // Mã xác nhận mặc định
+        ticket.setQrCode("QR_DEFAULT"); // QR code mặc định
+        model.addAttribute("ticket", ticket);
+        return "admin/tickets/add-ticket";
     }
 }

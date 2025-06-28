@@ -58,6 +58,17 @@ public class ParticipantService {
         }
     }
 
+    // Lấy danh sách người tham gia theo ticketId
+    public List<PARTICIPANT> getByTicket(int ticketId) {
+        if (ticketId <= 0) {
+            throw new IllegalArgumentException("ID vé không hợp lệ");
+        }
+        Query query = entityManager.createQuery(
+                "SELECT p FROM PARTICIPANT p WHERE p.ticket.id = :ticketId", PARTICIPANT.class);
+        query.setParameter("ticketId", ticketId);
+        return query.getResultList();
+    }
+
     // Thêm hoặc cập nhật người tham gia
     public boolean set(PARTICIPANT participant) {
         // Kiểm tra các trường bắt buộc (BR-10, BR-11)
@@ -95,7 +106,6 @@ public class ParticipantService {
         try {
             PARTICIPANT existing = getById(ticketId, userEmail);
             if (existing == null) {
-                // Tạo mới
                 Query userQuery = entityManager.createQuery("SELECT u FROM USER u WHERE u.email = :email", USER.class);
                 userQuery.setParameter("email", userEmail);
                 USER user = (USER) userQuery.getSingleResult();
@@ -106,7 +116,6 @@ public class ParticipantService {
                 if (ticket == null) {
                     throw new IllegalArgumentException("Vé không tồn tại");
                 }
-                // Kiểm tra slot còn trống (BR-11)
                 Query slotQuery = entityManager.createQuery(
                         "SELECT COUNT(p) FROM PARTICIPANT p WHERE p.ticket.id = :ticketId");
                 slotQuery.setParameter("ticketId", ticketId);
@@ -117,7 +126,6 @@ public class ParticipantService {
                 PARTICIPANT participant = new PARTICIPANT(user, ticket, status, rate, comment);
                 entityManager.persist(participant);
             } else {
-                // Cập nhật
                 existing.setStatus(status);
                 existing.setRate(rate);
                 existing.setComment(comment);
@@ -150,7 +158,6 @@ public class ParticipantService {
 
     // Đặt đánh giá cho vé (mục 98)
     public void setRate(USER user, TICKET ticket, int rate, String comment) {
-        // Kiểm tra điều kiện đánh giá (BR-17, BR-18, BR-19)
         Query query = entityManager.createQuery(
                 "SELECT p FROM PARTICIPANT p WHERE p.user = :user AND p.ticket = :ticket AND p.status = 1", PARTICIPANT.class);
         query.setParameter("user", user);

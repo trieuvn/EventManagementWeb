@@ -35,10 +35,6 @@ public class EventService {
 
     // Thêm hoặc cập nhật sự kiện (mục 100)
     public void set(EVENT event) {
-        // Kiểm tra các trường bắt buộc (BR-23)
-//        if (event.getName() == null || event.getType() == null || event.getTarget() == null || event.getOrganizer() == null) {
-//            throw new IllegalArgumentException("Required fields are missing");
-//        }
         if (event.getId() == 0) {
             entityManager.persist(event);
         } else {
@@ -46,22 +42,36 @@ public class EventService {
         }
     }
 
-    // Xóa sự kiện (mục 101, đã sửa theo yêu cầu trước)
+    // Xóa sự kiện (mục 101, đã sửa để xử lý TICKET, PARTICIPANT, và TAG)
     public boolean delete(EVENT event) {
         EVENT existingEvent = getById(event.getId());
         if (existingEvent != null) {
-            // Kiểm tra nếu sự kiện có người tham gia (BR-22, BR-25)
-            Query query = entityManager.createQuery("SELECT p FROM PARTICIPANT p WHERE p.ticket.event.id = :eventId");
-            query.setParameter("eventId", event.getId());
-            if (!query.getResultList().isEmpty()) {
-                throw new IllegalStateException("Không thể xóa sự kiện vì đã có người tham gia.");
-            } else {
-                // Xóa các tag liên quan trước (BR-26, BR-27)
+            try {
+                // Xóa các PARTICIPANT liên quan trước
+                Query participantQuery = entityManager.createQuery("DELETE FROM PARTICIPANT p WHERE p.ticket.event.id = :eventId");
+                participantQuery.setParameter("eventId", event.getId());
+                int participantCount = participantQuery.executeUpdate();
+                System.out.println("Deleted " + participantCount + " participants for event ID: " + event.getId());
+
+                // Xóa các TICKET liên quan
+                Query ticketQuery = entityManager.createQuery("DELETE FROM TICKET t WHERE t.event.id = :eventId");
+                ticketQuery.setParameter("eventId", event.getId());
+                int ticketCount = ticketQuery.executeUpdate();
+                System.out.println("Deleted " + ticketCount + " tickets for event ID: " + event.getId());
+
+                // Xóa các TAG liên quan (BR-26, BR-27)
                 Query tagQuery = entityManager.createQuery("DELETE FROM TAG t WHERE t.event.id = :eventId");
                 tagQuery.setParameter("eventId", event.getId());
-                tagQuery.executeUpdate();
+                int tagCount = tagQuery.executeUpdate();
+                System.out.println("Deleted " + tagCount + " tags for event ID: " + event.getId());
+
+                // Xóa sự kiện
                 entityManager.remove(existingEvent);
+                System.out.println("Deleted event with ID: " + event.getId());
                 return true;
+            } catch (Exception e) {
+                System.err.println("Error deleting event ID " + event.getId() + ": " + e.getMessage());
+                throw new IllegalStateException("Lỗi khi xóa sự kiện: " + e.getMessage());
             }
         }
         return false;
@@ -127,12 +137,10 @@ public class EventService {
 
     // Tạo sự kiện mới cho nhà tổ chức (mục 68)
     public EVENT createEvent(ORGANIZER organizer, EVENT event) {
-        // Kiểm tra nhà tổ chức tồn tại
         ORGANIZER existingOrganizer = organizerService.getById(organizer.getId());
         if (existingOrganizer == null) {
             throw new IllegalArgumentException("Nhà tổ chức không tồn tại");
         }
-        // Kiểm tra các trường bắt buộc của sự kiện (BR-23)
         if (event.getName() == null || event.getType() == null || event.getTarget() == null) {
             throw new IllegalArgumentException("Các trường bắt buộc của sự kiện bị thiếu");
         }
