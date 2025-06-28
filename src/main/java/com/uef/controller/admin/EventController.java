@@ -68,13 +68,13 @@ public class EventController {
 
         // Fetch stats for quick stats section
         // TODO: Replace with actual call to eventService.getUpcomingCount()
-        model.addAttribute("upcomingCount", 7); // Example value
+        model.addAttribute("upcomingCount", eventService.getUpcomingEvents()); // Example value
         // TODO: Replace with actual call to eventService.getOngoingCount()
-        model.addAttribute("ongoingCount", 2); // Example value
+        model.addAttribute("ongoingCount", eventService.getUpcomingEvents()); // Example value
         // TODO: Replace with actual call to eventService.getEndedCount()
-        model.addAttribute("endedCount", 12); // Example value
+        model.addAttribute("endedCount", eventService.getPastEvents()); // Example value
         // TODO: Replace with actual call to notificationService.getNotificationCount()
-        model.addAttribute("notificationCount", 3); // Example value
+        model.addAttribute("notificationCount", changes.size()); // Example value
         
         
         model.addAttribute("body", "/WEB-INF/views/admin/event/event-management.jpg");
@@ -155,6 +155,7 @@ public class EventController {
         return "redirect:/admin/events"; // Chuyển hướng tức thời, không cần reload
     }
 
+    @RoleRequired({"admin"})
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveChangeLog(CHANGE change, RedirectAttributes redirectAttributes) {
         try {
@@ -200,6 +201,7 @@ public class EventController {
     }
 
     // Hiển thị form chỉnh sửa sự kiện với nút thêm vé
+    @RoleRequired({"admin"})
     @GetMapping("/edit/{id}")
     public String showEditEventForm(@PathVariable int id, Model model) {
         EVENT event = eventService.getById(id);
@@ -213,6 +215,7 @@ public class EventController {
     }
 
     // Redirect tới form thêm vé
+    @RoleRequired({"admin"})
     @GetMapping("/edit/{id}/add-ticket")
     public String showAddTicketForm(@PathVariable int id, Model model, RedirectAttributes redirectAttributes) throws IOException {
         EVENT event = eventService.getById(id);

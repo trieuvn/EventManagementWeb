@@ -1,5 +1,6 @@
 package com.uef.controller.admin;
 
+import com.uef.annotation.RoleRequired;
 import com.uef.model.TICKET;
 import com.uef.model.EVENT;
 import com.uef.model.PARTICIPANT;
@@ -70,6 +71,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Hiển thị danh sách vé
+    @RoleRequired({"admin"})
     @GetMapping
     public String listTickets(Model model) {
         List<TICKET> tickets = ticketService.getAll();
@@ -80,6 +82,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Hiển thị form thêm vé mới
+    @RoleRequired({"admin"})
     @GetMapping("/add")
     public String showAddForm(@RequestParam("eventId") int eventId, Model model) {
         EVENT event = eventService.getById(eventId);
@@ -104,6 +107,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Xử lý thêm vé mới
+    @RoleRequired({"admin"})
     @PostMapping("/add")
     public String addTicket(@Valid @ModelAttribute TICKET ticket, BindingResult result, RedirectAttributes redirectAttributes) {
         System.out.println("Starting addTicket at " + LocalDate.now() + " " + LocalTime.now() + " for eventId: " + (ticket.getEvent() != null ? ticket.getEvent().getId() : "null"));
@@ -143,6 +147,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Hiển thị form chỉnh sửa vé
+    @RoleRequired({"admin"})
     @RequestMapping({"/edit/{id}", "/view/{id}"})
     public String showEditForm(@PathVariable("id") int id, Model model, RedirectAttributes redirectAttributes) {
         TICKET ticket = ticketService.getById(id);
@@ -158,6 +163,7 @@ public class AdminTicketDetailScreenController {
         return "admin/ticket/ticket-detail";
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/update/{id}")
     public String saveEditedTicket(
             @PathVariable("id") int ticketId,
@@ -236,6 +242,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Xử lý cập nhật vé
+    @RoleRequired({"admin"})
     @PostMapping("/update")
     public String updateTicket(@ModelAttribute TICKET ticket, RedirectAttributes redirectAttributes) {
         System.out.println("Starting updateTicket at " + LocalDate.now() + " " + LocalTime.now() + " for ticketId: " + ticket.getId());
@@ -276,6 +283,7 @@ public class AdminTicketDetailScreenController {
     }
 
     // Xử lý xóa vé (bỏ qua theo yêu cầu)
+    @RoleRequired({"admin"})
     @GetMapping("/delete/{id}")
     public String deleteTicket(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         TICKET ticket = new TICKET();
