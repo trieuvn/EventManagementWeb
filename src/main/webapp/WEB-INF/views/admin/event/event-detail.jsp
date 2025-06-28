@@ -8,6 +8,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Chỉnh sửa sự kiện</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/event-detail.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-style.css">
     </head>
 
@@ -63,7 +64,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn-primary">Lưu thay đổi</button>
-                            <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn-secondary">Hủy</a>
+                            <a href="${pageContext.request.contextPath}/admin/events" class="btn-secondary">Hủy</a>
                         </div>
                     </form:form>
                 </div>
@@ -121,6 +122,7 @@
                 </div>
             </div>
         </div>
+        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'956e2d018f1aadde',t:'MTc1MTEyNDEwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
     </body>
 
 </html>

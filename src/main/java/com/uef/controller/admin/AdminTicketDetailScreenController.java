@@ -65,17 +65,19 @@ public class AdminTicketDetailScreenController {
     }
 
     // Hiển thị form chỉnh sửa vé
-    @GetMapping("/edit/{id}")
+    @RequestMapping({"/edit/{id}", "/view/{id}"})
     public String showEditForm(@PathVariable("id") int id, Model model, RedirectAttributes redirectAttributes) {
         TICKET ticket = ticketService.getById(id);
         if (ticket == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Vé không tồn tại.");
             return "redirect:/admin/tickets";
         }
+        List<PARTICIPANT> participants = participantService.getAll();
         model.addAttribute("ticket", ticket);
+        model.addAttribute("participantList", participants);
         model.addAttribute("events", eventService.getAll());
-        model.addAttribute("locations", locationService.getAll());
-        return "admin/tickets/edit";
+        model.addAttribute("locationList", locationService.getAll());
+        return "admin/ticket/ticket-detail";
     }
 
     // Xử lý cập nhật vé
