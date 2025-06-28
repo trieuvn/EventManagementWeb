@@ -19,6 +19,9 @@ public class QRDataDTO {
         this.confirmCode = confirmCode;
     }
 
+    public QRDataDTO() {
+    }
+
     public String getEmail() {
         return email;
     }
