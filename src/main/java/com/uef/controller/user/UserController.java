@@ -24,6 +24,11 @@ public class UserController {
 
     @GetMapping("/login")
     public String showLogin(Model model) {
+        model.addAttribute("userForm", new USER());
+        model.addAttribute("hero", "/WEB-INF/views/layout/hero.jsp");
+        model.addAttribute("body", "/WEB-INF/views/user/events/list.jsp");
+        model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
+        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
         model.addAttribute("body", "/WEB-INF/views/layout/introduction.jsp?login=true");
         return "layout/main";
     }
@@ -56,6 +61,7 @@ public class UserController {
             @Valid @ModelAttribute("userForm") USER user,
             BindingResult result,
             RedirectAttributes ra) {
+        user.setRole(1);
         if (result.hasErrors()) {
             ra.addFlashAttribute("error", "Vui lòng kiểm tra lại thông tin.");
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);

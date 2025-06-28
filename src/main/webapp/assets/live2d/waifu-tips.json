@@ -1,0 +1,203 @@
+{
+    "mouseover": [
+        {
+            "selector": "#waifu-tool-hitokoto",
+            "text": ["Đoán xem mình định nói gì nè?", "Mình nghe được kha khá kinh nghiệm sống từ Hoàng tử Ếch đó!"]
+        },
+        {
+            "selector": "#waifu-tool-asteroids",
+            "text": ["Chơi game bắn máy bay không nào?", "Cái nút này ghi là 'Đừng bấm' đấy!"]
+        },
+        {
+            "selector": "#waifu-tool-switch-model",
+            "text": ["Cậu không thương mình nữa hả, hu hu hu~", "Muốn đổi nhân vật chính không nè?"]
+        },
+        {
+            "selector": "#waifu-tool-switch-texture",
+            "text": ["Thích chơi trò thay đồ không?", "Biến hình nào!"]
+        },
+        {
+            "selector": "#waifu-tool-photo",
+            "text": ["Cậu định chụp ảnh cho mình à? Một, hai, ba~ Cà tím đây~", "Cứ mỉm cười là ổn thôi~"]
+        },
+        {
+            "selector": "#waifu-tool-info",
+            "text": ["Muốn biết thêm về mình không?", "Cậu muốn tìm hiểu sâu hơn về mình cái gì nào?"]
+        },
+        {
+            "selector": "#waifu-tool-quit",
+            "text": ["Đã đến lúc nói lời tạm biệt rồi sao?", "Hẹn gặp lại nhé..."]
+        },
+        {
+            "selector": "a[href$='/']",
+            "text": ["Bấm để về trang chủ nè!", "Về trang chủ xem thử đi nào."]
+        },
+        {
+            "selector": "a[href$='/about']",
+            "text": ["Cậu muốn biết về hệ thống này không?", "Đây là bí mật về Event Management System!"]
+        },
+        {
+            "selector": "a[href$='/news']",
+            "text": ["Xem tin tức mới nhất nào!", "Tin nóng hổi đây nè!"]
+        },
+        {
+            "selector": "a[href$='/contacts']",
+            "text": ["Liên hệ với chúng mình nhé!", "Bấm để gửi tin nhắn nè!"]
+        },
+        {
+            "selector": "a[data-target='#loginModal']",
+            "text": ["Sẵn sàng đăng nhập chưa?", "Bấm để vào hệ thống nè!"]
+        },
+        {
+            "selector": ".qr-form .vsubmit",
+            "text": ["Sẵn sàng quét mã QR chưa?", "Bấm để gửi mã QR nè!"]
+        },
+        {
+            "selector": ".export-form .vsubmit",
+            "text": ["Xuất danh sách người dùng ra Excel nào!", "Bấm để tải file Excel nè!"]
+        }],
+    "click": [
+        {
+            "selector": "a[href$='/']",
+            "text": ["Đi đến trang chủ nào!"]
+        },
+        {
+            "selector": "a[href$='/about']",
+            "text": ["Khám phá giới thiệu về hệ thống!"]
+        },
+        {
+            "selector": "a[href$='/news']",
+            "text": ["Đọc tin tức mới nhất nè!"]
+        },
+        {
+            "selector": "a[href$='/contacts']",
+            "text": ["Gửi tin nhắn liên hệ đi nào!"]
+        },
+        {
+            "selector": "a[data-target='#loginModal']",
+            "text": ["Đăng nhập để bắt đầu nhé!"]
+        },
+        {
+            "selector": ".qr-form .vsubmit",
+            "text": ["Đang xử lý mã QR, chờ chút nha~"]
+        },
+        {
+            "selector": ".export-form .vsubmit",
+            "text": ["Đang xuất file Excel, sắp xong rồi!"]
+        }
+    ],
+    "seasons": [{
+            "date": "01/01",
+            "text": "<span>Tết Dương lịch</span> rồi nè, năm mới lại bắt đầu, năm nay là {year} đó~"
+        }, {
+            "date": "02/14",
+            "text": "Lại một mùa <span>Valentine</span>, năm {year} đã tìm được người thương chưa nè~"
+        }, {
+            "date": "03/08",
+            "text": "Hôm nay là <span>Ngày Quốc tế Phụ nữ</span> nè!"
+        }, {
+            "date": "03/12",
+            "text": "Hôm nay là <span>Ngày Trồng cây</span>, phải bảo vệ môi trường nha!"
+        }, {
+            "date": "04/01",
+            "text": "Bật mí một bí mật nè~ <span>Hôm nay là Cá tháng Tư, đừng để bị lừa nhé~</span>"
+        }, {
+            "date": "05/01",
+            "text": "Hôm nay là <span>Ngày Quốc tế Lao động</span>, đã lên kế hoạch đi chơi đâu chưa nè~"
+        }, {
+            "date": "06/01",
+            "text": "<span>Ngày Quốc tế Thiếu nhi</span> rồi, thời gian vui vẻ trôi nhanh thật, mãi không lớn thì tốt biết bao..."
+        }, {
+            "date": "09/03",
+            "text": "<span>Ngày Chiến thắng Kháng chiến chống Nhật</span>, ghi nhớ lịch sử, tưởng nhớ liệt sĩ, trân trọng hòa bình, hướng tới tương lai."
+        }, {
+            "date": "09/10",
+            "text": "<span>Ngày Nhà giáo</span>, nhớ chào hỏi thầy cô ở trường nha~"
+        }, {
+            "date": "10/01",
+            "text": "<span>Quốc khánh</span> đến rồi, chúc mừng sinh nhật tổ quốc!"
+        }, {
+            "date": "11/05-11/12",
+            "text": "<span>Double 11</span> năm nay cậu trải qua cùng ai nè~"
+        }, {
+            "date": "12/20-12/31",
+            "text": "Mấy ngày này là <span>Giáng sinh</span>, chủ nhân chắc lại đi shopping điên cuồng rồi~"
+        }],
+    "time": [{
+            "hour": "6-7",
+            "text": "Chào buổi sáng! Một ngày mới bắt đầu, kế hoạch hôm nay thế nào nè~"
+        }, {
+            "hour": "8-11",
+            "text": "Chào buổi trưa! Công việc suôn sẻ chứ, đừng ngồi lâu, đứng dậy đi lại chút nha!"
+        }, {
+            "hour": "12-13",
+            "text": "Trưa rồi, làm việc cả sáng, giờ là lúc ăn trưa nè!"
+        }, {
+            "hour": "14-17",
+            "text": "Buổi chiều dễ buồn ngủ lắm, hôm nay đã hoàn thành mục tiêu vận động chưa?"
+        }, {
+            "hour": "18-19",
+            "text": "Hoàng hôn rồi! Cảnh hoàng hôn ngoài cửa sổ đẹp lắm, đẹp nhất là ánh chiều tà~"
+        }, {
+            "hour": "20-21",
+            "text": "Chào buổi tối, hôm nay thế nào rồi?"
+        }, {
+            "hour": "22-23",
+            "text": ["Khuya lắm rồi nha, nghỉ ngơi sớm đi, chúc ngủ ngon~", "Đêm khuya rồi, nhớ giữ gìn đôi mắt nha!"]
+        }, {
+            "hour": "0-5",
+            "text": "Cú đêm hả? Khuya thế này còn chưa ngủ, mai dậy nổi không đó?"
+        }],
+    "message": {
+        "default": ["Lâu quá không gặp, thời gian trôi nhanh thật...", "Đồ xấu xa! Cậu bỏ bê mình bao lâu rồi, hức hức hức~", "Hây~ Mau đến chơi với mình đi!", "Đấm nhẹ vào ngực cậu nè!", "Nhớ thêm mình vào bookmark nha!"],
+        "console": "Haha, cậu mở bảng điều khiển à, muốn xem bí mật của mình hả?",
+        "copy": "Cậu vừa sao chép gì thế, nhớ ghi nguồn khi chia sẻ nha!",
+        "visibilitychange": "Wow, cuối cùng cậu cũng quay lại rồi~",
+        "changeSuccess": "Bộ đồ mới của mình có đẹp không?",
+        "changeFail": "Mình chưa có bộ đồ nào khác đâu!",
+        "photo": "Chụp xong chưa, mình có dễ thương không nè?",
+        "goodbye": "Chúc cậu một ngày nào đó sẽ gặp lại người quan trọng.",
+        "welcome": "Chào mừng đến với thế giới sự kiện Festivo!",
+        "referrer": "Xin chào! Bạn đến từ Festivo",
+        "hoverBody": ["Cậu làm gì thế, mau bỏ tay ra~~", "Chuột… chuột đặt nhầm chỗ rồi!", "Cậu định làm gì hả?", "Mèo mèo mèo?", "Sợ quá (ノ≧∇≦)ノ", "Tấn công kìa! Cứu với!", "Dùng võ lực thôi!", "Mình sắp giận rồi nha", "Đừng táy máy tay chân!", "Thật… thật là không biết xấu hổ!", "Hentai!"],
+        "tapBody": [["Chỉ… chỉ vô tình chạm thôi đúng không…", "Loli-con là gì vậy?", "Cậu thấy chú gấu nhỏ của mình đâu không?", "Sờ nữa là mình báo cảnh sát đó! ⌇●﹏●⌇", "110 ơi, có kẻ biến thái cứ sờ mình! (ó﹏ò｡)", "Đừng sờ nữa, mình sẽ mách vợ đến đánh cậu đó!", "Sao lại động vào mình! Cẩn thận mình cắn đó!", "Đừng sờ nữa, có gì hay ho đâu!"]]
+    },
+    "models": [{
+            "name": "Potion-Maker/Pio",
+            "paths": ["https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/Potion-Maker/Pio/index.json"],
+            "message": "Mình là Pio từ Potion Maker nè ~"
+        }, {
+            "name": "Potion-Maker/Tia",
+            "paths": ["https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/Potion-Maker/Tia/index.json"],
+            "message": "Mình là Tia từ Potion Maker nè ~"
+        }, {
+            "name": "HyperdimensionNeptunia",
+            "paths": [
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/neptune_classic/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/nepnep/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/neptune_santa/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/nepmaid/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/nepswim/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/noir_classic/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/noir/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/noir_santa/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/noireswim/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/blanc_classic/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/blanc_normal/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/blanc_swimwear/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/vert_classic/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/vert_normal/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/vert_swimwear/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/nepgear/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/nepgear_extra/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/nepgearswim/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/histoire/index.json",
+                "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/model/HyperdimensionNeptunia/histoirenohover"
+            ],
+            "message": "Nep! Nep! Dòng game Siêu chiều không gian: Hải Vương Tinh"
+        }, {
+            "name": "Hiyori",
+            "paths": ["https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json"],
+            "message": "Mình là Hiyori nè ~"
+        }]
+}

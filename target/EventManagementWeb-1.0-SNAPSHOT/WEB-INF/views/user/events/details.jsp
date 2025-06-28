@@ -2,16 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="container-fluid mt-4">
-    <!-- Phần trên: Hình ảnh và Organizer -->
-    <div class="row mb-5">
+    <!-- Hình ảnh và thông tin tổ chức -->
+    <div class="row mb-5 mt-5"> <!-- ĐÃ THÊM mt-5 ở đây -->
         <div class="col-md-4">
             <div class="card card-custom p-3 bg-light-custom">
                 <c:choose>
                     <c:when test="${not empty event.image}">
-                        <img src="${event.image}" alt="Event Image" class="img-fluid rounded shadow-sm" style="height: 200px; object-fit: cover;" />
+                        <img src="data:image/jpeg;base64,${event.getBase64Image()}" alt="Event Image" class="img-fluid rounded shadow-sm" style="height: 200px; object-fit: cover;" />
                     </c:when>
                     <c:otherwise>
-                        <img src="${pageContext.request.contextPath}/assets/img/eventdefault.jpg" alt="Event Default Image" class="img-fluid rounded shadow-sm" style="height: 200px; object-fit: cover;" />
+                        <img src="${pageContext.request.contextPath}/assets/img/eventdefault.jpg" alt="Default Event" class="img-fluid rounded shadow-sm" style="height: 200px; object-fit: cover;" />
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -20,17 +20,12 @@
             <div class="card card-custom p-4 bg-light-custom">
                 <div class="row align-items-center">
                     <div class="col-md-3 d-flex justify-content-center">
-                        <!-- Avatar của organizer -->
                         <c:choose>
                             <c:when test="${not empty event.organizer.avatar}">
-                                <img src="data:image/jpeg;base64,${event.organizer.avatarBase64}" 
-                                     alt="Organizer Avatar" 
-                                     class="img-fluid organizer-avatar" />
+                                <img src="data:image/jpeg;base64,${event.organizer.getBase64Avatar()}" class="img-fluid organizer-avatar" />
                             </c:when>
                             <c:otherwise>
-                                <img src="${pageContext.request.contextPath}/assets/img/bussinesspeople.jpg" 
-                                     alt="Default Avatar" 
-                                     class="img-fluid organizer-avatar" />
+                                <img src="${pageContext.request.contextPath}/assets/img/bussinesspeople.jpg" class="img-fluid organizer-avatar" />
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -38,36 +33,16 @@
                         <h3 class="text-primary">Organizer Information</h3>
                         <c:choose>
                             <c:when test="${not empty event.organizer}">
-                                <p class="mb-1"><strong>Name:</strong> 
+                                <p><strong>Name:</strong> 
                                     <c:choose>
                                         <c:when test="${not empty event.organizer.firstName and not empty event.organizer.lastName}">
                                             ${event.organizer.firstName} ${event.organizer.lastName}
                                         </c:when>
-                                        <c:otherwise>
-                                            ${event.organizer.lastName}
-                                        </c:otherwise>
+                                        <c:otherwise>${event.organizer.lastName}</c:otherwise>
                                     </c:choose>
                                 </p>
-                                <p class="mb-1"><strong>Email:</strong> 
-                                    <c:choose>
-                                        <c:when test="${not empty event.organizer.email}">
-                                            ${event.organizer.email}
-                                        </c:when>
-                                        <c:otherwise>
-                                            N/A
-                                        </c:otherwise>
-                                    </c:choose>
-                                </p>
-                                <p class="mb-0"><strong>Phone:</strong> 
-                                    <c:choose>
-                                        <c:when test="${not empty event.organizer.phoneNumber}">
-                                            ${event.organizer.phoneNumber}
-                                        </c:when>
-                                        <c:otherwise>
-                                            N/A
-                                        </c:otherwise>
-                                    </c:choose>
-                                </p>
+                                <p><strong>Email:</strong> ${event.organizer.email != null ? event.organizer.email : "N/A"}</p>
+                                <p><strong>Phone:</strong> ${event.organizer.phoneNumber != null ? event.organizer.phoneNumber : "N/A"}</p>
                             </c:when>
                             <c:otherwise>
                                 <p class="text-muted">No organizer information available.</p>
@@ -79,32 +54,32 @@
         </div>
     </div>
 
-    <!-- Phần dưới: Thông tin sự kiện -->
+    <!-- Thông tin sự kiện -->
     <div class="row mt-5">
         <div class="col-md-12">
             <div class="card card-custom p-4 bg-light-custom">
                 <h2 class="text-success">${event.name}</h2>
-                <p><strong>Description:</strong> ${event.description}</p>
-                <p><strong>Slots:</strong> ${totalSlots}</p>
-                <p><strong>Type:</strong> ${event.type}</p>
-                <p><strong>Target:</strong> ${event.target}</p>
+                <p>${event.description}</p>
+                <p><strong>Số lượng vé:</strong> ${event.getSlots()}</p>
+                <p><strong>Hình thức:</strong> ${event.type}</p>
+                <p><strong>Đối tượng tham gia:</strong> ${event.target}</p>
                 <p><strong>Contact:</strong> ${event.contactInfo}</p>
             </div>
         </div>
     </div>
 
-    <!-- Bảng danh sách vé -->
+    <!-- Danh sách vé -->
     <div class="row mt-5">
         <div class="col-md-12">
             <div class="card card-custom p-4 bg-light-custom">
-                <h3 class="text-info">Available Tickets</h3>
+                <h3 class="text-info">Danh sách vé</h3>
                 <table class="table table-bordered table-hover table-custom">
                     <thead>
                         <tr>
-                            <th scope="col">Ticket Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Slot</th>
-                            <th scope="col">Action</th>
+                            <th>Tên</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -116,26 +91,23 @@
                                         <c:when test="${ticket.price == 0}">
                                             <span class="free-badge">Free</span>
                                         </c:when>
-                                        <c:otherwise>
-                                            ${ticket.price}
-                                        </c:otherwise>
+                                        <c:otherwise>${ticket.price}</c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${ticket.slots}</td>
+                                <td>${ticket.getAvailableSlots()}/${ticket.slots}</td>
                                 <td>
-                                    <!-- Nút View với data attributes để truyền dữ liệu -->
-                                    <button type="button" class="btn btn-outline-info btn-sm ms-2 custom-view-btn" 
-                                            data-bs-toggle="modal" data-bs-target="#ticketModal" 
-                                            data-ticket-id="${ticket.id}" 
-                                            data-ticket-date="${ticket.date}" 
-                                            data-ticket-description="${ticket.description}" 
-                                            data-ticket-duration="${ticket.duration}" 
-                                            data-ticket-index="${ticket.index}" 
-                                            data-ticket-name="${ticket.name}" 
-                                            data-ticket-price="${ticket.price}" 
-                                            data-ticket-regdeadline="${ticket.regDeadline}" 
-                                            data-ticket-slots="${ticket.slots}" 
-                                            data-ticket-status="${ticket.status}" 
+                                    <button type="button" class="btn btn-outline-info btn-sm ms-2 custom-view-btn"
+                                            data-bs-toggle="modal" data-bs-target="#ticketModal"
+                                            data-ticket-id="${ticket.id}"
+                                            data-ticket-date="${ticket.date}"
+                                            data-ticket-description="${ticket.description}"
+                                            data-ticket-duration="${ticket.duration}"
+                                            data-ticket-index="${ticket.index}"
+                                            data-ticket-name="${ticket.name}"
+                                            data-ticket-price="${ticket.price}"
+                                            data-ticket-regdeadline="${ticket.regDeadline}"
+                                            data-ticket-slots="${ticket.slots}"
+                                            data-ticket-status="${ticket.status}"
                                             data-ticket-type="${ticket.type}">
                                         <i class="bi bi-eye"></i> View
                                     </button>
@@ -148,129 +120,131 @@
         </div>
     </div>
 
-    <!-- Bootstrap Modal -->
+    <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg"> <!-- Kích thước lớn hơn -->
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ticketModalLabel">Ticket Details</h5>
-                    <button type="button" class="btn btn-link text-dark close-btn" data-bs-dismiss="modal" aria-label="Close">x</button>
+                    <button type="button" class="btn btn-link text-dark close-btn" data-bs-dismiss="modal">x</button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>ID:</strong> <span id="modal-ticket-id"></span></p>
-                    <p><strong>Date:</strong> <span id="modal-ticket-date"></span></p>
-                    <p><strong>Description:</strong> <span id="modal-ticket-description"></span></p>
-                    <p><strong>Duration:</strong> <span id="modal-ticket-duration"></span></p>
-                    <p><strong>Index:</strong> <span id="modal-ticket-index"></span></p>
-                    <p><strong>Name:</strong> <span id="modal-ticket-name"></span></p>
-                    <p><strong>Price:</strong> <span id="modal-ticket-price"></span></p>
-                    <p><strong>Reg Deadline:</strong> <span id="modal-ticket-regdeadline"></span></p>
-                    <p><strong>Slots:</strong> <span id="modal-ticket-slots"></span></p>
-                    <p><strong>Status:</strong> <span id="modal-ticket-status"></span></p>
-                    <p><strong>Type:</strong> <span id="modal-ticket-type"></span></p>
+                    <div class="row">
+                        <!-- Bản đồ bên trái -->
+                        <div class="col-md-6">
+                            <div id="mapContainer" style="height: 400px; border-radius: 8px; overflow: hidden;">
+                                <iframe id="mapIframe"
+                                        src=""
+                                        style="width: 100%; height: 100%; border: none;"
+                                        allowfullscreen loading="lazy"></iframe>
+                            </div>
+                        </div>
+
+                        <!-- Thông tin vé bên phải -->
+                        <div class="col-md-6">
+                            <p><strong>Ngày:</strong> <span id="modal-ticket-date"></span></p>
+                            <p><strong>Mô tả:</strong> <span id="modal-ticket-description"></span></p>
+                            <p><strong>Thời lượng:</strong> <span id="modal-ticket-duration"></span></p>
+                            <p><strong>Tên vé:</strong> <span id="modal-ticket-name"></span></p>
+                            <p><strong>Giá vé:</strong> <span id="modal-ticket-price"></span></p>
+                            <p><strong>Hạn đăng ký:</strong> <span id="modal-ticket-regdeadline"></span></p>
+                            <p><strong>Số lượng vé:</strong> <span id="modal-ticket-slots"></span></p>
+                            <p><strong>Trạng thái:</strong> <span id="modal-ticket-status"></span></p>
+                            <p><strong>Hình thức:</strong> <span id="modal-ticket-type"></span></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success custom-register-btn">Register</button>
+                    <form id="registerForm" action="${pageContext.request.contextPath}/ticket/register" method="post">
+                        <c:if test="${not empty _csrf}">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </c:if>
+                        <button type="submit" class="btn btn-success custom-register-btn">Register</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Include Bootstrap JS and jQuery if not already included -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    // JavaScript to populate modal with ticket details
-    $('#ticketModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var ticketId = button.data('ticket-id');
-        var ticketDate = button.data('ticket-date') || 'N/A';
-        var ticketDescription = button.data('ticket-description') || 'N/A';
-        var ticketDuration = button.data('ticket-duration') || 'N/A';
-        var ticketIndex = button.data('ticket-index') || 'N/A';
-        var ticketName = button.data('ticket-name');
-        var ticketPrice = button.data('ticket-price');
-        var ticketRegDeadline = button.data('ticket-regdeadline') || 'N/A';
-        var ticketSlots = button.data('ticket-slots');
-        var ticketStatus = button.data('ticket-status') === 1 ? 'Active' : 'Inactive';
-        var ticketType = button.data('ticket-type') || 'N/A';
+    <script>
+        $(document).ready(function () {
+            $('.custom-view-btn').click(function () {
+                const button = $(this);
 
-        // Update modal content
-        $('#modal-ticket-id').text(ticketId);
-        $('#modal-ticket-date').text(ticketDate);
-        $('#modal-ticket-description').text(ticketDescription);
-        $('#modal-ticket-duration').text(ticketDuration);
-        $('#modal-ticket-index').text(ticketIndex);
-        $('#modal-ticket-name').text(ticketName);
-        $('#modal-ticket-price').text(ticketPrice === 0 ? 'Free' : ticketPrice);
-        $('#modal-ticket-regdeadline').text(ticketRegDeadline);
-        $('#modal-ticket-slots').text(ticketSlots);
-        $('#modal-ticket-status').text(ticketStatus);
-        $('#modal-ticket-type').text(ticketType);
-    });
-</script>
+                const ticketData = {
+                    id: button.data('ticket-id'),
+                    date: button.data('ticket-date') || 'N/A',
+                    description: button.data('ticket-description') || 'N/A',
+                    duration: button.data('ticket-duration') || 'N/A',
+                    name: button.data('ticket-name'),
+                    price: button.data('ticket-price'),
+                    regDeadline: button.data('ticket-regdeadline') || 'N/A',
+                    slots: button.data('ticket-slots'),
+                    status: button.data('ticket-status') === 1 ? 'Active' : 'Inactive',
+                    type: button.data('ticket-type') || 'N/A'
+                };
 
-<style>
-    .card-custom {
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
-    .card-custom:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        transform: translateY(-2px);
-    }
-    .bg-light-custom {
-        background-color: #f8f9fa;
-    }
-    .table-custom th {
-        background-color: #007bff;
-        color: white;
-    }
-    .table-custom td {
-        vertical-align: middle;
-    }
-    .custom-register-btn {
-        padding: 10px 20px; /* Tăng padding để phóng to nút */
-        font-size: 1.1rem; /* Tăng kích thước chữ */
-        min-width: 120px; /* Tăng chiều rộng tối thiểu */
-    }
-    .free-badge {
-        color: #28a745;
-        font-weight: bold;
-        font-size: 1.1em;
-    }
-    .organizer-avatar {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-    }
-    @media (max-width: 768px) {
-        .organizer-avatar {
-            width: 100px;
-            height: 100px;
+                // Gửi ticketId lên controller lưu vào session
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/event/save-ticket-id',
+                    type: 'POST',
+                    data: {ticketId: ticketData.id},
+                    success: function () {
+                        console.log('Saved ticketId to session: ' + ticketData.id);
+                    },
+                    error: function () {
+                        console.error('Error saving ticketId');
+                    }
+                });
+
+                // Hiển thị dữ liệu vào modal
+                $('#modal-ticket-date').text(ticketData.date);
+                $('#modal-ticket-description').text(ticketData.description);
+                $('#modal-ticket-duration').text(ticketData.duration);
+                $('#modal-ticket-name').text(ticketData.name);
+                $('#modal-ticket-price').text(ticketData.price === 0 ? 'Free' : ticketData.price);
+                $('#modal-ticket-regdeadline').text(ticketData.regDeadline);
+                $('#modal-ticket-slots').text(ticketData.slots);
+                $('#modal-ticket-status').text(ticketData.status);
+                $('#modal-ticket-type').text(ticketData.type);
+
+                // Tạo URL bản đồ với điểm đến mặc định
+                const mapUrl = '${pageContext.request.contextPath}/ticket/show-map'
+                        + '?endLat=16.0544&endLng=108.2022'
+                        + '&startName=' + encodeURIComponent('You are here')
+                        + '&endName=' + encodeURIComponent(ticketData.name);
+                
+                $('#mapIframe').attr('src', mapUrl);
+                
+                
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openTicketModal(ticket) {
+            // Cập nhật thông tin vé trong modal
+            document.getElementById('modal-ticket-date').textContent = ticket.date;
+            document.getElementById('modal-ticket-description').textContent = ticket.description;
+            document.getElementById('modal-ticket-duration').textContent = ticket.duration;
+            document.getElementById('modal-ticket-name').textContent = ticket.name;
+            document.getElementById('modal-ticket-price').textContent = ticket.price;
+            document.getElementById('modal-ticket-regdeadline').textContent = ticket.regdeadline;
+            document.getElementById('modal-ticket-slots').textContent = ticket.slots;
+            document.getElementById('modal-ticket-status').textContent = ticket.status;
+            document.getElementById('modal-ticket-type').textContent = ticket.type;
+
+            // Cập nhật action của form với ticket_id
+            const form = document.getElementById('registerForm');
+            form.action = `${form.getAttribute('action')}/${ticket.id}`;
+
+            // Hiển thị modal
+            const modal = new bootstrap.Modal(document.getElementById('ticketModal'));
+            modal.show();
         }
-        .col-md-3 {
-            flex: 0 0 100%;
-            max-width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-    }
-    .modal-header .close-btn {
-        padding: 0;
-        font-size: 1.5rem;
-        line-height: 1;
-        background: none;
-        border: none;
-        outline: none;
-        color: #000;
-    }
-    .modal-header .close-btn:hover {
-        color: #dc3545; /* Màu đỏ khi hover */
-    }
-</style>
+    </script>

@@ -17,12 +17,15 @@ import com.uef.utils.Map;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -44,27 +47,26 @@ public class TicketController {
     @Autowired
     private ParticipantService participantService;
     
-    @GetMapping("/{ticket_id}")
-    public String TicketDetail(@RequestParam int ticket_id, RedirectAttributes ra, Model model) throws Exception {
-        TICKET ticket = ticketService.getById(ticket_id);
-        EVENT event = ticket.getEvent();
-        if (ticket == null) {
-            ra.addFlashAttribute("message", "Sự kiện không tồn tại.");
-            return "redirect:/";
-        }
-        model.addAttribute("ticket", ticket);
-        model.addAttribute("event", event);
-        model.addAttribute("event_image", Image.convertByteToBase64(event.getImage()));
-        model.addAttribute("map", Map.showMap(model, null, null, Double.valueOf(ticket.getLocation().getLatitude()), Double.valueOf(ticket.getLocation().getLongitude()), null, null));
-        model.addAttribute("userForm", new USER());
-        model.addAttribute("body", "/WEB-INF/views/user/tickets/detail.jsp");
-        model.addAttribute("advantage", "/WEB-INF/views/layout/benefit.jsp");
-        model.addAttribute("introPicture", "/WEB-INF/assets/img/hero.jpg");
-        return "layout/main2";
+    @PostMapping("/event/save-ticket-id")
+    @ResponseBody
+    public ResponseEntity<String> saveTicketIdToSession(@RequestParam("ticketId") int ticketId, HttpSession session) {
+        session.setAttribute("selectedTicketId", ticketId);
+        return ResponseEntity.ok("Saved successfully");
+    }
+    @GetMapping("/show-map")
+    public String showMap(Model model,
+                          @RequestParam(required = false) Double startLat,
+                          @RequestParam(required = false) Double startLng,
+                          @RequestParam Double endLat,
+                          @RequestParam Double endLng,
+                          @RequestParam(required = false) String startName,
+                          @RequestParam(required = false) String endName) throws Exception {
+        return Map.showMap(model, startLat, startLng, endLat, endLng, startName, endName);
     }
     
+    
     @PostMapping("/register/{ticket_id}")
-    public String registerTicket(@RequestParam int ticket_id, RedirectAttributes ra, HttpSession session) {
+    public String registerTicket(@PathVariable int ticket_id, RedirectAttributes ra, HttpSession session) {
         USER user = (USER) session.getAttribute("user");
         if (user == null){
             //redirect Dang nhap
@@ -90,6 +92,10 @@ public class TicketController {
         participant.setStatus(0);
         
         //Thêm participant vào database (Sang chưa code à? Chịu luôn)
+        boolean result = participantService.set(participant);
+        if (result != true){
+            ra.addFlashAttribute("message", "Có lỗi xảy ra vui lòng thử lại.");
+        }
         ra.addFlashAttribute("message", "Thêm sự kiện thành công.");
         return "redirect:/ticket/"+ticket_id;
     }
