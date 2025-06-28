@@ -15,7 +15,6 @@ com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
 com\uef\model\QRDataDTO.class
 com\uef\service\LocationService.class
-com\uef\controller\admin\CategoryManagementScreenController.class
 com\uef\annotation\RoleRequired.class
 com\uef\utils\Map.class
 com\uef\service\EventService.class
@@ -24,7 +23,6 @@ com\uef\model\TAG.class
 com\uef\controller\admin\ParticipantController.class
 com\uef\controller\user\TicketController.class
 com\uef\utils\Email.class
-com\uef\controller\admin\CategoryDetailScreenController.class
 com\uef\model\TICKET.class
 com\uef\utils\Email$1.class
 com\uef\utils\Image.class
