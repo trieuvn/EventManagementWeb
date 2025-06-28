@@ -90,9 +90,10 @@ public class AdminTicketDetailScreenController {
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes) {
+        ticket = ticketService.getById(ticketId);
         if (result.hasErrors()) {
             // TODO: Fetch participant list again to repopulate the form
-            model.addAttribute("message", result);
+            redirectAttributes.addFlashAttribute("message", result);
             return "redirect:/admin/tickets/edit/"+String.valueOf(ticketId);
         }
 

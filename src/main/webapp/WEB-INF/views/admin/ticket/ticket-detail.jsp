@@ -8,7 +8,63 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Chỉnh sửa vé</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin-style.css">
+        <style>
+            /* Popup styles */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                max-width: 400px;
+                width: 100%;
+                text-align: center;
+            }
+            .popup.show {
+                display: block;
+            }
+            .popup-header {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .popup-content {
+                margin-bottom: 20px;
+            }
+            .popup-close {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .popup-close:hover {
+                background-color: #0056b3;
+            }
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            .overlay.show {
+                display: block;
+            }
+        </style>
     </head>
 
     <body>
@@ -163,7 +219,12 @@
                 </div>
             </div>
         </div>
-        
+        <script>
+            function closePopup() {
+                document.querySelector('.popup').classList.remove('show');
+                document.querySelector('.overlay').classList.remove('show');
+            }
+        </script>
     </body>
 
 </html>
