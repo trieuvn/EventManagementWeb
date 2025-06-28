@@ -11,6 +11,7 @@ import com.uef.service.ChangeService;
 import com.uef.service.EventService;
 import com.uef.service.OrganizerService;
 import com.uef.service.ParticipantService;
+import com.uef.service.TicketService;
 import com.uef.service.UserService;
 import jakarta.validation.Valid;
 import java.sql.Date;
@@ -36,6 +37,9 @@ public class EventController {
 
     @Autowired
     private OrganizerService organizerService;
+    
+    @Autowired
+    private TicketService ticketService;
     
     @Autowired
     private ChangeService changeService;
@@ -75,13 +79,13 @@ public class EventController {
 
         // Fetch stats for quick stats section
         // TODO: Replace with actual call to eventService.getUpcomingCount()
-        model.addAttribute("upcomingCount", 7); // Example value
+        model.addAttribute("upcomingCount", eventService.getUpcomingEvents().size()); // Example value
         // TODO: Replace with actual call to eventService.getOngoingCount()
-        model.addAttribute("ongoingCount", 2); // Example value
+        model.addAttribute("ongoingCount", eventService.getUpcomingEvents().size()); // Example value
         // TODO: Replace with actual call to eventService.getEndedCount()
-        model.addAttribute("endedCount", 12); // Example value
+        model.addAttribute("endedCount", eventService.getPastEvents().size()); // Example value
         // TODO: Replace with actual call to notificationService.getNotificationCount()
-        model.addAttribute("notificationCount", 3); // Example value
+        model.addAttribute("notificationCount", changes.size()); // Example value
         
         
         model.addAttribute("body", "/WEB-INF/views/admin/event/event-management.jpg");
