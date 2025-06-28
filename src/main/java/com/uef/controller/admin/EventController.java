@@ -115,7 +115,7 @@ public class EventController {
             }
         } catch (Exception e) {
             // TODO: Handle file upload errors (e.g., add error message to model)
-            model.addAttribute("error", "Lỗi khi tải lên hình ảnh: " + e.getMessage());
+            model.addAttribute("message", "Lỗi khi tải lên hình ảnh: " + e.getMessage());
             return "redirect:/admin/events/edit/"+eventId;
         }
 

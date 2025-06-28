@@ -12,6 +12,14 @@
     </head>
 
     <body>
+        <c:if test="${not empty message}">
+            <div class="overlay show"></div>
+            <div class="popup show">
+                <div class="popup-header">Thông báo</div>
+                <div class="popup-content">${message}</div>
+                <button class="popup-close" onclick="closePopup()">Đóng</button>
+            </div>
+        </c:if>
         <div class="container">
             <div class="main-content">
                 <div class="card">

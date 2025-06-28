@@ -7,6 +7,8 @@ import com.uef.service.TicketService;
 import com.uef.service.EventService;
 import com.uef.service.LocationService;
 import com.uef.service.ParticipantService;
+import jakarta.validation.Valid;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import org.springframework.validation.BindingResult;
 
 @Controller
 @RequestMapping("/admin/tickets")
@@ -78,6 +81,31 @@ public class AdminTicketDetailScreenController {
         model.addAttribute("events", eventService.getAll());
         model.addAttribute("locationList", locationService.getAll());
         return "admin/ticket/ticket-detail";
+    }
+
+    @PostMapping("/save/{id}")
+    public String saveEditedTicket(
+            @PathVariable("id") int ticketId,
+            @Valid @ModelAttribute("ticket") TICKET ticket,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            // TODO: Fetch participant list again to repopulate the form
+            model.addAttribute("message", result);
+            return "redirect:/admin/tickets/edit/"+String.valueOf(ticketId);
+        }
+
+        ticket.setId(ticketId);
+        try {
+            // TODO: Save the updated ticket to the database
+            ticketService.set(ticket);
+            redirectAttributes.addFlashAttribute("message", "Vé đã được cập nhật thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Lỗi khi lưu vé: " + e.getMessage());
+            return "redirect:/admin/tickets/edit/"+String.valueOf(ticketId);
+        }
+        return "redirect:/admin/tickets/edit/" + String.valueOf(ticketId);
     }
 
     // Xử lý cập nhật vé
