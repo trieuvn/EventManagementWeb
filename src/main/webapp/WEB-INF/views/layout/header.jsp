@@ -105,6 +105,9 @@
                     <li class="<%= uri.startsWith(context + "/about") ? "active" : "" %>">
                         <a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a>
                     </li>
+                    <li class="<%= uri.startsWith(context + "/contacts") ? "active" : "" %>">
+                        <a href="${pageContext.request.contextPath}/contacts">NHÓM PHÁT TRIỂN</a>
+                    </li>
                     <li>
                         <a href="#" data-toggle="modal" data-target="#loginModal">ĐĂNG NHẬP</a>
                     </li>

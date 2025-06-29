@@ -9,8 +9,9 @@
                 <div class="footer-text">
                     <ul class="list-inline mb-2">
                         <li class="list-inline-item"><a href="${pageContext.request.contextPath}/">TRANG CHỦ</a></li>
-                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/checkin">ĐIỂM DANH</a></li>
+                        <li class="list-inline-item"><a href="${pageContext.request.contextPath}/about">GIỚI THIỆU</a></li>
                         <li class="list-inline-item"><a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a></li>
+                              <li class="list-inline-item"><a href="${pageContext.request.contextPath}/contacts">NHÓM PHÁT TRIỂN</a></li>
                     </ul>
                     <div class="copyright-text">
                         <p class="text-light">
