@@ -103,6 +103,7 @@ public class TicketController {
         participant.setUser(user);
         participant.setTicket(ticket);
         participant.setStatus(0);
+        participant.setRate(5);
 
         boolean result = participantService.set(participant);
         if (!result) {
