@@ -79,7 +79,7 @@ FESTIVO follows the **Model-View-Controller (MVC)** architecture to ensure modul
 - **Administrators**:
   - Log in to access the admin dashboard for event management, participant check-in, and report generation.
   - Export reports as PDF or Excel for analysis.
-  - ![image](https://github.com/trieuvn/EventManagementWeb/blob/main/home.png?raw=true)
+  - ![image](https://github.com/trieuvn/EventManagementWeb/blob/main/report.png?raw=true)
 
 ## Database Schema
 The system uses a relational database with the following key tables:
