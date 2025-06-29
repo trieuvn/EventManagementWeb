@@ -51,8 +51,11 @@ public class Email {
             msg.setFrom(new InternetAddress(fromEmail));
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
             msg.setSubject(subject);
-            msg.setText(message + "\nYour OTP is: " + otp + "\nThis code is valid for 5 minutes.");
-
+            if (otp != null)
+                msg.setText(message + "\nYour OTP is: " + otp + "\nThis code is valid for 5 minutes.");
+            else{
+                msg.setText(message);
+            }
             Transport.send(msg);
             logger.info("Email sent successfully to: {}", recipientEmail);
             return new EmailResult(true, "Email sent successfully! Please check " + recipientEmail + " for OTP");

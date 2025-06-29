@@ -13,6 +13,7 @@ import com.uef.service.CategoryService;
 import com.uef.service.EventService;
 import com.uef.service.ParticipantService;
 import com.uef.service.TicketService;
+import com.uef.utils.Email;
 import com.uef.utils.Image;
 import com.uef.utils.Map;
 import jakarta.servlet.http.HttpSession;
@@ -109,6 +110,9 @@ public class TicketController {
         if (!result) {
             ra.addFlashAttribute("message", "Có lỗi xảy ra, vui lòng thử lại.");
         } else {
+            
+            Email.sendEmail(ticket.getEvent().getName(), user.getEmail(), "Cảm ơn bạn đã đăng ký tham gia sự kiện " + ticket.getEvent().getName() 
+                                                                            + "\nVé: " + ticket.getName(), null);
             ra.addFlashAttribute("message", "Đăng ký sự kiện thành công.");
         }
 
