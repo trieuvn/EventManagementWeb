@@ -160,6 +160,9 @@
                     <li class="<%= uri.startsWith(context + "/history") ? "active" : "" %>">
                         <a href="${pageContext.request.contextPath}/history">LỊCH SỬ</a>
                     </li>
+                    <li class="<%= uri.startsWith(context + "/contacts") ? "active" : "" %>">
+                        <a href="${pageContext.request.contextPath}/contacts">NHÓM PHÁT TRIỂN</a>
+                    </li>
                 </ul>
             </nav>
         </div>
