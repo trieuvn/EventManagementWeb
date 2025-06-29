@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/admin/participants")
 public class ParticipantController {
+
     @Autowired
     private ParticipantService participantService;
 
@@ -26,7 +27,8 @@ public class ParticipantController {
         model.addAttribute("participants", participantService.getAllByEvent(eventId));
         model.addAttribute("eventId", eventId);
         model.addAttribute("event", eventService.getById(eventId));
-        return "admin/participants";
+        model.addAttribute("body", "admin/participants");
+        return "admin/layout/main";
     }
 
     @RoleRequired({"admin"})

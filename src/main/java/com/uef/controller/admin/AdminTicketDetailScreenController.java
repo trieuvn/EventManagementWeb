@@ -78,7 +78,8 @@ public class AdminTicketDetailScreenController {
         model.addAttribute("tickets", tickets);
         model.addAttribute("successMessage", model.getAttribute("successMessage"));
         model.addAttribute("errorMessage", model.getAttribute("errorMessage"));
-        return "admin/tickets/list";
+        model.addAttribute("body", "admin/tickets/list");
+        return "admin/layout/main";
     }
 
     // Hiển thị form thêm vé mới
@@ -103,7 +104,8 @@ public class AdminTicketDetailScreenController {
         ticket.setConfirmCode(123456); // Mã xác nhận mặc định
         ticket.setQrCode("QR_DEFAULT_" + System.currentTimeMillis()); // Giá trị mặc định duy nhất
         model.addAttribute("ticket", ticket);
-        return "admin/tickets/add-ticket";
+        model.addAttribute("body", "admin/tickets/add-ticket");
+        return "admin/layout/main";
     }
 
     // Xử lý thêm vé mới
@@ -160,7 +162,8 @@ public class AdminTicketDetailScreenController {
         model.addAttribute("participantList", participants);
         model.addAttribute("events", eventService.getAll());
         model.addAttribute("locationList", locationService.getAll());
-        return "admin/ticket/ticket-detail";
+        model.addAttribute("body", "admin/ticket/ticket-detail");
+        return "admin/layout/main";
     }
 
     @RoleRequired({"admin"})

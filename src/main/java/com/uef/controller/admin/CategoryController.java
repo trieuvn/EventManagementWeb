@@ -22,7 +22,8 @@ public class CategoryController {
     public String listCategories(@RequestParam(value = "name", required = false) String name, Model model) {
         model.addAttribute("categories", categoryService.searchByName(name));
         model.addAttribute("name", name);
-        return "admin/categories";
+        model.addAttribute("body", "admin/categories");
+        return "admin/layout/main";
     }
 
     // Hiển thị form thêm danh mục
@@ -30,7 +31,8 @@ public class CategoryController {
     @GetMapping("/add")
     public String showAddCategoryForm(Model model) {
         model.addAttribute("category", new CATEGORY());
-        return "admin/categories/edit";
+        model.addAttribute("body", "admin/categories/edit");
+        return "admin/layout/main";
     }
 
     // Hiển thị form chỉnh sửa danh mục
@@ -43,7 +45,8 @@ public class CategoryController {
             return "redirect:/admin/categories";
         }
         model.addAttribute("category", category);
-        return "admin/categories/edit";
+        model.addAttribute("body", "admin/categories/edit");
+        return "admin/layout/main";
     }
 
     // Lưu hoặc cập nhật danh mục
