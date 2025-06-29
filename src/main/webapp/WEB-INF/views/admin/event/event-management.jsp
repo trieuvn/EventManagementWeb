@@ -83,16 +83,32 @@
                 display: flex;
                 gap: 10px;
             }
-            .guests .btn-icon {
+            td.actions {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                justify-content: start;
+            }
+
+            td.actions form {
+                margin: 0;
+                display: inline-block;
+            }
+            .btn-icon {
                 background: none;
                 border: none;
                 cursor: pointer;
                 color: #007bff;
-                font-size: 16px;
+                font-size: 18px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
-            .guests .btn-icon:hover {
+
+            .btn-icon:hover {
                 color: #0056b3;
             }
+
             /* Responsive table */
             @media (max-width: 768px) {
                 .guests table {
@@ -101,6 +117,71 @@
                     white-space: nowrap;
                 }
             }
+            .stats {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-bottom: 30px;
+            }
+
+            .card {
+                flex: 1 1 200px;
+                max-width: 250px;
+                min-width: 180px;
+                background-color: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                text-align: center;
+            }
+
+            .card.upcoming {
+                border-left: 6px solid #28a745; /* Xanh lá */
+            }
+
+            .card.ongoing {
+                border-left: 6px solid #17a2b8; /* Xanh ngọc */
+            }
+
+            .card.ended {
+                border-left: 6px solid #dc3545; /* Đỏ */
+            }
+
+            .card.total {
+                border-left: 6px solid #ffc107; /* Vàng */
+            }
+
+            .card h3 {
+                font-size: 32px;
+                margin: 0;
+                color: #000;
+            }
+
+            .card p {
+                margin-top: 8px;
+                font-size: 16px;
+                color: #666;
+            }
+            .icon-wrapper {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            .card.upcoming .icon-wrapper i {
+                color: #28a745; /* xanh lá */
+            }
+            .card.ongoing .icon-wrapper i {
+                color: #17a2b8; /* xanh ngọc */
+            }
+            .card.ended .icon-wrapper i {
+                color: #dc3545; /* đỏ */
+            }
+            .card.total .icon-wrapper i {
+                color: #ffc107; /* vàng */
+            }
+
+
         </style>
     </head>
     <body>
@@ -116,46 +197,87 @@
 
         <div class="dashboard">
             <!-- Sidebar Filters -->
-            <aside class="sidebar">
-                <h2>Bộ lọc</h2>
-                <label>Khoảng thời gian</label>
-                <input type="date">
-                <input type="date">
-                <label>Loại sự kiện</label>
-                <select>
-                    <option value="">Tất cả</option>
-                    <option>Hội nghị</option>
-                    <option>Workshop</option>
-                    <option>Webinar</option>
-                </select>
-                <label>Trạng thái</label>
-                <select>
-                    <option value="">Tất cả</option>
-                    <option>Đang mở</option>
-                    <option>Đã đóng</option>
-                </select>
-                <label>Tìm kiếm</label>
-                <input type="search" placeholder="Tên sự kiện hoặc địa điểm">
-                <button class="btn-primary"><i class="fa fa-search"></i> Tìm</button>
-            </aside>
+            <aside class="sidebar" style="padding: 20px; background-color: #f9f9f9; border-right: 1px solid #ddd;">
+                <h2 style="margin-bottom: 20px;">Bộ lọc</h2>
 
+                <form method="get" action="${pageContext.request.contextPath}/admin/events" style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Ngày -->
+                    <div>
+                        <label for="fromDate">Từ ngày:</label>
+                        <input type="date" id="fromDate" name="fromDate" value="${param.fromDate}" style="width: 100%; padding: 6px;">
+                    </div>
+
+                    <div>
+                        <label for="toDate">Đến ngày:</label>
+                        <input type="date" id="toDate" name="toDate" value="${param.toDate}" style="width: 100%; padding: 6px;">
+                    </div>
+
+                    <!-- Loại sự kiện -->
+                    <div>
+                        <label for="type">Loại sự kiện:</label>
+                        <select id="type" name="type" style="width: 100%; padding: 6px;">
+                            <option value="">Tất cả</option>
+                            <c:forEach var="t" items="${eventTypes}">
+                                <option value="${t}" ${t == param.type ? "selected" : ""}>${t}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <!-- Trạng thái -->
+                    <div>
+                        <label for="status">Trạng thái:</label>
+                        <select id="status" name="status" style="width: 100%; padding: 6px;">
+                            <option value="">Tất cả</option>
+                            <c:forEach var="s" items="${statusList}">
+                                <c:choose>
+                                    <c:when test="${s}">
+                                        <option value="true" ${param.status == 'true' ? "selected" : ""}>Đang mở</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="false" ${param.status == 'false' ? "selected" : ""}>Đã đóng</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <!-- Tìm kiếm -->
+                    <div>
+                        <label for="keyword">Tìm kiếm:</label>
+                        <input type="search" id="keyword" name="keyword" placeholder="Tên sự kiện hoặc địa điểm" value="${param.keyword}" style="width: 100%; padding: 6px;">
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px;">
+                        <i class="fa fa-search"></i> Tìm
+                    </button>
+                </form>
+            </aside>
             <!-- Main Content -->
             <main class="main-content">
                 <!-- Quick Stats -->
                 <section class="stats">
                     <div class="card upcoming">
+                        <div class="icon-wrapper"><i class="fas fa-calendar-plus"></i></div>
                         <h3>${upcomingCount}</h3>
-                        <p>Sự kiện sắp tới</p>
+                        <p>Sắp tới</p>
                     </div>
                     <div class="card ongoing">
+                        <div class="icon-wrapper"><i class="fas fa-hourglass-half"></i></div>
                         <h3>${ongoingCount}</h3>
                         <p>Đang diễn ra</p>
                     </div>
                     <div class="card ended">
+                        <div class="icon-wrapper"><i class="fas fa-calendar-times"></i></div>
                         <h3>${endedCount}</h3>
                         <p>Đã kết thúc</p>
                     </div>
+                    <div class="card total">
+                        <div class="icon-wrapper"><i class="fas fa-list-alt"></i></div>
+                        <h3>${totalCount}</h3>
+                        <p>Tổng số sự kiện</p>
+                    </div>
                 </section>
+
 
                 <!-- Event List -->
                 <section class="event-list">

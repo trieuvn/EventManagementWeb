@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,48 +36,141 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/admin/events")
 public class EventController {
+
     @Autowired
     private EventService eventService;
 
     @Autowired
     private OrganizerService organizerService;
-    
+
     @Autowired
     private TicketService ticketService;
 
     @Autowired
     private ChangeService changeService;
-    
+
     @Autowired
     private UserService userService;
 
     @RoleRequired({"admin"})
     @GetMapping
-    public String listEvents(Model model) {
+    public String listEvents(
+            @RequestParam(required = false) String fromDate,
+            @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String keyword,
+            Model model) {
+
         List<EVENT> eventList = eventService.getAll();
+
+        LocalDate from = null;
+        LocalDate to = null;
+        try {
+            if (fromDate != null && !fromDate.isEmpty()) {
+                from = LocalDate.parse(fromDate);
+            }
+            if (toDate != null && !toDate.isEmpty()) {
+                to = LocalDate.parse(toDate);
+            }
+        } catch (DateTimeParseException e) {
+            // handle nếu cần
+        }
+
+        final LocalDate finalFrom = from;
+        final LocalDate finalTo = to;
+
+        // Lọc theo ngày
+        if (finalFrom != null && finalTo != null) {
+            eventList = eventList.stream()
+                    .filter(e -> e.getTickets() != null && !e.getTickets().isEmpty()
+                    && e.getTickets().stream().anyMatch(t -> {
+                        if (t.getDate() == null) {
+                            return false;
+                        }
+                        LocalDate d = t.getDate().toLocalDate();
+                        return (d.isEqual(finalFrom) || d.isAfter(finalFrom))
+                                && (d.isEqual(finalTo) || d.isBefore(finalTo));
+                    }))
+                    .toList();
+        }
+
+        // Lọc theo loại
+        if (type != null && !type.isEmpty()) {
+            eventList = eventList.stream()
+                    .filter(e -> e.getType() != null && e.getType().equalsIgnoreCase(type))
+                    .toList();
+        }
+
+        // Lọc theo trạng thái
+        if (status != null && !status.isEmpty()) {
+            boolean isOpen = Boolean.parseBoolean(status);
+            eventList = eventList.stream()
+                    .filter(e -> e.getStatus() == isOpen)
+                    .toList();
+        }
+
+        // Lọc theo từ khóa
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            String kw = keyword.trim().toLowerCase();
+            eventList = eventList.stream()
+                    .filter(e -> e.getName().toLowerCase().contains(kw)
+                    || (e.getContactInfo() != null && e.getContactInfo().toLowerCase().contains(kw)))
+                    .toList();
+        }
+
+        // Thống kê theo danh sách đã lọc
+        LocalDate today = LocalDate.now();
+
+        long upcomingCount = eventList.stream()
+                .filter(e -> e.getTickets().stream()
+                .anyMatch(t -> t.getStatus() == 0))
+                .count();
+
+        long ongoingCount = eventList.stream()
+                .filter(e -> e.getTickets().stream()
+                .anyMatch(t -> t.getStatus() == 1))
+                .count();
+
+        long endedCount = eventList.stream()
+                .filter(e -> e.getTickets().stream()
+                .anyMatch(t -> t.getStatus() == 2))
+                .count();
+
+        // Lấy danh sách duy nhất cho bộ lọc dropdown
+        List<String> eventTypes = eventService.getAll().stream()
+                .map(EVENT::getType)
+                .filter(t -> t != null && !t.isEmpty())
+                .distinct()
+                .toList();
+
+        List<Boolean> statusList = eventService.getAll().stream()
+                .map(EVENT::getStatus)
+                .distinct()
+                .toList();
+        long totalCount = eventList.size();
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("eventTypes", eventTypes);
+        model.addAttribute("statusList", statusList);
         model.addAttribute("eventList", eventList);
+        model.addAttribute("guestList", organizerService.getAll());
 
-        List<ORGANIZER> guestList = organizerService.getAll();
-        model.addAttribute("guestList", guestList);
-
-        List<USER> topStudents = userService.getAll();
-        topStudents.sort(Comparator.comparingLong(USER::getTotalParticipated).reversed());
+        // Top sinh viên
+        List<USER> topStudents = userService.getAll().stream()
+                .sorted(Comparator.comparingLong(USER::getTotalParticipated).reversed())
+                .toList();
         model.addAttribute("topStudents", topStudents);
 
+        // Lịch sử thay đổi
         List<CHANGE> changes = changeService.getAll();
         model.addAttribute("changes", changes);
+        model.addAttribute("notificationCount", changes.size());
 
-        // Fetch stats for quick stats section
-        // TODO: Replace with actual call to eventService.getUpcomingCount()
-        model.addAttribute("upcomingCount", eventService.getUpcomingEvents()); // Example value
-        // TODO: Replace with actual call to eventService.getOngoingCount()
-        model.addAttribute("ongoingCount", eventService.getUpcomingEvents()); // Example value
-        // TODO: Replace with actual call to eventService.getEndedCount()
-        model.addAttribute("endedCount", eventService.getPastEvents()); // Example value
-        // TODO: Replace with actual call to notificationService.getNotificationCount()
-        model.addAttribute("notificationCount", changes.size()); // Example value
-        
-        
+        // Thống kê
+        model.addAttribute("upcomingCount", upcomingCount);
+        model.addAttribute("ongoingCount", ongoingCount);
+        model.addAttribute("endedCount", endedCount);
+
         model.addAttribute("body", "admin/event/event-management");
         return "admin/layout/main";
     }
@@ -118,7 +212,7 @@ public class EventController {
         // eventService.saveEvent(event);
         eventService.set(event);
         redirectAttributes.addFlashAttribute("successMessage", "Lưu thay đổi sự kiện thành công!");
-        return "redirect:/admin/events"; // Chuyển hướng về danh sách sự kiện
+        return "redirect:/admin/events";
     }
 
     @RoleRequired({"admin"})
