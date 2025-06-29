@@ -16,6 +16,8 @@ import com.uef.service.TicketService;
 import com.uef.utils.Image;
 import com.uef.utils.Map;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,11 +87,23 @@ public class TicketController {
             ra.addFlashAttribute("message", "Bạn đã đăng ký sự kiện này rồi!");
             return "redirect:/event/" + ticket.getEvent().getId();
         }
+        
+        if (ticket.getRegDeadline().before(Date.valueOf(LocalDate.now()))) {
+            ra.addFlashAttribute("message", "Sự kiện đã đóng đăng ký!");
+            return "redirect:/event/" + ticket.getEvent().getId();
+        }
 
+        if (ticket.getSlots() - ticket.getParticipants().size() <= 0){
+            ra.addFlashAttribute("message", "Sự kiện đã đầy!");
+            return "redirect:/event/" + ticket.getEvent().getId();
+        }
+        
+        
         PARTICIPANT participant = new PARTICIPANT();
         participant.setUser(user);
         participant.setTicket(ticket);
         participant.setStatus(0);
+        participant.setRate(5);
 
         boolean result = participantService.set(participant);
         if (!result) {

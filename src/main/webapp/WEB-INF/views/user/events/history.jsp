@@ -14,7 +14,6 @@
             background-color: #f9f9f9;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         .main-content {
             margin-top: 100px;
             padding: 0 10px;
@@ -22,14 +21,12 @@
             margin-left: auto;
             margin-right: auto;
         }
-
         .main-content h2 {
             margin-bottom: 30px;
             font-size: 32px;
             color: #333;
             text-align: center;
         }
-
         table {
             width: 100%;
             background-color: white;
@@ -38,25 +35,21 @@
             overflow: hidden;
             table-layout: fixed;
         }
-
         table thead {
             background-color: #007bff;
             color: white;
         }
-
         table th, table td {
             padding: 12px 15px;
             text-align: center;
             border-bottom: 1px solid #ddd;
             word-wrap: break-word;
         }
-
         .status {
             padding: 5px 10px;
             border-radius: 6px;
             font-weight: bold;
         }
-
         .status.upcoming { background-color: #e0f7fa; color: #00796b; }
         .status.completed { background-color: #e8f5e9; color: #2e7d32; }
         .status.canceled { background-color: #ffebee; color: #c62828; }
@@ -82,6 +75,36 @@
 <body>
 <div class="main-content">
     <h2>Lịch Sử Sự Kiện Của Tôi</h2>
+
+    <!-- KHUNG FORM LỌC -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form class="row g-3" method="get" action="${pageContext.request.contextPath}/history">
+                <div class="col-md-4">
+                    <label for="type" class="form-label">Loại vé</label>
+                    <select class="form-select" name="type" id="type">
+                        <option value="">Tất cả</option>
+                        <c:forEach var="t" items="${ticketTypes}">
+                            <option value="${t}" <c:if test="${param.type == t}">selected</c:if>>${t}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="fromDate" class="form-label">Từ ngày</label>
+                    <input type="date" class="form-control" id="fromDate" name="fromDate" value="${param.fromDate}">
+                </div>
+                <div class="col-md-4">
+                    <label for="toDate" class="form-label">Đến ngày</label>
+                    <div class="d-flex align-items-end">
+                        <input type="date" class="form-control me-2" id="toDate" name="toDate" value="${param.toDate}">
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- BẢNG SỰ KIỆN -->
     <table>
         <thead>
         <tr>
@@ -103,14 +126,11 @@
                         <c:when test="${p.status == 0}">
                             <span class="status upcoming">Đã Đăng ký</span>
                         </c:when>
-                        <c:when test="${p.status == 1}">
-                            <span class="status completed">Đã tham gia</span>
-                        </c:when>
-                        <c:when test="${p.status == 2}">
+                        <c:when test="${p.status == 1 || p.status == 2}">
                             <span class="status completed">Đã tham gia</span>
                         </c:when>
                         <c:when test="${p.status == -1}">
-                            <span class="status completed">Đã hủy</span>
+                            <span class="status canceled">Đã hủy</span>
                         </c:when>
                     </c:choose>
                 </td>
@@ -126,7 +146,7 @@
     </table>
 </div>
 
-<!-- QR Modal -->
+<!-- MODAL QR -->
 <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -141,7 +161,7 @@
     </div>
 </div>
 
-<!-- Rate Modal -->
+<!-- MODAL ĐÁNH GIÁ -->
 <div class="modal fade" id="rateModal" tabindex="-1" aria-labelledby="rateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -163,6 +183,7 @@
     </div>
 </div>
 
+<!-- SCRIPT -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const qrButtons = document.querySelectorAll(".view-qr-btn");

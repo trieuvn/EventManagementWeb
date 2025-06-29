@@ -97,18 +97,17 @@ public class EventService {
     }
 
     // Lấy sự kiện sắp tới (mục 82)
-    public List<EVENT> getUpcomingEvents() {
-        return entityManager.createQuery(
-                "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date > CURRENT_DATE AND t.status = 0", EVENT.class)
-                .getResultList();
-    }
-
-    // Lấy sự kiện đã qua (mục 83)
-    public List<EVENT> getPastEvents() {
-        return entityManager.createQuery(
-                "SELECT e FROM EVENT e JOIN e.tickets t WHERE t.date < CURRENT_DATE AND t.status = 2", EVENT.class)
-                .getResultList();
-    }
+//    public Long countUpcomingEvents() {
+//        return entityManager.createQuery(
+//                "SELECT COUNT(DISTINCT e) FROM EVENT e JOIN e.tickets t WHERE t.date > CURRENT_DATE AND t.status = 1", Long.class)
+//                .getSingleResult();
+//    }
+//
+//    public Long countPastEvents() {
+//        return entityManager.createQuery(
+//                "SELECT COUNT(DISTINCT e) FROM EVENT e JOIN e.tickets t WHERE t.date < CURRENT_DATE AND t.status = 0", Long.class)
+//                .getSingleResult();
+//    }
 
     // Tìm kiếm sự kiện (mục 85)
     public List<EVENT> searchEvents(String name, String category, Date date) {
