@@ -83,16 +83,32 @@
                 display: flex;
                 gap: 10px;
             }
-            .guests .btn-icon {
+            td.actions {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                justify-content: start;
+            }
+
+            td.actions form {
+                margin: 0;
+                display: inline-block;
+            }
+            .btn-icon {
                 background: none;
                 border: none;
                 cursor: pointer;
                 color: #007bff;
-                font-size: 16px;
+                font-size: 18px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
-            .guests .btn-icon:hover {
+
+            .btn-icon:hover {
                 color: #0056b3;
             }
+
             /* Responsive table */
             @media (max-width: 768px) {
                 .guests table {
@@ -101,6 +117,71 @@
                     white-space: nowrap;
                 }
             }
+            .stats {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-bottom: 30px;
+            }
+
+            .card {
+                flex: 1 1 200px;
+                max-width: 250px;
+                min-width: 180px;
+                background-color: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                text-align: center;
+            }
+
+            .card.upcoming {
+                border-left: 6px solid #28a745; /* Xanh lá */
+            }
+
+            .card.ongoing {
+                border-left: 6px solid #17a2b8; /* Xanh ngọc */
+            }
+
+            .card.ended {
+                border-left: 6px solid #dc3545; /* Đỏ */
+            }
+
+            .card.total {
+                border-left: 6px solid #ffc107; /* Vàng */
+            }
+
+            .card h3 {
+                font-size: 32px;
+                margin: 0;
+                color: #000;
+            }
+
+            .card p {
+                margin-top: 8px;
+                font-size: 16px;
+                color: #666;
+            }
+            .icon-wrapper {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            .card.upcoming .icon-wrapper i {
+                color: #28a745; /* xanh lá */
+            }
+            .card.ongoing .icon-wrapper i {
+                color: #17a2b8; /* xanh ngọc */
+            }
+            .card.ended .icon-wrapper i {
+                color: #dc3545; /* đỏ */
+            }
+            .card.total .icon-wrapper i {
+                color: #ffc107; /* vàng */
+            }
+
+
         </style>
     </head>
     <body>
@@ -176,18 +257,27 @@
                 <!-- Quick Stats -->
                 <section class="stats">
                     <div class="card upcoming">
+                        <div class="icon-wrapper"><i class="fas fa-calendar-plus"></i></div>
                         <h3>${upcomingCount}</h3>
-                        <p>Sự kiện sắp tới</p>
+                        <p>Sắp tới</p>
                     </div>
                     <div class="card ongoing">
+                        <div class="icon-wrapper"><i class="fas fa-hourglass-half"></i></div>
                         <h3>${ongoingCount}</h3>
                         <p>Đang diễn ra</p>
                     </div>
                     <div class="card ended">
+                        <div class="icon-wrapper"><i class="fas fa-calendar-times"></i></div>
                         <h3>${endedCount}</h3>
                         <p>Đã kết thúc</p>
                     </div>
+                    <div class="card total">
+                        <div class="icon-wrapper"><i class="fas fa-list-alt"></i></div>
+                        <h3>${totalCount}</h3>
+                        <p>Tổng số sự kiện</p>
+                    </div>
                 </section>
+
 
                 <!-- Event List -->
                 <section class="event-list">

@@ -64,10 +64,8 @@ public class EventController {
 
         List<EVENT> eventList = eventService.getAll();
 
-        // Chuyển đổi ngày nếu có và hợp lệ
         LocalDate from = null;
         LocalDate to = null;
-
         try {
             if (fromDate != null && !fromDate.isEmpty()) {
                 from = LocalDate.parse(fromDate);
@@ -76,44 +74,35 @@ public class EventController {
                 to = LocalDate.parse(toDate);
             }
         } catch (DateTimeParseException e) {
-            // Có thể log lỗi hoặc gửi message tới model nếu muốn hiển thị thông báo
+            // handle nếu cần
         }
 
-        // Sử dụng biến final để dùng được trong lambda
         final LocalDate finalFrom = from;
         final LocalDate finalTo = to;
 
-        // Lọc theo khoảng ngày từ ticket
+        // Lọc theo ngày
         if (finalFrom != null && finalTo != null) {
             eventList = eventList.stream()
-                    .filter(e -> {
-                        List<TICKET> tickets = e.getTickets();
-                        if (tickets == null || tickets.isEmpty()) {
+                    .filter(e -> e.getTickets() != null && !e.getTickets().isEmpty()
+                    && e.getTickets().stream().anyMatch(t -> {
+                        if (t.getDate() == null) {
                             return false;
                         }
-
-                        return tickets.stream().anyMatch(t -> {
-                            java.sql.Date ticketDate = t.getDate();
-                            if (ticketDate == null) {
-                                return false;
-                            }
-
-                            LocalDate eventDate = ticketDate.toLocalDate();
-                            return (eventDate.isEqual(finalFrom) || eventDate.isAfter(finalFrom))
-                                    && (eventDate.isEqual(finalTo) || eventDate.isBefore(finalTo));
-                        });
-                    })
+                        LocalDate d = t.getDate().toLocalDate();
+                        return (d.isEqual(finalFrom) || d.isAfter(finalFrom))
+                                && (d.isEqual(finalTo) || d.isBefore(finalTo));
+                    }))
                     .toList();
         }
 
-        // Lọc theo loại sự kiện
+        // Lọc theo loại
         if (type != null && !type.isEmpty()) {
             eventList = eventList.stream()
-                    .filter(e -> e.getType().equalsIgnoreCase(type))
+                    .filter(e -> e.getType() != null && e.getType().equalsIgnoreCase(type))
                     .toList();
         }
 
-        // Lọc theo trạng thái ("true"/"false")
+        // Lọc theo trạng thái
         if (status != null && !status.isEmpty()) {
             boolean isOpen = Boolean.parseBoolean(status);
             eventList = eventList.stream()
@@ -121,7 +110,7 @@ public class EventController {
                     .toList();
         }
 
-        // Lọc theo từ khóa tìm kiếm
+        // Lọc theo từ khóa
         if (keyword != null && !keyword.trim().isEmpty()) {
             String kw = keyword.trim().toLowerCase();
             eventList = eventList.stream()
@@ -130,19 +119,37 @@ public class EventController {
                     .toList();
         }
 
-        // Lấy danh sách loại sự kiện duy nhất
+        // Thống kê theo danh sách đã lọc
+        LocalDate today = LocalDate.now();
+
+        long upcomingCount = eventList.stream()
+                .filter(e -> e.getTickets().stream()
+                .anyMatch(t -> t.getStatus() == 0))
+                .count();
+
+        long ongoingCount = eventList.stream()
+                .filter(e -> e.getTickets().stream()
+                .anyMatch(t -> t.getStatus() == 1))
+                .count();
+
+        long endedCount = eventList.stream()
+                .filter(e -> e.getTickets().stream()
+                .anyMatch(t -> t.getStatus() == 2))
+                .count();
+
+        // Lấy danh sách duy nhất cho bộ lọc dropdown
         List<String> eventTypes = eventService.getAll().stream()
                 .map(EVENT::getType)
                 .filter(t -> t != null && !t.isEmpty())
                 .distinct()
                 .toList();
 
-        // Lấy danh sách trạng thái duy nhất
         List<Boolean> statusList = eventService.getAll().stream()
                 .map(EVENT::getStatus)
                 .distinct()
                 .toList();
-
+        long totalCount = eventList.size();
+        model.addAttribute("totalCount", totalCount);
         model.addAttribute("eventTypes", eventTypes);
         model.addAttribute("statusList", statusList);
         model.addAttribute("eventList", eventList);
@@ -157,14 +164,13 @@ public class EventController {
         // Lịch sử thay đổi
         List<CHANGE> changes = changeService.getAll();
         model.addAttribute("changes", changes);
-
-        // Thống kê số lượng
-        model.addAttribute("upcomingCount", eventService.getUpcomingEvents());
-        model.addAttribute("ongoingCount", eventService.getUpcomingEvents()); // Nếu có ongoing riêng thì sửa
-        model.addAttribute("endedCount", eventService.getPastEvents());
         model.addAttribute("notificationCount", changes.size());
 
-        // Load layout
+        // Thống kê
+        model.addAttribute("upcomingCount", upcomingCount);
+        model.addAttribute("ongoingCount", ongoingCount);
+        model.addAttribute("endedCount", endedCount);
+
         model.addAttribute("body", "admin/event/event-management");
         return "admin/layout/main";
     }
