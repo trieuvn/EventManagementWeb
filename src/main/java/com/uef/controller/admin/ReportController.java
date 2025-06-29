@@ -59,10 +59,12 @@ public class ReportController {
             model.addAttribute("fromDate", fromDate);
             model.addAttribute("toDate", toDate);
 
-            return "admin/report";
+            model.addAttribute("body", "admin/report");
+            return "admin/layout/main";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "admin/report"; // Trang để chọn lại ngày
+            model.addAttribute("body", "admin/report");
+            return "admin/layout/main";
         }
     }
 

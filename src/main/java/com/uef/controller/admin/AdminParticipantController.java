@@ -45,8 +45,9 @@ public class AdminParticipantController {
 
         model.addAttribute("participants", participants);
         model.addAttribute("events", events);
-        model.addAttribute("eventId", eventId); // để giữ selected trong dropdown
-        return "admin/participants/list";
+        model.addAttribute("eventId", eventId); 
+        model.addAttribute("body", "admin/participants/list");
+        return "admin/layout/main";
     }
 
     // Xác nhận participant (status = 1)

@@ -77,10 +77,11 @@ public class EventController {
         model.addAttribute("notificationCount", changes.size()); // Example value
         
         
-        model.addAttribute("body", "/WEB-INF/views/admin/event/event-management.jpg");
-        return "admin/event/event-management";
+        model.addAttribute("body", "admin/event/event-management");
+        return "admin/layout/main";
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/save/{id}")
     public String saveEditedEvent(
             @PathVariable("id") int eventId,
@@ -120,6 +121,7 @@ public class EventController {
         return "redirect:/admin/events"; // Chuyển hướng về danh sách sự kiện
     }
 
+    @RoleRequired({"admin"})
     @PostMapping("/delete/{id}")
     public String deleteEvent(@PathVariable int id, RedirectAttributes redirectAttributes) {
         EVENT event = eventService.getById(id);
@@ -197,7 +199,8 @@ public class EventController {
     @GetMapping("/details")
     public String eventDetails(Model model) {
         model.addAttribute("event", eventService.getAll());
-        return "admin/events/details";
+        model.addAttribute("body", "admin/events/details");
+        return "admin/layout/main";
     }
 
     // Hiển thị form chỉnh sửa sự kiện với nút thêm vé
@@ -211,7 +214,8 @@ public class EventController {
         }
         model.addAttribute("event", event);
         model.addAttribute("tickets", event.getTickets());
-        return "admin/event/event-detail";
+        model.addAttribute("body", "admin/event/event-detail");
+        return "admin/layout/main";
     }
 
     // Redirect tới form thêm vé
@@ -236,6 +240,7 @@ public class EventController {
         ticket.setConfirmCode(123456); // Mã xác nhận mặc định
         ticket.setQrCode("QR_DEFAULT"); // QR code mặc định
         model.addAttribute("ticket", ticket);
-        return "/admin/tickets/add-ticket";
+        model.addAttribute("body", "/admin/tickets/add-ticket");
+        return "admin/layout/main";
     }
 }
