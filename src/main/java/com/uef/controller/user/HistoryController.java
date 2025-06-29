@@ -27,7 +27,7 @@ public class HistoryController {
 
     @Autowired
     private TicketService ticketService;
-    
+
     @GetMapping("/history")
     public String history(
             @RequestParam(value = "type", required = false) String type,
@@ -63,7 +63,7 @@ public class HistoryController {
 
         return "layout/main2";
     }
-    
+
     @RoleRequired({"user", "admin"})
     @GetMapping("/user/qr")
     public String showQRCode(@RequestParam("ticket_id") int ticketId, Model model, HttpSession session) {
@@ -86,7 +86,7 @@ public class HistoryController {
             return "redirect:/history";
         }
     }
-    
+
     @RoleRequired({"user", "admin"})
     @GetMapping("/user/rate")
     @ResponseBody
@@ -105,6 +105,36 @@ public class HistoryController {
             return ResponseEntity.ok("Đánh giá thành công");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Không thể cập nhật đánh giá");
+        }
+    }
+
+    @RoleRequired({"user", "admin"})
+    @PostMapping("/history/cancel")
+    @ResponseBody
+    public ResponseEntity<String> cancelRegistration(
+            @RequestParam("ticketId") int ticketId,
+            HttpSession session) {
+        USER user = (USER) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
+        }
+
+        PARTICIPANT participant = participantService.getById(ticketId, user.getEmail());
+        if (participant == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy đăng ký.");
+        }
+
+        // Check if cancellation is allowed (e.g., status must be 0 - Đã Đăng ký)
+        if (participant.getStatus() != 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Không thể hủy đăng ký vì trạng thái hiện tại không cho phép.");
+        }
+
+        // Update status to -1 (canceled)
+        boolean updated = participantService.setById(ticketId, user.getEmail(), -1, participant.getRate(), participant.getComment());
+        if (updated) {
+            return ResponseEntity.ok("Hủy đăng ký thành công.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi hủy đăng ký.");
         }
     }
 }
