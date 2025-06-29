@@ -23,21 +23,25 @@ public class EventManagementController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("event", new EVENT());
-        return "admin/form";
+
+        model.addAttribute("body", "admin/form");
+        return "admin/layout/main";
     }
 
     @RoleRequired({"admin"})
     @PostMapping("/add")
     public String addEvent(@Valid @ModelAttribute EVENT event, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "admin/form";
+            model.addAttribute("body", "admin/form");
+            return "admin/layout/main";
         }
         try {
             eventService.set(event);
             return "redirect:/admin/events/list";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "admin/form";
+            model.addAttribute("body", "admin/form");
+            return "admin/layout/main";
         }
     }
 
@@ -47,24 +51,27 @@ public class EventManagementController {
         EVENT event = eventService.getById(id);
         if (event != null) {
             model.addAttribute("event", event);
-            return "admin/event/event-detail";
+            model.addAttribute("body", "admin/event/event-detail");
+            return "admin/layout/main";
         }
-        return "admin/event/event-management";
+        model.addAttribute("body", "admin/event/event-management");
+        return "admin/layout/main";
     }
-
 
     @RoleRequired({"admin"})
     @PostMapping("/update")
     public String updateEvent(@Valid @ModelAttribute EVENT event, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "admin/form";
+            model.addAttribute("body", "admin/event/form");
+            return "admin/layout/main";
         }
         try {
             eventService.set(event);
             return "redirect:/admin/events/list";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "admin/form";
+            model.addAttribute("body", "admin/event/form");
+            return "admin/layout/main";
         }
     }
 
@@ -79,6 +86,5 @@ public class EventManagementController {
             return "admin/event-status-form";
         }
     }
-    
-    
+
 }
