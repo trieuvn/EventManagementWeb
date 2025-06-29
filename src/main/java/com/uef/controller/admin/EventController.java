@@ -19,6 +19,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,48 +36,135 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/admin/events")
 public class EventController {
+
     @Autowired
     private EventService eventService;
 
     @Autowired
     private OrganizerService organizerService;
-    
+
     @Autowired
     private TicketService ticketService;
 
     @Autowired
     private ChangeService changeService;
-    
+
     @Autowired
     private UserService userService;
 
     @RoleRequired({"admin"})
     @GetMapping
-    public String listEvents(Model model) {
+    public String listEvents(
+            @RequestParam(required = false) String fromDate,
+            @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String keyword,
+            Model model) {
+
         List<EVENT> eventList = eventService.getAll();
+
+        // Chuyển đổi ngày nếu có và hợp lệ
+        LocalDate from = null;
+        LocalDate to = null;
+
+        try {
+            if (fromDate != null && !fromDate.isEmpty()) {
+                from = LocalDate.parse(fromDate);
+            }
+            if (toDate != null && !toDate.isEmpty()) {
+                to = LocalDate.parse(toDate);
+            }
+        } catch (DateTimeParseException e) {
+            // Có thể log lỗi hoặc gửi message tới model nếu muốn hiển thị thông báo
+        }
+
+        // Sử dụng biến final để dùng được trong lambda
+        final LocalDate finalFrom = from;
+        final LocalDate finalTo = to;
+
+        // Lọc theo khoảng ngày từ ticket
+        if (finalFrom != null && finalTo != null) {
+            eventList = eventList.stream()
+                    .filter(e -> {
+                        List<TICKET> tickets = e.getTickets();
+                        if (tickets == null || tickets.isEmpty()) {
+                            return false;
+                        }
+
+                        return tickets.stream().anyMatch(t -> {
+                            java.sql.Date ticketDate = t.getDate();
+                            if (ticketDate == null) {
+                                return false;
+                            }
+
+                            LocalDate eventDate = ticketDate.toLocalDate();
+                            return (eventDate.isEqual(finalFrom) || eventDate.isAfter(finalFrom))
+                                    && (eventDate.isEqual(finalTo) || eventDate.isBefore(finalTo));
+                        });
+                    })
+                    .toList();
+        }
+
+        // Lọc theo loại sự kiện
+        if (type != null && !type.isEmpty()) {
+            eventList = eventList.stream()
+                    .filter(e -> e.getType().equalsIgnoreCase(type))
+                    .toList();
+        }
+
+        // Lọc theo trạng thái ("true"/"false")
+        if (status != null && !status.isEmpty()) {
+            boolean isOpen = Boolean.parseBoolean(status);
+            eventList = eventList.stream()
+                    .filter(e -> e.getStatus() == isOpen)
+                    .toList();
+        }
+
+        // Lọc theo từ khóa tìm kiếm
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            String kw = keyword.trim().toLowerCase();
+            eventList = eventList.stream()
+                    .filter(e -> e.getName().toLowerCase().contains(kw)
+                    || (e.getContactInfo() != null && e.getContactInfo().toLowerCase().contains(kw)))
+                    .toList();
+        }
+
+        // Lấy danh sách loại sự kiện duy nhất
+        List<String> eventTypes = eventService.getAll().stream()
+                .map(EVENT::getType)
+                .filter(t -> t != null && !t.isEmpty())
+                .distinct()
+                .toList();
+
+        // Lấy danh sách trạng thái duy nhất
+        List<Boolean> statusList = eventService.getAll().stream()
+                .map(EVENT::getStatus)
+                .distinct()
+                .toList();
+
+        model.addAttribute("eventTypes", eventTypes);
+        model.addAttribute("statusList", statusList);
         model.addAttribute("eventList", eventList);
+        model.addAttribute("guestList", organizerService.getAll());
 
-        List<ORGANIZER> guestList = organizerService.getAll();
-        model.addAttribute("guestList", guestList);
-
-        List<USER> topStudents = userService.getAll();
-        topStudents.sort(Comparator.comparingLong(USER::getTotalParticipated).reversed());
+        // Top sinh viên
+        List<USER> topStudents = userService.getAll().stream()
+                .sorted(Comparator.comparingLong(USER::getTotalParticipated).reversed())
+                .toList();
         model.addAttribute("topStudents", topStudents);
 
+        // Lịch sử thay đổi
         List<CHANGE> changes = changeService.getAll();
         model.addAttribute("changes", changes);
 
-        // Fetch stats for quick stats section
-        // TODO: Replace with actual call to eventService.getUpcomingCount()
-        model.addAttribute("upcomingCount", eventService.getUpcomingEvents()); // Example value
-        // TODO: Replace with actual call to eventService.getOngoingCount()
-        model.addAttribute("ongoingCount", eventService.getUpcomingEvents()); // Example value
-        // TODO: Replace with actual call to eventService.getEndedCount()
-        model.addAttribute("endedCount", eventService.getPastEvents()); // Example value
-        // TODO: Replace with actual call to notificationService.getNotificationCount()
-        model.addAttribute("notificationCount", changes.size()); // Example value
-        
-        
+        // Thống kê số lượng
+        model.addAttribute("upcomingCount", eventService.getUpcomingEvents());
+        model.addAttribute("ongoingCount", eventService.getUpcomingEvents()); // Nếu có ongoing riêng thì sửa
+        model.addAttribute("endedCount", eventService.getPastEvents());
+        model.addAttribute("notificationCount", changes.size());
+
+        // Load layout
         model.addAttribute("body", "admin/event/event-management");
         return "admin/layout/main";
     }
@@ -118,7 +206,7 @@ public class EventController {
         // eventService.saveEvent(event);
         eventService.set(event);
         redirectAttributes.addFlashAttribute("successMessage", "Lưu thay đổi sự kiện thành công!");
-        return "redirect:/admin/events"; // Chuyển hướng về danh sách sự kiện
+        return "redirect:/admin/events";
     }
 
     @RoleRequired({"admin"})

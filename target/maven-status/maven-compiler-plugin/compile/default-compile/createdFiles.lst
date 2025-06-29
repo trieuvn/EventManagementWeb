@@ -15,6 +15,7 @@ com\uef\model\ORGANIZER.class
 com\uef\model\CHANGE.class
 com\uef\model\QRDataDTO.class
 com\uef\service\LocationService.class
+com\uef\controller\user\ContactController.class
 com\uef\annotation\RoleRequired.class
 com\uef\utils\Map.class
 com\uef\service\EventService.class

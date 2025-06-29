@@ -8,6 +8,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Quản lý Sự kiện</title>
+        <link rel="icon" href="https://cdn-icons-png.freepik.com/512/12769/12769433.png" type="image/png">
         <!-- Liên kết CSS từ template -->
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700,800,900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
