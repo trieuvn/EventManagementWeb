@@ -9,6 +9,8 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -83,10 +85,10 @@ public class ParticipantService {
             if (existing == null) {
                 entityManager.persist(participant);
             } else {
-                existing.setStatus(participant.getStatus());
-                existing.setRate(participant.getRate());
-                existing.setComment(participant.getComment());
-                entityManager.merge(existing);
+                    existing.setStatus(participant.getStatus());
+                    existing.setRate(participant.getRate());
+                    existing.setComment(participant.getComment());
+                    entityManager.merge(existing);
             }
             return true;
         } catch (Exception e) {
@@ -106,38 +108,71 @@ public class ParticipantService {
         if (rate < 0 || rate > 5) {
             throw new IllegalArgumentException("Điểm đánh giá phải từ 0 đến 5");
         }
-        try {
-            PARTICIPANT existing = getById(ticketId, userEmail);
-            if (existing == null) {
-                Query userQuery = entityManager.createQuery("SELECT u FROM USER u WHERE u.email = :email", USER.class);
-                userQuery.setParameter("email", userEmail);
-                USER user = (USER) userQuery.getSingleResult();
-                if (user == null) {
-                    throw new IllegalArgumentException("Người dùng không tồn tại");
-                }
-                TICKET ticket = entityManager.find(TICKET.class, ticketId);
-                if (ticket == null) {
-                    throw new IllegalArgumentException("Vé không tồn tại");
-                }
-                Query slotQuery = entityManager.createQuery(
-                        "SELECT COUNT(p) FROM PARTICIPANT p WHERE p.ticket.id = :ticketId");
-                slotQuery.setParameter("ticketId", ticketId);
-                long participantCount = (long) slotQuery.getSingleResult();
-                if (ticket.getSlots() != -1 && participantCount >= ticket.getSlots()) {
-                    throw new IllegalStateException("Không còn slot trống cho vé này");
-                }
-                PARTICIPANT participant = new PARTICIPANT(user, ticket, status, rate, comment);
-                entityManager.persist(participant);
-            } else {
-                existing.setStatus(status);
-                existing.setRate(rate);
-                existing.setComment(comment);
-                entityManager.merge(existing);
+
+        PARTICIPANT existing = getById(ticketId, userEmail);
+        if (existing == null) {
+            Query userQuery = entityManager.createQuery("SELECT u FROM USER u WHERE u.email = :email", USER.class);
+            userQuery.setParameter("email", userEmail);
+            USER user = (USER) userQuery.getSingleResult();
+            if (user == null) {
+                throw new IllegalArgumentException("Người dùng không tồn tại");
             }
-            return true;
-        } catch (Exception e) {
-            return false;
+            TICKET ticket = entityManager.find(TICKET.class, ticketId);
+            if (ticket == null) {
+                throw new IllegalArgumentException("Vé không tồn tại");
+            }
+            // Kiểm tra số lượng slot
+            Query slotQuery = entityManager.createQuery(
+                    "SELECT COUNT(p) FROM PARTICIPANT p WHERE p.ticket.id = :ticketId");
+            slotQuery.setParameter("ticketId", ticketId);
+            long participantCount = (long) slotQuery.getSingleResult();
+            if (ticket.getSlots() != -1 && participantCount >= ticket.getSlots()) {
+                throw new IllegalStateException("Không còn slot trống cho vé này");
+            }
+            PARTICIPANT participant = new PARTICIPANT(user, ticket, status, rate, comment);
+            entityManager.persist(participant);
+        } else {
+            // Kiểm tra nếu hủy đăng ký (status = -1), chỉ cho phép nếu chưa tham gia
+            if (status == -1 && (existing.getStatus() == 1 || existing.getStatus() == 2)) {
+                throw new IllegalStateException("Không thể hủy đăng ký sau khi đã tham gia.");
+            }
+            // Kiểm tra ngày sự kiện để giới hạn hủy (ví dụ: không hủy nếu quá gần)
+            Date eventDate = existing.getTicket().getDate();
+            if (eventDate != null) {
+                LocalDate currentDate = LocalDate.now(); // 04:24 AM +07, June 30, 2025
+                LocalDate eventLocalDate = eventDate.toLocalDate();
+                if (eventLocalDate.isBefore(currentDate) || eventLocalDate.isEqual(currentDate)) {
+                    throw new IllegalStateException("Không thể hủy đăng ký vì sự kiện đã bắt đầu.");
+                }
+            }
+            existing.setStatus(status);
+            existing.setRate(rate);
+            existing.setComment(comment);
+            entityManager.merge(existing);
         }
+        return true;
+    }
+
+    // Hủy đăng ký tham gia
+    public boolean cancelRegistration(int ticketId, String userEmail) {
+        PARTICIPANT participant = getById(ticketId, userEmail);
+        if (participant == null) {
+            throw new IllegalArgumentException("Đăng ký không tồn tại.");
+        }
+        // Chỉ cho phép hủy nếu trạng thái là 0 (Đã Đăng ký)
+        if (participant.getStatus() != 0) {
+            throw new IllegalStateException("Không thể hủy đăng ký vì trạng thái hiện tại không cho phép.");
+        }
+        // Kiểm tra ngày sự kiện
+        Date eventDate = participant.getTicket().getDate();
+        if (eventDate != null) {
+            LocalDate currentDate = LocalDate.now(); // 04:24 AM +07, June 30, 2025
+            LocalDate eventLocalDate = eventDate.toLocalDate();
+            if (eventLocalDate.isBefore(currentDate) || eventLocalDate.isEqual(currentDate)) {
+                throw new IllegalStateException("Không thể hủy đăng ký vì sự kiện đã bắt đầu.");
+            }
+        }
+        return setById(ticketId, userEmail, -1, participant.getRate(), participant.getComment());
     }
 
     // Xóa người tham gia (mục 89)
