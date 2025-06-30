@@ -242,15 +242,25 @@ public class UserController {
 
     @PostMapping("/user/profile")
     public String updateUserNameAndPhone(
-            @ModelAttribute("userForm") USER userForm,
+            @Valid @ModelAttribute("userForm") USER userForm,
+            BindingResult result,
             HttpSession session,
             RedirectAttributes ra) {
 
         USER sessionUser = (USER) session.getAttribute("user");
-
-        sessionUser.setFirstName(userForm.getFirstName());
-        sessionUser.setLastName(userForm.getLastName());
-        sessionUser.setPhoneNumber(userForm.getPhoneNumber());
+        sessionUser = userService.getByEmail(sessionUser.getEmail());
+        try{
+            sessionUser.setFirstName(userForm.getFirstName());
+            sessionUser.setLastName(userForm.getLastName());
+            sessionUser.setPhoneNumber(userForm.getPhoneNumber());
+        }catch(Exception e){
+            return "redirect:/profile";
+        }
+        
+        if (result.hasErrors()){
+            ra.addFlashAttribute("error", "Hãy kiểm tra lại thông tin");
+            return "redirect:/profile";
+        }
 
         try {
             boolean success = userService.updateNameAndPhone(sessionUser);
@@ -259,9 +269,11 @@ public class UserController {
                 ra.addFlashAttribute("msg", "Cập nhật thông tin thành công!");
             } else {
                 ra.addFlashAttribute("error", "Lỗi khi cập nhật.");
+                return "redirect:/profile";
             }
         } catch (IllegalArgumentException e) {
             ra.addFlashAttribute("error", e.getMessage());
+            return "redirect:/profile";
         }
 
         return "redirect:/profile";
