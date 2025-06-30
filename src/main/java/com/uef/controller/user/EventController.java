@@ -87,8 +87,6 @@ public class EventController {
             return "error/404";
         }
 
-        int totalSlots = 50;
-
         double firstTicketPrice = event.getTickets().isEmpty() ? 0 : event.getTickets().get(0).getPrice();
         String firstTicketDeadline = event.getTickets().isEmpty() ? null
                 : event.getTickets().get(0).getRegDeadline() != null
@@ -97,7 +95,6 @@ public class EventController {
 
         model.addAttribute("body", "/WEB-INF/views/user/events/details.jsp");
         model.addAttribute("event", event);
-        model.addAttribute("totalSlots", totalSlots);
         model.addAttribute("firstTicketPrice", firstTicketPrice);
         model.addAttribute("firstTicketDeadline", firstTicketDeadline);
         model.addAttribute("userForm", new USER());

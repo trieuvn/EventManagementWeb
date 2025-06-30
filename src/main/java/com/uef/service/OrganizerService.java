@@ -28,16 +28,27 @@ public class OrganizerService {
 
     // Thêm hoặc cập nhật nhà tổ chức
     public boolean set(ORGANIZER organizer) {
-        // Kiểm tra email duy nhất
-        Query query = entityManager.createQuery("SELECT o FROM ORGANIZER o WHERE o.email = :email");
+        // Kiểm tra email duy nhất với điều kiện loại trừ ID hiện tại nếu có
+        StringBuilder jpql = new StringBuilder("SELECT COUNT(o) FROM ORGANIZER o WHERE o.email = :email");
+        if (organizer.getId() > 0) {
+            jpql.append(" AND o.id != :id");
+        }
+        Query query = entityManager.createQuery(jpql.toString());
         query.setParameter("email", organizer.getEmail());
-        if (!query.getResultList().isEmpty() && !getById(organizer.getId()).equals(organizer)) {
+        if (organizer.getId() > 0) {
+            query.setParameter("id", organizer.getId());
+        }
+
+        Long count = (Long) query.getSingleResult();
+        if (count > 0) {
             throw new IllegalArgumentException("Email already exists");
         }
+
         // Kiểm tra các trường bắt buộc
         if (organizer.getEmail() == null || organizer.getLastName() == null) {
             throw new IllegalArgumentException("Required fields are missing");
         }
+
         try {
             if (organizer.getId() == 0) {
                 entityManager.persist(organizer);

@@ -68,6 +68,9 @@
         .btn-rate { background-color: #ffc107; color: black; }
         .btn-rate:hover { background-color: #e0a800; color: black; }
 
+        .btn-cancel { background-color: #dc3545; color: white; }
+        .btn-cancel:hover { background-color: #c82333; }
+
         .bi { cursor: pointer; }
     </style>
 </head>
@@ -136,8 +139,12 @@
                 </td>
                 <td>
                     <div class="d-flex justify-content-center gap-2">
+                        <form action="${pageContext.request.contextPath}/history/cancel" method="post">
+                            <input type="hidden" name="ticketId" value="${p.ticket.id}" />
+                            <button type="submit" class="btn-icon btn-cancel" ${p.status != 0 ? 'disabled' : ''}>Hủy đăng ký</button>
+                        </form>
                         <button class="btn-icon btn-view view-qr-btn" data-ticket-id="${p.ticket.id}">Xem QR</button>
-                        <button class="btn-icon btn-rate rate-btn" data-ticket-id="${p.ticket.id}">Đánh giá</button>
+                        <button class="btn-icon btn-rate rate-btn" data-ticket-id="${p.ticket.id}" ${p.status != 1 && p.status != 2 ? 'disabled' : ''}>Đánh giá</button>
                     </div>
                 </td>
             </tr>

@@ -24,6 +24,7 @@ com\uef\model\TAG.class
 com\uef\controller\admin\ParticipantController.class
 com\uef\controller\user\TicketController.class
 com\uef\utils\Email.class
+com\uef\controller\admin\OrganizerController.class
 com\uef\model\TICKET.class
 com\uef\utils\Email$1.class
 com\uef\utils\Image.class
