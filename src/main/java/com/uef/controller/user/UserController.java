@@ -161,21 +161,18 @@ public class UserController {
         Long otpExpiry = (Long) session.getAttribute("otpExpiry");
 
         if (email == null || !email.equals(sessionEmail)) {
-            response.put("success", false);
             response.put("message", "Email không hợp lệ hoặc phiên đã hết hạn.");
             logger.warn("Invalid email or session expired: {}", email);
             return ResponseEntity.badRequest().body(response);
         }
 
         if (otpExpiry == null || System.currentTimeMillis() > otpExpiry) {
-            response.put("success", false);
             response.put("message", "Mã OTP đã hết hạn.");
             logger.warn("OTP expired for email: {}", email);
             return ResponseEntity.badRequest().body(response);
         }
 
         if (submittedOtp == null || !submittedOtp.equals(sessionOtp)) {
-            response.put("success", false);
             response.put("message", "Mã OTP không hợp lệ.");
             logger.warn("Invalid OTP for email: {}", email);
             return ResponseEntity.badRequest().body(response);
