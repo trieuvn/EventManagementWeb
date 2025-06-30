@@ -10,6 +10,7 @@ import com.uef.service.EventService;
 import com.uef.service.LocationService;
 import com.uef.service.ParticipantService;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -85,7 +86,7 @@ public class AdminTicketDetailScreenController {
     // Hiển thị form thêm vé mới
     @RoleRequired({"admin"})
     @GetMapping("/add")
-    public String showAddForm(@RequestParam("eventId") int eventId, Model model) {
+    public String showAddForm(@RequestParam("eventId") int eventId, Model model) throws IOException {
         EVENT event = eventService.getById(eventId);
         if (event == null) {
             model.addAttribute("errorMessage", "Sự kiện không tồn tại.");
@@ -101,7 +102,7 @@ public class AdminTicketDetailScreenController {
         ticket.setSlots(100);
         ticket.setStatus(0); // Upcoming
         ticket.setType(event.getType()); // Loại vé khớp với sự kiện
-        ticket.setConfirmCode(123456); // Mã xác nhận mặc định
+        ticket.createNewQRCode(); // Mã xác nhận mặc định
         ticket.setQrCode("QR_DEFAULT_" + System.currentTimeMillis()); // Giá trị mặc định duy nhất
         model.addAttribute("ticket", ticket);
         model.addAttribute("body", "admin/tickets/add-ticket");
