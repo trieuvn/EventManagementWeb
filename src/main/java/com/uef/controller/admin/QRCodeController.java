@@ -48,8 +48,7 @@ public class QRCodeController {
     @RoleRequired({"admin"})
     @GetMapping("/qrscan")
     public String showQRForm(Model model) {
-        model.addAttribute("body", "admin/qrscan/qr-result-content");
-        return "admin/layout/main";
+        return "admin/qrscan/qr-result-content";
     }
 
     @RoleRequired({"admin"})
@@ -58,16 +57,14 @@ public class QRCodeController {
         // Validate file
         if (imageFile == null || imageFile.isEmpty()) {
             model.addAttribute("message", "Please upload an image file.");
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         }
 
         // Validate file type (optional: restrict to image types)
         String contentType = imageFile.getContentType();
         if (!contentType.startsWith("image/")) {
             model.addAttribute("message", "Uploaded file must be an image (e.g., PNG, JPEG).");
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         }
 
         try {
@@ -86,8 +83,7 @@ public class QRCodeController {
                 data = parseQRData(result.getText());
             } catch (Exception e) {
                 model.addAttribute("message", "Mã QR không hợp lệ.");
-                model.addAttribute("body", "admin/qrscan/qr-result-content");
-                return "admin/layout/main";
+                return "admin/qrscan/qr-result-content";
             }
 
             String userEmail = data.getEmail();
@@ -100,8 +96,7 @@ public class QRCodeController {
 
             if (ticket.getConfirmCode() != Integer.parseInt(confirmCode)) {
                 model.addAttribute("message", "QRCode and ticket not matched.");
-                model.addAttribute("body", "admin/qrscan/qr-result-content");
-                return "admin/layout/main";
+                return "admin/qrscan/qr-result-content";
             }
 
             if (participant == null) {
@@ -120,16 +115,13 @@ public class QRCodeController {
         } catch (NotFoundException e) {
             // Handle case where image is not a QR code
             model.addAttribute("message", "The uploaded image is not a valid QR code.");
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         } catch (IOException e) {
             // Handle other potential errors (e.g., corrupted image)
             model.addAttribute("message", "Error processing the image: " + e.getMessage());
-            model.addAttribute("body", "admin/qrscan/qr-result-content");
-            return "admin/layout/main";
+            return "admin/qrscan/qr-result-content";
         }
 
-        model.addAttribute("body", "admin/qrscan/qr-result-content");
-        return "admin/layout/main";
+        return "admin/qrscan/qr-result-content";
     }
 }
