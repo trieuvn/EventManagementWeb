@@ -27,13 +27,13 @@
             color: #333;
             text-align: center;
         }
+
         table {
             width: 100%;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.05);
             overflow: hidden;
-            table-layout: fixed;
         }
         table thead {
             background-color: #007bff;
@@ -45,14 +45,27 @@
             border-bottom: 1px solid #ddd;
             word-wrap: break-word;
         }
+        table td:last-child {
+            min-width: 270px; /* đảm bảo đủ rộng cho các nút */
+        }
+
         .status {
             padding: 5px 10px;
             border-radius: 6px;
             font-weight: bold;
         }
-        .status.upcoming { background-color: #e0f7fa; color: #00796b; }
-        .status.completed { background-color: #e8f5e9; color: #2e7d32; }
-        .status.canceled { background-color: #ffebee; color: #c62828; }
+        .status.upcoming {
+            background-color: #e0f7fa;
+            color: #00796b;
+        }
+        .status.completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status.canceled {
+            background-color: #ffebee;
+            color: #c62828;
+        }
 
         .btn-icon {
             padding: 6px 12px;
@@ -60,18 +73,39 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.2s;
+            white-space: nowrap;
+            min-width: 80px;
+            text-align: center;
         }
 
-        .btn-view { background-color: #28a745; color: white; }
-        .btn-view:hover { background-color: #218838; }
+        .btn-view {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-view:hover {
+            background-color: #218838;
+        }
 
-        .btn-rate { background-color: #ffc107; color: black; }
-        .btn-rate:hover { background-color: #e0a800; color: black; }
+        .btn-rate {
+            background-color: #ffc107;
+            color: black;
+        }
+        .btn-rate:hover {
+            background-color: #e0a800;
+            color: black;
+        }
 
-        .btn-cancel { background-color: #dc3545; color: white; }
-        .btn-cancel:hover { background-color: #c82333; }
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
 
-        .bi { cursor: pointer; }
+        .bi {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -138,10 +172,10 @@
                     </c:choose>
                 </td>
                 <td>
-                    <div class="d-flex justify-content-center gap-2">
+                    <div class="d-flex justify-content-center gap-2 flex-nowrap">
                         <form action="${pageContext.request.contextPath}/history/cancel" method="post">
                             <input type="hidden" name="ticketId" value="${p.ticket.id}" />
-                            <button type="submit" class="btn-icon btn-cancel" ${p.status != 0 ? 'disabled' : ''}>Hủy đăng ký</button>
+                            <button type="submit" class="btn-icon btn-cancel" ${p.status != 0 ? 'disabled' : ''}>Hủy đăng ký </button>
                         </form>
                         <button class="btn-icon btn-view view-qr-btn" data-ticket-id="${p.ticket.id}">Xem QR</button>
                         <button class="btn-icon btn-rate rate-btn" data-ticket-id="${p.ticket.id}" ${p.status != 1 && p.status != 2 ? 'disabled' : ''}>Đánh giá</button>
@@ -190,7 +224,6 @@
     </div>
 </div>
 
-<!-- SCRIPT -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const qrButtons = document.querySelectorAll(".view-qr-btn");

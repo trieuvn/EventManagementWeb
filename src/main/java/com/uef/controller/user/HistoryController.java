@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HistoryController {
@@ -50,8 +51,8 @@ public class HistoryController {
                 .filter(p -> type == null || type.isEmpty() || p.getTicket().getEvent().getType().equalsIgnoreCase(type))
                 .filter(p -> {
                     LocalDate eventDate = p.getTicket().getDate().toLocalDate();
-                    return (fromDate == null || !eventDate.isBefore(fromDate)) &&
-                           (toDate == null || !eventDate.isAfter(toDate));
+                    return (fromDate == null || !eventDate.isBefore(fromDate))
+                            && (toDate == null || !eventDate.isAfter(toDate));
                 })
                 .collect(Collectors.toList());
 
@@ -110,31 +111,27 @@ public class HistoryController {
 
     @RoleRequired({"user", "admin"})
     @PostMapping("/history/cancel")
-    @ResponseBody
-    public ResponseEntity<String> cancelRegistration(
+    public String cancelRegistration(
             @RequestParam("ticketId") int ticketId,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
         USER user = (USER) session.getAttribute("user");
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
-        }
 
         PARTICIPANT participant = participantService.getById(ticketId, user.getEmail());
-        if (participant == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy đăng ký.");
+        if (participant == null || participant.getStatus() != 0) {
+            redirectAttributes.addFlashAttribute("error", "Không thể hủy đăng ký.");
+            return "redirect:/history";
         }
 
-        // Check if cancellation is allowed (e.g., status must be 0 - Đã Đăng ký)
-        if (participant.getStatus() != 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Không thể hủy đăng ký vì trạng thái hiện tại không cho phép.");
-        }
-
-        // Update status to -1 (canceled)
         boolean updated = participantService.setById(ticketId, user.getEmail(), -1, participant.getRate(), participant.getComment());
         if (updated) {
-            return ResponseEntity.ok("Hủy đăng ký thành công.");
+            redirectAttributes.addFlashAttribute("success", "Hủy đăng ký thành công.");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi hủy đăng ký.");
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi hủy đăng ký.");
         }
+
+        return "redirect:/history";
     }
+
 }
