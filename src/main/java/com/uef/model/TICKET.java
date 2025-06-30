@@ -283,10 +283,13 @@ public class TICKET {
     }
 
     public int getAvailableSlots() {
-        if (this.participants == null) {
-            return this.slots;
+        int total = 0;
+        for (PARTICIPANT p : participants){
+            if (p.getStatus() != -1){
+                total++;
+            }
         }
-        return this.slots - this.participants.size();
+        return this.slots - total;
     }
 
     public void createNewQRCode() throws UnsupportedEncodingException, IOException {

@@ -52,6 +52,7 @@ public class TicketController {
 
     @Autowired
     private ParticipantService participantService;
+
     @RoleRequired({"user", "admin"})
     @PostMapping("/event/save-ticket-id")
     @ResponseBody
@@ -59,6 +60,7 @@ public class TicketController {
         session.setAttribute("selectedTicketId", ticketId);
         return ResponseEntity.ok("Saved successfully");
     }
+
     @RoleRequired({"user", "admin"})
     @GetMapping("/show-map")
     public String showMap(Model model,
@@ -70,6 +72,7 @@ public class TicketController {
             @RequestParam(required = false) String endName) throws Exception {
         return Map.showMap(model, startLat, startLng, endLat, endLng, startName, endName);
     }
+
     @RoleRequired({"user", "admin"})
     @PostMapping("/register/{ticket_id}")
     public String registerTicket(@PathVariable int ticket_id, RedirectAttributes ra, HttpSession session) {
@@ -77,42 +80,50 @@ public class TicketController {
         TICKET ticket = ticketService.getById(ticket_id);
         if (ticket == null) {
             ra.addFlashAttribute("message", "Sự kiện không tồn tại.");
-            return "redirect:/events"; 
+            return "redirect:/events";
         }
 
         List<PARTICIPANT> participants = participantService.getByUser(user);
         boolean alreadyRegistered = participants.stream()
                 .anyMatch(p -> p.getTicket().getId() == ticket_id);
 
+        PARTICIPANT participant = participantService.getById(ticket_id, user.getEmail());
+
         if (alreadyRegistered) {
-            ra.addFlashAttribute("message", "Bạn đã đăng ký sự kiện này rồi!");
-            return "redirect:/event/" + ticket.getEvent().getId();
+            if (participant.getStatus() != -1) {
+                ra.addFlashAttribute("message", "Bạn đã đăng ký sự kiện này rồi!");
+                return "redirect:/event/" + ticket.getEvent().getId();
+            }
         }
-        
+
         if (ticket.getRegDeadline().before(Date.valueOf(LocalDate.now()))) {
             ra.addFlashAttribute("message", "Sự kiện đã đóng đăng ký!");
             return "redirect:/event/" + ticket.getEvent().getId();
         }
 
-        if (ticket.getSlots() - ticket.getParticipants().size() <= 0){
+        if (ticket.getSlots() - ticket.getParticipants().size() <= 0) {
             ra.addFlashAttribute("message", "Sự kiện đã đầy!");
             return "redirect:/event/" + ticket.getEvent().getId();
         }
-        
-        
-        PARTICIPANT participant = new PARTICIPANT();
-        participant.setUser(user);
-        participant.setTicket(ticket);
-        participant.setStatus(0);
-        participant.setRate(5);
+
+        if (participant == null) {
+            participant = new PARTICIPANT();
+            participant.setUser(user);
+            participant.setTicket(ticket);
+            participant.setStatus(0);
+            participant.setRate(5);
+        }else {
+            participant.setStatus(0);
+            participant.setRate(5);
+        }
 
         boolean result = participantService.set(participant);
         if (!result) {
             ra.addFlashAttribute("message", "Có lỗi xảy ra, vui lòng thử lại.");
         } else {
-            
-            Email.sendEmail(ticket.getEvent().getName(), user.getEmail(), "Cảm ơn bạn đã đăng ký tham gia sự kiện " + ticket.getEvent().getName() 
-                                                                            + "\nVé: " + ticket.getName(), null);
+
+            Email.sendEmail(ticket.getEvent().getName(), user.getEmail(), "Cảm ơn bạn đã đăng ký tham gia sự kiện " + ticket.getEvent().getName()
+                    + "\nVé: " + ticket.getName(), null);
             ra.addFlashAttribute("message", "Đăng ký sự kiện thành công.");
         }
 

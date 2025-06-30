@@ -67,7 +67,7 @@
             <div class="card card-custom p-4 bg-light-custom">
                 <h2 class="text-success">${event.name}</h2>
                 <p>${event.description}</p>
-                <p><strong>Số lượng vé:</strong> ${event.getSlots()}</p>
+                <p><strong>Số lượng vé:</strong>${event.getSlots()}</p>
                 <p><strong>Hình thức:</strong> ${event.type}</p>
                 <p><strong>Đối tượng tham gia:</strong> ${event.target}</p>
                 <p><strong>Contact:</strong> ${event.contactInfo}</p>
@@ -112,7 +112,7 @@
                                             data-ticket-name="${ticket.name}"
                                             data-ticket-price="${ticket.price}"
                                             data-ticket-regdeadline="${ticket.regDeadline}"
-                                            data-ticket-slots="${ticket.slots}"
+                                            data-ticket-slots="${ticket.getAvailableSlots()}"
                                             data-ticket-status="${ticket.status}"
                                             data-ticket-type="${ticket.type}"
                                             data-ticket-lat="${ticket.location.latitude}"
