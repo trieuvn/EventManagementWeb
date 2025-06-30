@@ -294,6 +294,6 @@ public class TICKET {
 
     public void createNewQRCode() throws UnsupportedEncodingException, IOException {
         // Tạo chuỗi kết hợp ticket id với thông tin khác (ví dụ: id và confirmCode)
-        this.confirmCode = QRCode.generateRandomInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        this.confirmCode = QRCode.generateRandomInt(0, Integer.MAX_VALUE);
     }
 }

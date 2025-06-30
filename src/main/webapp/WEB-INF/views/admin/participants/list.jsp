@@ -7,7 +7,10 @@
     </head>
     <body>
         <div class="container mt-4">
-            <h2 class="mb-4">Quản lý người tham gia</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Quản lý người tham gia</h2>
+                <a href="${pageContext.request.contextPath}/admin/qrscan" class="btn btn-primary">Checkin</a>
+            </div>
 
             <!-- Bộ lọc theo sự kiện -->
             <form method="get" action="${pageContext.request.contextPath}/admin/participants" class="row g-3 mb-4">
@@ -54,15 +57,15 @@
                                     <input type="hidden" name="userEmail" value="${participant.user.email}" />
                                     <button type="submit" class="btn btn-success btn-sm"
                                             <c:if test="${participant.status == 1}">disabled</c:if>>Confirm</button>
-                                    </form>
-                                    <form action="${pageContext.request.contextPath}/admin/participants/cancel" method="post" style="display:inline;">
+                                </form>
+                                <form action="${pageContext.request.contextPath}/admin/participants/cancel" method="post" style="display:inline;">
                                     <input type="hidden" name="ticketId" value="${participant.ticket.id}" />
                                     <input type="hidden" name="userEmail" value="${participant.user.email}" />
                                     <button type="submit" class="btn btn-danger btn-sm"
                                             <c:if test="${participant.status == 0}">disabled</c:if>>Cancel</button>
-                                    </form>
-                                </td>
-                            </tr>
+                                </form>
+                            </td>
+                        </tr>
                     </c:forEach>
                 </tbody>
             </table>
